@@ -1,120 +1,63 @@
-<!-- <div fxLayout="column" fxLayoutAlign="space-around center">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="example-full-width">
-      <div class="form-group">
-        <mat-form-field class="example-full-width">
-          <input
-            matInput
-            placeholder="Usuário ou e-mail"
-            formControlName="username"
-            [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-          />
-        </mat-form-field>
-        <mat-error
-          *ngIf="
-            submitted &&
-            f.username.errors &&
-            f.username.errors.required &&
-            (f.username.touched || f.username.dirty)
-          "
-          >Usuário ou e-mail é obrigatório</mat-error
-        >
-      </div>
-      <div class="form-group">
-        <mat-form-field class="example-full-width">
-          <input
-            matInput
-            placeholder="Senha"
-            formControlName="password"
-            type="password"
-            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-          />
-        </mat-form-field>
-        <mat-error
-          *ngIf="
-            submitted &&
-            f.password.errors &&
-            f.password.errors.required &&
-            (f.password.touched || f.password.dirty)
-          "
-          >Senha é obrigatória</mat-error
-        >
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-around center">
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="loading"
-          *ngIf="!loading"
-        >
-          Login
-        </button>
-        <button mat-raised-button (click)="register()">Cadastrar</button>
-      </div>
-    </form>
-  </mat-card>
-</div> -->
-<div class="center-card">
-  <mat-card>
-    <div *ngIf="!loading" class="example-full-width">
+<div class="align">
+  <mat-card class="card-width ">
+    <div *ngIf="!loading">
       <mat-card-header>
         <mat-card-title>Login</mat-card-title>
       </mat-card-header>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
-        <div class="form-group">
-          <mat-form-field class="example-full-width">
-            <input
-              matInput
-              placeholder="Usuário ou e-mail"
-              formControlName="username"
-              [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-            />
-          </mat-form-field>
-          <mat-error
-            *ngIf="
-              submitted &&
-              f.username.errors &&
-              f.username.errors.required &&
-              (f.username.touched || f.username.dirty)
-            "
-            >Usuário ou e-mail é obrigatório</mat-error
-          >
-        </div>
-        <div class="form-group">
-          <mat-form-field class="example-full-width">
-            <input
-              matInput
-              placeholder="Senha"
-              formControlName="password"
-              type="password"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-            />
-          </mat-form-field>
-          <mat-error
-            *ngIf="
-              submitted &&
-              f.password.errors &&
-              f.password.errors.required &&
-              (f.password.touched || f.password.dirty)
-            "
-            >Senha é obrigatória</mat-error
-          >
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button
-            mat-raised-button
-            color="primary"
-            [disabled]="loading"
-            *ngIf="!loading"
-          >
-            Login
-          </button>
-          <button mat-raised-button (click)="register()">Cadastrar</button>
-        </div>
-      </form>
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <mat-form-field class="example-full-width">
+              <input
+                matInput
+                placeholder="Usuário ou e-mail"
+                formControlName="username"
+                [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+              />
+            </mat-form-field>
+            <mat-error
+              *ngIf="
+                submitted &&
+                f.username.errors &&
+                f.username.errors.required &&
+                (f.username.touched || f.username.dirty)
+              "
+              >Usuário ou e-mail é obrigatório</mat-error
+            >
+          </div>
+          <div class="form-group">
+            <mat-form-field class="example-full-width">
+              <input
+                matInput
+                placeholder="Senha"
+                formControlName="password"
+                type="password"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+              />
+            </mat-form-field>
+            <mat-error
+              *ngIf="
+                submitted &&
+                f.password.errors &&
+                f.password.errors.required &&
+                (f.password.touched || f.password.dirty)
+              "
+              >Senha é obrigatória</mat-error
+            >
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-around center">
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="loading"
+              *ngIf="!loading"
+            >
+              Login
+            </button>
+            <button mat-raised-button (click)="register()">Cadastrar</button>
+          </div>
+        </form>
+      </mat-card-content>
     </div>
     <mat-spinner *ngIf="loading" [diameter]="300"></mat-spinner>
   </mat-card>

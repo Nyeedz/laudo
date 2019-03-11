@@ -1,22 +1,16 @@
-.center-card {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.mat-card {
-  height: 60%;
+.card-width {
   width: 30%;
+  text-align: center;
+}
+.align {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  min-height: 100vh;
 }
 .example-full-width {
   width: 90%;
-}
-.form-group:first {
-  margin-bottom: 1em;
 }
 .mat-card-actions a {
   float: right;

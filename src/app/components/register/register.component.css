@@ -1,0 +1,15 @@
+.tamanho {
+  width: 60%;
+  height: 30%;
+  text-align: center;
+}
+.example-full-width {
+  width: 100%;
+}
+.align {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}

@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from "src/app/services/user/user.service";
 
 @Component({
   selector: "app-register",
@@ -27,9 +27,15 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
       username: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      nome: ["", Validators.required],
+      cidade: ["", Validators.required],
+      bairro: ["", Validators.required],
+      estado: ["", Validators.required],
+      endereco: ["", Validators.required],
+      numero: ["", Validators.required],
+      confirmedPassword: ["", Validators.required],
       password: ["", [Validators.required, Validators.minLength(6)]]
     });
   }
