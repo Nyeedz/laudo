@@ -3,8 +3,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { UserService } from "src/app/services/user/user.service";
-import { AlertService } from "src/app/services/alert/alert.service";
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: "app-register",
@@ -18,9 +17,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService,
     private userService: UserService,
-    private alertService: AlertService
+    private authenticationService: AuthenticationService
   ) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(["/"]);
@@ -53,11 +51,9 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success("Registration successful", true);
           this.router.navigate(["/login"]);
         },
         error => {
-          this.alertService.error(error);
           this.loading = false;
         }
       );

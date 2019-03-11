@@ -3,13 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { User } from "src/app/models/user";
+import { GlobalVariable } from "../../global";
 
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-
-  apiUrl: string = "http://localhost:1337";
+  private apiUrl = GlobalVariable.apiUrl;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(

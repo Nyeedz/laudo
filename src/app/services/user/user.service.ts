@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { User } from "src/app/models/user";
+import { GlobalVariable } from "../../global";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
-  apiUrl: string = "http://localhost:1337";
+  private apiUrl = GlobalVariable.apiUrl;
   jwt = JSON.parse(localStorage.getItem("currentUser"));
 
   constructor(private http: HttpClient) {}

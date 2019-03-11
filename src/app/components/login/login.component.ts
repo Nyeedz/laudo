@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { AlertService } from "src/app/services/alert/alert.service";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: "app-login",
@@ -14,26 +14,23 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private snackBar: MatSnackBar
   ) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(["/"]);
     }
   }
+
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ["", Validators.required],
       password: ["", Validators.required]
     });
-
-    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
   }
 
   get f() {
@@ -53,12 +50,21 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
+          this.router.navigate(["/"]);
         },
         error => {
-          this.alertService.error(error);
+          this.snackBar.open("Usuário ou senha inválido", "Ok", {
+            duration: 5000
+          });
           this.loading = false;
+          setTimeout(() => {
+            this.loginForm.reset();
+          }, 1500);
         }
       );
+  }
+
+  register() {
+    this.router.navigate(["/register"]);
   }
 }

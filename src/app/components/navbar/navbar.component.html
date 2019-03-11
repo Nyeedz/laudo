@@ -1,0 +1,7 @@
+<mat-toolbar color="primary" *ngIf="currentUser">
+  <mat-toolbar-row>
+    <span>{{ currentUser.user.username }}</span>
+    <span class="space"></span>
+    <mat-icon class="example-icon" (click)="logout()">exit_to_app</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>

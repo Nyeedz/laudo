@@ -1,0 +1,23 @@
+.center-card {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mat-card {
+  height: 60%;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.example-full-width {
+  width: 90%;
+}
+.form-group:first {
+  margin-bottom: 1em;
+}
+.mat-card-actions a {
+  float: right;
+}
