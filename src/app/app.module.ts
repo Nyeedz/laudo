@@ -22,6 +22,7 @@ import {
   MatSnackBarModule
 } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { CompareValidatorDirective } from "./shared/compare-validator.directive";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    CompareValidatorDirective
   ],
   imports: [
     BrowserModule,

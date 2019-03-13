@@ -2,10 +2,7 @@
   width: 30%;
   text-align: center;
 }
-.align {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.altura {
   align-items: center;
   min-height: 100vh;
 }

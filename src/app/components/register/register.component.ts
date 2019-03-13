@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { UserService } from "src/app/services/user/user.service";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: "app-register",
@@ -18,7 +19,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar
   ) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(["/"]);
@@ -35,8 +37,8 @@ export class RegisterComponent implements OnInit {
       estado: ["", Validators.required],
       endereco: ["", Validators.required],
       numero: ["", Validators.required],
-      confirmedPassword: ["", Validators.required],
-      password: ["", [Validators.required, Validators.minLength(6)]]
+      password: ["", [Validators.required, Validators.minLength(6)]],
+      confirmedPassword: ["", Validators.required]
     });
   }
 
@@ -44,12 +46,14 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
+  login() {
+    this.router.navigate(["/"]);
+  }
+
   onSubmit() {
     this.submitted = true;
 
-    if (this.registerForm.invalid) {
-      return;
-    }
+    if (this.registerForm.invalid) return;
 
     this.loading = true;
     this.userService
@@ -57,10 +61,23 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
+          this.snackBar.open("Usuário cadastrado com sucesso!", "✔️", {
+            duration: 5000
+          });
           this.router.navigate(["/login"]);
         },
         error => {
+          this.snackBar.open(
+            "Não foi possivel se cadastrar, por favor tente mais tarde",
+            "❌",
+            {
+              duration: 5000
+            }
+          );
           this.loading = false;
+          setTimeout(() => {
+            this.registerForm.reset();
+          }, 1500);
         }
       );
   }

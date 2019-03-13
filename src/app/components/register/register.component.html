@@ -1,16 +1,4 @@
-<!-- <div class="center-card">
-  <mat-card>
-    <div *ngIf="!loading" class="example-full-width">
-      <mat-card-header>
-        <mat-card-title>Cadastro</mat-card-title>
-      </mat-card-header>
-      
-    </div>
-    <mat-spinner *ngIf="loading" [diameter]="300"></mat-spinner>
-  </mat-card>
-</div> -->
-
-<div class="align">
+<div fxLayout="column" fxLayoutAlign="center center" class="altura">
   <mat-card class="tamanho">
     <div *ngIf="!loading" class="example-full-width">
       <mat-card-header>
@@ -18,210 +6,154 @@
       </mat-card-header>
       <mat-card-content>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Usuário"
-                formControlName="username"
-                [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.username.errors &&
-                f.username.errors.required &&
-                (f.username.touched || f.username.dirty)
-              "
-              >Usuário</mat-error
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Usuário"
+              formControlName="username"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'username')"
+              >Usuário é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="E-mail"
-                formControlName="email"
-                type="email"
-                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.email.errors &&
-                f.email.errors.required &&
-                (f.email.touched || f.email.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="E-mail"
+              formControlName="email"
+              type="email"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'email')"
               >E-mail é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Nome"
-                formControlName="nome"
-                type="nome"
-                [ngClass]="{ 'is-invalid': submitted && f.nome.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.nome.errors &&
-                f.nome.errors.required &&
-                (f.nome.touched || f.nome.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Nome"
+              formControlName="nome"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'nome')"
               >Nome é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Cidade"
-                formControlName="cidade"
-                type="cidade"
-                [ngClass]="{ 'is-invalid': submitted && f.cidade.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.cidade.errors &&
-                f.cidade.errors.required &&
-                (f.cidade.touched || f.cidade.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Cidade"
+              formControlName="cidade"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'cidade')"
               >Cidade é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Bairro"
-                formControlName="bairro"
-                type="bairro"
-                [ngClass]="{ 'is-invalid': submitted && f.bairro.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.bairro.errors &&
-                f.bairro.errors.required &&
-                (f.bairro.touched || f.bairro.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Bairro"
+              formControlName="bairro"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'bairro')"
               >Bairro é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Estado"
-                formControlName="estado"
-                type="estado"
-                [ngClass]="{ 'is-invalid': submitted && f.estado.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.estado.errors &&
-                f.estado.errors.required &&
-                (f.estado.touched || f.estado.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Estado"
+              formControlName="estado"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'estado')"
               >Estado é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Endereço"
-                formControlName="endereco"
-                type="endereco"
-                [ngClass]="{ 'is-invalid': submitted && f.endereco.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.endereco.errors &&
-                f.endereco.errors.required &&
-                (f.endereco.touched || f.endereco.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Endereço"
+              formControlName="endereco"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'endereco')"
               >Endereço é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Número"
-                formControlName="numero"
-                type="numero"
-                [ngClass]="{ 'is-invalid': submitted && f.numero.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.numero.errors &&
-                f.numero.errors.required &&
-                (f.numero.touched || f.numero.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Número"
+              formControlName="numero"
+              type="number"
+              required
+            />
+            <mat-error *ngIf="registerForm?.hasError('required', 'numero')"
               >Número é obrigatório</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Senha"
-                formControlName="password"
-                type="password"
-                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-              />
-            </mat-form-field>
-            <mat-error
-              *ngIf="
-                submitted &&
-                f.password.errors &&
-                f.password.errors.required &&
-                (f.password.touched || f.password.dirty)
-              "
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Senha"
+              [type]="!hide ? 'password' : 'text'"
+              formControlName="password"
+              required
+            />
+            <mat-icon matSuffix (click)="hide = !hide">{{
+              hide ? "visibility_off" : "visibility"
+            }}</mat-icon>
+            <mat-error *ngIf="registerForm?.hasError('required', 'password')"
               >Senha é obrigatória</mat-error
             >
-            <mat-error *ngIf="submitted && f.confirmedPassword.errors.minlength"
+            <mat-error
+              *ngIf="
+                submitted && registerForm?.hasError('minlength', 'password')
+              "
               >Senha muito curta</mat-error
             >
-          </div>
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <input
-                matInput
-                placeholder="Confirmar Senha"
-                formControlName="confirmedPassword"
-                type="confirmedPassword"
-                [ngClass]="{
-                  'is-invalid': submitted && f.confirmedPassword.errors
-                }"
-              />
-            </mat-form-field>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Confirmar Senha"
+              [type]="!hide ? 'password' : 'text'"
+              formControlName="confirmedPassword"
+              required
+              compare="password"
+            />
+            <mat-icon matSuffix (click)="hide = !hide">{{
+              hide ? "visibility_off" : "visibility"
+            }}</mat-icon>
+            <mat-error
+              *ngIf="registerForm?.hasError('required', 'confirmedPassword')"
+              >Senha é obrigatória</mat-error
+            >
             <mat-error
               *ngIf="
                 submitted &&
-                f.confirmedPassword.errors &&
-                f.confirmedPassword.errors.required &&
-                (f.confirmedPassword.touched || f.confirmedPassword.dirty)
+                registerForm?.hasError('minlength', 'confirmedPassword')
               "
-              >Senha é obrigatória</mat-error
+              >Senha muito curta</mat-error
             >
-          </div>
+            <mat-error *ngIf="!registerForm?.errors"
+              >Senhas diferentes</mat-error
+            >
+          </mat-form-field>
+
           <div fxLayout="row" fxLayoutAlign="space-around center">
             <button
               mat-raised-button
@@ -231,7 +163,7 @@
             >
               Login
             </button>
-            <button mat-raised-button (click)="register()">Cadastrar</button>
+            <button mat-raised-button (click)="login()">Cancelar</button>
           </div>
         </form>
       </mat-card-content>

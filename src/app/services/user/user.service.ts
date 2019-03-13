@@ -18,8 +18,21 @@ export class UserService {
     });
   }
 
+  getMe() {
+    return this.http
+      .get(`${this.apiUrl}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${this.jwt.jwt}`
+        }
+      })
+  }
+
   getById(id: any) {
-    return this.http.get(`${this.apiUrl}/users/${id}`);
+    return this.http.get(`${this.apiUrl}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt.jwt}`
+      }
+    });
   }
 
   register(user: User) {

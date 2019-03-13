@@ -4,12 +4,10 @@
   text-align: center;
 }
 .example-full-width {
-  width: 100%;
+  width: 95%;
+  padding: 2px
 }
-.align {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.altura {
   align-items: center;
   min-height: 100vh;
 }

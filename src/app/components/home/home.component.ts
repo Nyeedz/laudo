@@ -13,7 +13,8 @@ import { UserService } from "src/app/services/user/user.service";
 export class HomeComponent implements OnInit, OnDestroy {
   currentUser: User;
   currentUserSubscription: Subscription;
-  users: User[] = [];
+  user: Object;
+  idUser: any;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -24,10 +25,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     );
+    this.idUser = JSON.parse(localStorage.getItem("currentUser"));
   }
 
   ngOnInit() {
-    this.loadAllUsers();
+    this.loadUser();
   }
 
   ngOnDestroy() {
@@ -39,16 +41,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .delete(id)
       .pipe(first())
       .subscribe(() => {
-        this.loadAllUsers();
+        this.loadUser();
       });
   }
 
-  private loadAllUsers() {
-    this.userService
-      .getAll()
-      .pipe(first())
-      .subscribe(users => {
-        this.users = users;
-      });
+  private loadUser() {
+    this.userService.getMe();
   }
 }
