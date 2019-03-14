@@ -1,60 +1,50 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="altura">
   <mat-card class="card-width" *ngIf="!loading">
-    <div>
-      <mat-card-header>
-        <mat-card-title>Login</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <mat-form-field class="example-full-width">
-            <input
-              matInput
-              placeholder="Usuário ou e-mail"
-              formControlName="username"
-              [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-            />
-          </mat-form-field>
-          <mat-error
-            *ngIf="
-              submitted &&
-              f.username.errors &&
-              f.username.errors.required &&
-              (f.username.touched || f.username.dirty)
-            "
-            >Usuário ou e-mail é obrigatório</mat-error
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Usuário"
+            formControlName="username"
+            required
+          />
+          <mat-error *ngIf="loginForm?.hasError('required', 'username')"
+            >Usuário é obrigatório</mat-error
           >
-          <mat-form-field class="example-full-width">
-            <input
-              matInput
-              placeholder="Senha"
-              formControlName="password"
-              type="password"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-            />
-          </mat-form-field>
-          <mat-error
-            *ngIf="
-              submitted &&
-              f.password.errors &&
-              f.password.errors.required &&
-              (f.password.touched || f.password.dirty)
-            "
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Senha"
+            [type]="!hide ? 'password' : 'text'"
+            formControlName="password"
+            required
+          />
+          <mat-icon matSuffix (click)="hide = !hide">{{
+            hide ? "visibility_off" : "visibility"
+          }}</mat-icon>
+          <mat-error *ngIf="loginForm?.hasError('required', 'password')"
             >Senha é obrigatória</mat-error
           >
-          <div fxLayout="row" fxLayoutAlign="space-around center">
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="loading"
-              *ngIf="!loading"
-            >
-              Login
-            </button>
-            <button mat-raised-button (click)="register()">Cadastrar</button>
-          </div>
-        </form>
-      </mat-card-content>
-    </div>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center" class="mt-1">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="loading"
+            *ngIf="!loading"
+          >
+            Login
+          </button>
+          <button mat-raised-button (click)="register()">Cadastrar</button>
+        </div>
+      </form>
+    </mat-card-content>
   </mat-card>
   <mat-spinner *ngIf="loading" [diameter]="300"></mat-spinner>
 </div>

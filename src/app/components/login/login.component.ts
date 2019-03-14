@@ -40,9 +40,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     this.loading = true;
     this.authenticationService
@@ -53,13 +51,13 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/"]);
         },
         error => {
-          this.snackBar.open("Usuário ou senha inválido", "Ok", {
+          this.snackBar.open("❌ Usuário ou Senha inválido", "Ok", {
             duration: 5000
           });
           this.loading = false;
           setTimeout(() => {
             this.loginForm.reset();
-          }, 1500);
+          }, 1000);
         }
       );
   }

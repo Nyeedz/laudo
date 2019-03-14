@@ -5,6 +5,7 @@ import { first } from "rxjs/operators";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { UserService } from "src/app/services/user/user.service";
 import { MatSnackBar } from "@angular/material";
+import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 
 @Component({
   selector: "app-register",
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private authenticationService: AuthenticationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private viaCepService: ViaCepService
   ) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(["/"]);
@@ -32,6 +34,7 @@ export class RegisterComponent implements OnInit {
       username: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       nome: ["", Validators.required],
+      cep: ["", Validators.required],
       cidade: ["", Validators.required],
       bairro: ["", Validators.required],
       estado: ["", Validators.required],
@@ -48,6 +51,47 @@ export class RegisterComponent implements OnInit {
 
   login() {
     this.router.navigate(["/"]);
+  }
+
+  consultaCep(cep) {
+    cep.replace(/\D+/g, "");
+    if (cep != "") {
+      let validaCep = /^[0-9]{8}$/;
+
+      if (validaCep.test(cep)) {
+        this.resetaDadosForm(this.registerForm);
+        this.viaCepService.getCep(cep).subscribe(
+          result => {
+            this.populaDadosCep(result);
+          },
+          error => {
+            this.snackBar.open("❌ Cep não encontrado", "OK", {
+              duration: 2000
+            });
+          }
+        );
+      }
+    }
+  }
+
+  populaDadosCep(dados) {
+    this.registerForm.patchValue({
+      cep: dados.cep,
+      bairro: dados.bairro,
+      cidade: dados.localidade,
+      estado: dados.uf,
+      endereco: dados.logradouro
+    });
+  }
+
+  resetaDadosForm(form) {
+    this.registerForm.patchValue({
+      cep: form.cep,
+      bairro: null,
+      cidade: null,
+      estado: null,
+      endereco: null
+    });
   }
 
   onSubmit() {
@@ -67,17 +111,10 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(["/login"]);
         },
         error => {
-          this.snackBar.open(
-            "Não foi possivel se cadastrar, por favor tente mais tarde",
-            "❌",
-            {
-              duration: 5000
-            }
-          );
+          this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+            duration: 5000
+          });
           this.loading = false;
-          setTimeout(() => {
-            this.registerForm.reset();
-          }, 1500);
         }
       );
   }
