@@ -1,0 +1,22 @@
+<!-- <h1>Hi {{ currentUser.firstName }}!</h1>
+<h3>All registered users:</h3>
+<ul>
+  <li *ngFor="let user of users">
+    {{ user.username }} -
+    <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
+  </li>
+</ul> -->
+
+<mat-drawer-container class="example-container" [hasBackdrop]="false">
+  <mat-drawer #drawer mode="side">
+    <br />
+    <a [routerLink]="'/dashboard'">inicio</a>
+    <br />
+    <a [routerLink]="'/dashboard/nota'">nota</a>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-navbar></app-navbar>
+    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

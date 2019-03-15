@@ -6,14 +6,11 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./components/login/login.component";
-import { RegisterComponent } from "./components/register/register.component";
-import { HomeComponent } from "./components/home/home.component";
-import { NavbarComponent } from "./components/navbar/navbar.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { RegisterComponent } from "./pages/register/register.component";
 
 // Material Components
 import {
-  MatToolbarModule,
   MatIconModule,
   MatCardModule,
   MatInputModule,
@@ -29,8 +26,6 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
-    NavbarComponent,
     CompareValidatorDirective
   ],
   imports: [
@@ -42,7 +37,7 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     BrowserAnimationsModule,
 
     // material imports
-    MatToolbarModule,
+
     MatIconModule,
     MatCardModule,
     MatInputModule,

@@ -1,13 +1,16 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { HomeComponent } from "./components/home/home.component";
 import { AuthGuard } from "./guards/auth/auth.guard";
-import { LoginComponent } from "./components/login/login.component";
-import { RegisterComponent } from "./components/register/register.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { RegisterComponent } from "./pages/register/register.component";
 
 const routes: Routes = [
-  { path: "", component: HomeComponent, canActivate: [AuthGuard] },
-  { path: "login", component: LoginComponent },
+  {
+    path: "dashboard",
+    loadChildren: "./pages/dashboard/dashboard.module#DashboardModule",
+    canActivate: [AuthGuard]
+  },
+  { path: "", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "**", redirectTo: "" }
 ];

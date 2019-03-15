@@ -6,11 +6,11 @@ import { AuthenticationService } from "src/app/services/authentication/authentic
 import { UserService } from "src/app/services/user/user.service";
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.css"]
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   currentUser: User;
   currentUserSubscription: Subscription;
   user: Object;
