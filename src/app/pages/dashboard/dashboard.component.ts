@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { User } from '../../models/user';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  @ViewChild('drawer') drawer: MatDrawer;
   currentUser: User;
   currentUserSubscription: Subscription;
   user: Object;
@@ -43,6 +45,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.loadUser();
       });
+  }
+
+  drawerToggle() {
+    this.drawer.toggle();
   }
 
   private loadUser() {

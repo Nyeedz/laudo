@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { User } from '../../models/user';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +9,8 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @Output() drawerToggle = new EventEmitter();
+
   currentUser: User;
   constructor(
     private router: Router,
@@ -24,5 +26,9 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleDrawer() {
+    this.drawerToggle.emit(null);
   }
 }
