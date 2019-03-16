@@ -1,12 +1,15 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatIconModule, MatToolbarModule } from "@angular/material";
-import { RouterModule } from "@angular/router";
-import { MatSidenavModule } from "@angular/material/sidenav";
-
-import { DashboardRoutingModule } from "./dashboard-routing.module";
-import { DashboardComponent } from "./dashboard.component";
-import { NavbarComponent } from "../navbar/navbar.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import {
+  MatIconModule,
+  MatListModule,
+  MatToolbarModule
+} from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterModule } from '@angular/router';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { DashboardRoutingModule } from './dashboard-routing.module';
+import { DashboardComponent } from './dashboard.component';
 
 @NgModule({
   declarations: [DashboardComponent, NavbarComponent],
@@ -16,7 +19,8 @@ import { NavbarComponent } from "../navbar/navbar.component";
     RouterModule,
     MatIconModule,
     DashboardRoutingModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatListModule
   ]
 })
 export class DashboardModule {}

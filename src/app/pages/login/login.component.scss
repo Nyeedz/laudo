@@ -1,0 +1,14 @@
+.card-login {
+  text-align: center;
+  padding: 3em;
+
+  form {
+    display: flex;
+    flex-flow: column wrap;
+    padding: 2em;
+
+    button {
+      margin-top: 1em;
+    }
+  }
+}

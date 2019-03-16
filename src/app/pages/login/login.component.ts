@@ -1,68 +1,60 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { first } from "rxjs/operators";
-import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
-  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar
-  ) {
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(["/"]);
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required]
+      identifier: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
-  get f() {
-    return this.loginForm.controls;
-  }
-
   onSubmit() {
-    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
 
-    if (this.loginForm.invalid) return;
-
+    const user = this.loginForm.getRawValue();
     this.loading = true;
+
     this.authenticationService
-      .login(this.f.username.value, this.f.password.value)
+      .login(user)
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(["/dashboard"]);
+          this.router.navigate(['/dashboard']);
         },
         error => {
-          this.snackBar.open("❌ Usuário ou Senha inválido", "Ok", {
+          this.snackBar.open('❌ Usuário ou Senha inválido', 'Ok', {
             duration: 5000
           });
+        },
+        () => {
           this.loading = false;
-          setTimeout(() => {
-            this.loginForm.reset();
-          }, 1000);
         }
       );
   }
 
   register() {
-    this.router.navigate(["/register"]);
+    this.router.navigate(['/register']);
   }
 }

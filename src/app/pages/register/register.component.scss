@@ -1,0 +1,25 @@
+.stepper-box {
+  @media(min-width: 440px) {
+    width: 85vw;
+  }
+  @media(min-width: 900px) {
+    width: 55vw;
+  }
+  @media(min-width: 1024px) {
+    width: 50vw;
+  }
+
+  form {
+    display: flex;
+    flex-flow: column;
+
+    .btnBox {
+      text-align: center;
+    }
+  }
+}
+
+.back-button {
+  width: 100%;
+  margin-bottom: 1rem!important;
+}

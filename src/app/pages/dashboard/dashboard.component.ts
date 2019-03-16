@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Subscription } from "rxjs";
-import { first } from "rxjs/operators";
-import { User } from "src/app/models/user";
-import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { UserService } from "src/app/services/user/user.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   currentUser: User;
@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     );
-    this.idUser = JSON.parse(localStorage.getItem("currentUser"));
+    this.idUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {

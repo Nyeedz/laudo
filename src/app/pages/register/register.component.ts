@@ -1,21 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { first } from "rxjs/operators";
-import { AuthenticationService } from "src/app/services/authentication/authentication.service";
-import { UserService } from "src/app/services/user/user.service";
-import { MatSnackBar } from "@angular/material";
-import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
 
 @Component({
-  selector: "app-register",
-  templateUrl: "./register.component.html",
-  styleUrls: ["./register.component.css"]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
+  firstForm: FormGroup;
+  secondForm: FormGroup;
   loading = false;
-  submitted = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -23,59 +24,48 @@ export class RegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar,
     private viaCepService: ViaCepService
-  ) {
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(["/"]);
-    }
-  }
+  ) {}
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      nome: ["", Validators.required],
-      cep: ["", Validators.required],
-      cidade: ["", Validators.required],
-      bairro: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-      confirmedPassword: ["", Validators.required]
+    this.firstForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      nome: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    });
+
+    this.secondForm = this.formBuilder.group({
+      cep: ['', Validators.required],
+      cidade: ['', Validators.required],
+      bairro: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      numero: ['', Validators.required]
     });
   }
 
-  get f() {
-    return this.registerForm.controls;
-  }
-
-  login() {
-    this.router.navigate(["/"]);
-  }
-
   consultaCep(cep) {
-    cep.replace(/\D+/g, "");
-    if (cep != "") {
-      let validaCep = /^[0-9]{8}$/;
-
-      if (validaCep.test(cep)) {
-        this.resetaDadosForm(this.registerForm);
-        this.viaCepService.getCep(cep).subscribe(
-          result => {
-            this.populaDadosCep(result);
-          },
-          error => {
-            this.snackBar.open("❌ Cep não encontrado", "OK", {
-              duration: 2000
-            });
-          }
-        );
-      }
+    cep.replace(/\D+/g, '');
+    const validaCep = /^[0-9]{8}$/;
+    if (cep != '' && validaCep.test(cep)) {
+      this.resetaDadosForm(cep);
+      this.viaCepService.getCep(cep).subscribe(
+        result => {
+          console.log(result);
+          this.populaDadosCep(result);
+        },
+        error => {
+          this.snackBar.open('❌ Cep não encontrado', 'OK', {
+            duration: 2000
+          });
+        }
+      );
     }
   }
 
   populaDadosCep(dados) {
-    this.registerForm.patchValue({
+    this.secondForm.patchValue({
       cep: dados.cep,
       bairro: dados.bairro,
       cidade: dados.localidade,
@@ -84,9 +74,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  resetaDadosForm(form) {
-    this.registerForm.patchValue({
-      cep: form.cep,
+  resetaDadosForm(cep) {
+    this.secondForm.patchValue({
+      cep: cep,
       bairro: null,
       cidade: null,
       estado: null,
@@ -95,23 +85,28 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
-
-    if (this.registerForm.invalid) return;
+    if (this.firstForm.invalid || this.secondForm.invalid) {
+      return;
+    }
 
     this.loading = true;
+    const dados = {
+      ...this.firstForm.getRawValue(),
+      ...this.secondForm.getRawValue()
+    };
+
     this.userService
-      .register(this.registerForm.value)
+      .register(dados)
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open("Usuário cadastrado com sucesso!", "✔️", {
+          this.snackBar.open('Usuário cadastrado com sucesso!', '✔️', {
             duration: 5000
           });
-          this.router.navigate(["/login"]);
+          this.router.navigate(['/']);
         },
         error => {
-          this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+          this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
             duration: 5000
           });
           this.loading = false;
