@@ -2,6 +2,14 @@
   <mat-toolbar-row>
     <span>{{ currentUser.user.username }}</span>
     <span class="space"></span>
-    <mat-icon class="example-icon" (click)="logout()">exit_to_app</mat-icon>
+    <button mat-icon-button [matMenuTriggerFor]="auth">
+      <mat-icon>person_outline</mat-icon>
+    </button>
+    <mat-menu #auth="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Log out</span>
+      </button>
+    </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>

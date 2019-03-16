@@ -35,6 +35,7 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
 
     // material imports
 
@@ -44,7 +45,6 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     MatProgressSpinnerModule,
     MatButtonModule,
     MatSnackBarModule,
-    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
