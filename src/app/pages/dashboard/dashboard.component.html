@@ -1,17 +1,8 @@
-<!-- <h1>Hi {{ currentUser.firstName }}!</h1>
-<h3>All registered users:</h3>
-<ul>
-  <li *ngFor="let user of users">
-    {{ user.username }} -
-    <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
-  </li>
-</ul> -->
-
 <mat-drawer-container class="drawer-container" [hasBackdrop]="false">
   <mat-drawer class="sidenav" #drawer mode="side">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a routerLink="/dashboard" mat-list-item>
+      <a routerLink="/dashboard/empresa-contratante" mat-list-item>
         Link 1
       </a>
       <a routerLink="/dashboard" mat-list-item>

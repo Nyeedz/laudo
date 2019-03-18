@@ -1,7 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule,
   MatCardModule,
@@ -11,14 +11,14 @@ import {
   MatProgressSpinnerModule,
   MatSnackBarModule,
   MatStepperModule
-} from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { CompareValidatorDirective } from './shared/compare-validator.directive';
+} from "@angular/material";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { RegisterComponent } from "./pages/register/register.component";
+import { CompareValidatorDirective } from "./shared/compare-validator.directive";
 
 @NgModule({
   declarations: [
@@ -34,6 +34,9 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
+    // material imports
+
     MatIconModule,
     MatCardModule,
     MatInputModule,
@@ -41,8 +44,7 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
     MatProgressBarModule,
     MatButtonModule,
     MatStepperModule,
-    MatSnackBarModule,
-    FlexLayoutModule
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
