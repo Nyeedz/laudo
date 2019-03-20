@@ -9,7 +9,10 @@ import {
   MatToolbarModule,
   MatTableModule,
   MatProgressSpinnerModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSortModule
 } from "@angular/material";
 import { RouterModule } from "@angular/router";
 import { NavbarComponent } from "../../components/navbar/navbar.component";
@@ -34,8 +37,11 @@ import { EmpresaContratanteComponent } from "../empresa-contratante/empresa-cont
     MatMenuModule,
     MatButtonModule,
     MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSortModule
   ]
 })
 export class DashboardModule {}
