@@ -60,4 +60,8 @@ export class EmpresaContratanteService {
   getPageSize() {
     return this.http.get<number>(`${this.apiUrl}/empresacontratantes/count`);
   }
+
+  createEmpresa(empresa: Contratante) {
+    return this.http.post(`${this.apiUrl}/empresacontratantes`, empresa);
+  }
 }

@@ -51,39 +51,68 @@ export class EmpresaContratanteComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.empresaContratanteService!.dataSource(
-            undefined,
-            this.paginator.pageIndex * 10,
-            10,
-            this.filterValue
-          );
-        }),
-        map(data => {
+    this.loadEmpresas();
+
+    // merge(this.sort.sortChange, this.paginator.page)
+    //   .pipe(
+    //     startWith({}),
+    //     switchMap(() => {
+    //       this.isLoadingResults = true;
+    //       return this.empresaContratanteService!.dataSource(
+    //         undefined,
+    //         this.paginator.pageIndex * 10,
+    //         10,
+    //         this.filterValue
+    //       );
+    //     }),
+    //     map(data => {
+    //       this.isLoadingResults = false;
+    //       this.isRateLimitReached = false;
+    //       this.resultsLength = 11;
+
+    //       return data;
+    //     }),
+    //     catchError(() => {
+    //       this.isLoadingResults = false;
+    //       this.isRateLimitReached = true;
+    //       return observableOf([]);
+    //     })
+    //   )
+    //   .subscribe(data => {
+    //     this.data = data[0];
+    //   });
+  }
+
+  loadEmpresas() {
+    this.empresaContratanteService
+      .dataSource(
+        undefined,
+        this.paginator.pageIndex * 10,
+        10,
+        this.filterValue
+      )
+      .subscribe(
+        res => {
+          const [empresa, pageSize] = res;
+
+          this.data = empresa;
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          this.resultsLength = 11;
-
-          return data;
-        }),
-        catchError(() => {
+          this.resultsLength = pageSize;
+        },
+        error => {
           this.isLoadingResults = false;
-          this.isRateLimitReached = true;
+          this.isLoadingResults = true;
+          console.log(error);
           return observableOf([]);
-        })
-      )
-      .subscribe(data => {
-        this.data = data[0];
-      });
+        }
+      );
   }
 
   applyFilter(filterValue: string) {
     this.filterValue = filterValue;
-    this.sort.sortChange.emit(null);
+    this.loadEmpresas();
+    this.sort.sortChange.emit();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
