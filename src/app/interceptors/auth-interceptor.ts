@@ -1,12 +1,12 @@
-import { Injectable, NgModule } from '@angular/core'
 import {
   HttpEvent,
-  HttpInterceptor,
   HttpHandler,
+  HttpInterceptor,
   HttpRequest,
-} from '@angular/common/http'
-import { HTTP_INTERCEPTORS } from '@angular/common/http'
-import { Observable } from 'rxjs'
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
+import { Injectable, NgModule } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class HttpsRequestInterceptor implements HttpInterceptor {
@@ -14,20 +14,19 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    let cloneRequest = req;
 
-    const jwtObject = JSON.parse(localStorage.getItem("currentUser"));
-    const jwt = jwtObject.jwt
-    let cloneRequest = req
-    
-    if (jwt){
-      cloneRequest = req.clone({
-        headers: req.headers.set(
-          'Authorization',
-          `Bearer ${jwt}`
-        ),
-      })
+    if (user) {
+      const jwt = user.jwt;
+      if (jwt) {
+        cloneRequest = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${jwt}`)
+        });
+      }
     }
-    return next.handle(cloneRequest)
+
+    return next.handle(cloneRequest);
   }
 }
 
@@ -36,8 +35,8 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpsRequestInterceptor,
-      multi: true,
-    },
-  ],
+      multi: true
+    }
+  ]
 })
 export class AuthInterceptor {}
