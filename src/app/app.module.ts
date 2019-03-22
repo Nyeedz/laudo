@@ -19,6 +19,7 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { RegisterComponent } from "./pages/register/register.component";
 import { CompareValidatorDirective } from "./shared/compare-validator.directive";
+import { AuthInterceptor } from "./interceptors/auth-interceptor";
 
 @NgModule({
   declarations: [
@@ -35,8 +36,8 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    AuthInterceptor,
     // material imports
-
     MatIconModule,
     MatCardModule,
     MatInputModule,

@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { User } from "src/app/models/user";
-import { GlobalVariable } from "../../global";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
-  private apiUrl = GlobalVariable.apiUrl;
+  private apiUrl = environment.apiUrl;
   jwt = JSON.parse(localStorage.getItem("currentUser"));
 
   constructor(private http: HttpClient) {}
@@ -19,12 +19,7 @@ export class UserService {
   }
 
   getMe() {
-    return this.http
-      .get(`${this.apiUrl}/users/me`, {
-        headers: {
-          Authorization: `Bearer ${this.jwt.jwt}`
-        }
-      })
+    return this.http.get(`${this.apiUrl}/users/me`);
   }
 
   getById(id: any) {
@@ -40,18 +35,10 @@ export class UserService {
   }
 
   update(user: User) {
-    return this.http.put(`${this.apiUrl}/users/${user.id}`, user, {
-      headers: {
-        Authorization: `Bearer ${this.jwt.jwt}`
-      }
-    });
+    return this.http.put(`${this.apiUrl}/users/${user.id}`, user);
   }
 
   delete(id: any) {
-    return this.http.delete(`${this.apiUrl}/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${this.jwt.jwt}`
-      }
-    });
+    return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { GlobalVariable } from "../../global";
+import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root"
 })
 export class ViaCepService {
-  private viaCepUrl = GlobalVariable.viaCepUrl;
+  private viaCepUrl = environment.viaCepUrl;
 
   constructor(private http: HttpClient) {}
 

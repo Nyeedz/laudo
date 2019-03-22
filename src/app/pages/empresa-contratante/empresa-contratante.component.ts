@@ -1,10 +1,8 @@
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { EmpresaContratanteService } from "../../services/empresa-contratante/empresa-contratante.service";
 import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
-import { HttpClient } from "@angular/common/http";
-import { merge, Observable, of as observableOf } from "rxjs";
+import { merge, of as observableOf } from "rxjs";
 import { catchError, map, startWith, switchMap } from "rxjs/operators";
-import { EventEmitter } from "protractor";
 
 export interface Contratante {
   id: string;
@@ -37,7 +35,6 @@ export interface Contratante {
 })
 export class EmpresaContratanteComponent implements AfterViewInit {
   displayedColumns: string[] = ["id", "cnpj"];
-  database: EmpresaContratanteService | null;
   dataSource = new MatTableDataSource();
   data: Contratante[] = [];
 
@@ -49,11 +46,9 @@ export class EmpresaContratanteComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   filterValue: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private empresaContratanteService: EmpresaContratanteService) {}
 
   ngAfterViewInit() {
-    this.database = new EmpresaContratanteService(this.http);
-
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
@@ -61,7 +56,7 @@ export class EmpresaContratanteComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.database!.dataSource(
+          return this.empresaContratanteService!.dataSource(
             undefined,
             this.paginator.pageIndex * 10,
             10,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { GlobalVariable } from "../../global";
-import { Observable, forkJoin } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { forkJoin } from "rxjs";
 
 export interface Contratante {
   id: string;
@@ -31,60 +31,33 @@ export interface Contratante {
   providedIn: "root"
 })
 export class EmpresaContratanteService {
-  private apiUrl = GlobalVariable.apiUrl;
-  jwt = JSON.parse(localStorage.getItem("currentUser"));
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  dataSource(
-    sort: string = "cnpj:ASC",
-    start: number = 0,
-    limit: number = 25,
-    filter: string
-  ) {
+  dataSource(sort: string, start: number, limit: number = 10, filter: string) {
     return forkJoin([
       this.getEmpresas(sort, start, limit, filter),
-      this.getPageSize(sort, start, limit, filter)
+      this.getPageSize()
     ]);
   }
 
-  getEmpresas(
-    sort: string = "cnpj:ASC",
-    start: number = 0,
-    limit: number = 25,
-    filter: string
-  ) {
-    const params = new HttpParams()
+  getEmpresas(sort: string, start: number, limit: number, filter: string) {
+    let params = new HttpParams()
       .set("_sort", sort)
       .set("_start", start.toString())
-      .set("_limit", limit.toString())
-      .set("cnpj_contains", filter);
+      .set("_limit", limit.toString());
 
-    return this.http.get<Contratante>(`${this.apiUrl}/empresacontratantes`, {
-      headers: {
-        Authorization: `Bearer ${this.jwt.jwt}`
-      },
+    if (filter) {
+      params = params.append("cnpj_contains", filter);
+    }
+
+    return this.http.get<Contratante[]>(`${this.apiUrl}/empresacontratantes`, {
       params
     });
   }
 
-  getPageSize(
-    sort: string = "cnpj:ASC",
-    start: number = 0,
-    limit: number = 25,
-    filter: string
-  ) {
-    const params = new HttpParams()
-      .set("_sort", sort)
-      .set("_start", start.toString())
-      .set("_limit", limit.toString())
-      .set("cnpj_contains", filter);
-
-    return this.http.get<number>(`${this.apiUrl}/empresacontratantes/count`, {
-      headers: {
-        Authorization: `Bearer ${this.jwt.jwt}`
-      },
-      params
-    });
+  getPageSize() {
+    return this.http.get<number>(`${this.apiUrl}/empresacontratantes/count`);
   }
 }
