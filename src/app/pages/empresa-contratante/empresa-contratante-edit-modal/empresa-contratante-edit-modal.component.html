@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h2 matDialogTitle>Editar Informações</h2>
+  <button class="btn-close" mat-icon-button matDialogClose>
+    <mat-icon> close </mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <form class="form" [formGroup]="form">
+    <mat-form-field class="mat-form-field">
+      <input formControlName="razao_social" matInput placeholder="Razão Social" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="actions">
+  <button (click)="save()" mat-raised-button color="primary" cdkFocusInitial>
+    <mat-icon>
+      save
+    </mat-icon>
+    Salvar
+  </button>
+  <button mat-raised-button color="primary" matDialogClose cdkFocusInitial>
+    Fechar
+  </button>
+</div>
