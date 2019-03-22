@@ -56,6 +56,12 @@ body {
   }
 }
 
+.wrapper {
+  padding: 1rem 1rem 2rem;
+  max-height: calc(100% - 64px);
+  overflow: auto;
+}
+
 .mat-progress-bar {
   position: absolute !important;
   top: 0;

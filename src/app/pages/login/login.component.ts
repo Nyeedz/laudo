@@ -41,17 +41,17 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(["/dashboard"]);
         },
         error => {
-          this.snackBar.open('❌ Usuário ou Senha inválido', 'Ok', {
+          this.snackBar.open("❌ Usuário ou Senha inválido", "Ok", {
             duration: 5000
           });
-        },
-        () => {
-          this.loading = false;
         }
-      );
+      )
+      .add(() => {
+        this.loading = false;
+      });
   }
 
   register() {

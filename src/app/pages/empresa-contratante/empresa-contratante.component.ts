@@ -34,7 +34,12 @@ export interface Contratante {
   styleUrls: ["./empresa-contratante.component.scss"]
 })
 export class EmpresaContratanteComponent implements AfterViewInit {
-  displayedColumns: string[] = ["id", "cnpj"];
+  displayedColumns: string[] = [
+    "cnpj",
+    "nome_fantasia",
+    "razao_social",
+    "email"
+  ];
   dataSource = new MatTableDataSource();
   data: Contratante[] = [];
 
@@ -44,7 +49,17 @@ export class EmpresaContratanteComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  filterValue: string;
+  filter: {
+    cnpj: string;
+    nomeFantasia: string;
+    razaoSocial: string;
+    email: string;
+  } = {
+    cnpj: null,
+    nomeFantasia: null,
+    razaoSocial: null,
+    email: null
+  };
 
   constructor(private empresaContratanteService: EmpresaContratanteService) {}
 
@@ -53,52 +68,27 @@ export class EmpresaContratanteComponent implements AfterViewInit {
 
     this.loadEmpresas();
 
-    // merge(this.sort.sortChange, this.paginator.page)
-    //   .pipe(
-    //     startWith({}),
-    //     switchMap(() => {
-    //       this.isLoadingResults = true;
-    //       return this.empresaContratanteService!.dataSource(
-    //         undefined,
-    //         this.paginator.pageIndex * 10,
-    //         10,
-    //         this.filterValue
-    //       );
-    //     }),
-    //     map(data => {
-    //       this.isLoadingResults = false;
-    //       this.isRateLimitReached = false;
-    //       this.resultsLength = 11;
-
-    //       return data;
-    //     }),
-    //     catchError(() => {
-    //       this.isLoadingResults = false;
-    //       this.isRateLimitReached = true;
-    //       return observableOf([]);
-    //     })
-    //   )
-    //   .subscribe(data => {
-    //     this.data = data[0];
-    //   });
+    merge(this.sort.sortChange, this.paginator.page).subscribe(() => {
+      this.loadEmpresas();
+    });
   }
 
   loadEmpresas() {
     this.empresaContratanteService
-      .dataSource(
-        undefined,
-        this.paginator.pageIndex * 10,
-        10,
-        this.filterValue
-      )
+      .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
+        cnpj: this.filter.cnpj,
+        nomeFantasia: this.filter.nomeFantasia,
+        razaoSocial: this.filter.razaoSocial,
+        email: this.filter.email
+      })
       .subscribe(
         res => {
           const [empresa, pageSize] = res;
 
           this.data = empresa;
+          this.resultsLength = pageSize;
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          this.resultsLength = pageSize;
         },
         error => {
           this.isLoadingResults = false;
@@ -109,8 +99,8 @@ export class EmpresaContratanteComponent implements AfterViewInit {
       );
   }
 
-  applyFilter(filterValue: string) {
-    this.filterValue = filterValue;
+  applyFilter(filterValue: string, type: string) {
+    this.filter[type] = filterValue;
     this.loadEmpresas();
     this.sort.sortChange.emit();
     if (this.dataSource.paginator) {
