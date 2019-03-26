@@ -7,7 +7,7 @@ import { EmpresaContratante } from "../../models/empresaContratante";
 @Injectable({
   providedIn: "root"
 })
-export class EmpresaContratanteService {
+export class EmpresaCredenciadaService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -39,7 +39,7 @@ export class EmpresaContratanteService {
     }
 
     return this.http.get<EmpresaContratante[]>(
-      `${this.apiUrl}/empresacontratantes`,
+      `${this.apiUrl}/empresacredenciadas`,
       {
         params
       }
@@ -47,21 +47,21 @@ export class EmpresaContratanteService {
   }
 
   getPageSize() {
-    return this.http.get<number>(`${this.apiUrl}/empresacontratantes/count`);
+    return this.http.get<number>(`${this.apiUrl}/empresacredenciadas/count`);
   }
 
   create(empresa: EmpresaContratante) {
-    return this.http.post(`${this.apiUrl}/empresacontratantes`, empresa);
+    return this.http.post(`${this.apiUrl}/empresacredenciadas`, empresa);
   }
 
   update(empresa: EmpresaContratante) {
     return this.http.put(
-      `${this.apiUrl}/empresacontratantes/${empresa.id}`,
+      `${this.apiUrl}/empresacredenciadas/${empresa.id}`,
       empresa
     );
   }
 
   delete(id: any) {
-    return this.http.delete(`${this.apiUrl}/empresacontratantes/${id}`);
+    return this.http.delete(`${this.apiUrl}/empresacredenciadas/${id}`);
   }
 }

@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material";
+import { Router } from "@angular/router";
+import { first } from "rxjs/operators";
+import { AuthenticationService } from "src/app/services/authentication/authentication.service";
+import { UserService } from "src/app/services/user/user.service";
+import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: "app-register",
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.scss"]
 })
 export class RegisterComponent implements OnInit {
   firstForm: FormGroup;
@@ -28,35 +28,34 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.firstForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      nome: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      username: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      nome: ["", Validators.required],
+      password: ["", [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ["", Validators.required]
     });
 
     this.secondForm = this.formBuilder.group({
-      cep: ['', Validators.required],
-      cidade: ['', Validators.required],
-      bairro: ['', Validators.required],
-      estado: ['', Validators.required],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required]
+      cep: ["", Validators.required],
+      cidade: ["", Validators.required],
+      bairro: ["", Validators.required],
+      estado: ["", Validators.required],
+      endereco: ["", Validators.required],
+      numero: ["", Validators.required]
     });
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, '');
+    cep.replace(/\D+/g, "");
     const validaCep = /^[0-9]{8}$/;
-    if (cep != '' && validaCep.test(cep)) {
+    if (cep != "" && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
-          console.log(result);
           this.populaDadosCep(result);
         },
         error => {
-          this.snackBar.open('❌ Cep não encontrado', 'OK', {
+          this.snackBar.open("❌ Cep não encontrado", "OK", {
             duration: 2000
           });
         }
@@ -100,13 +99,13 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open('Usuário cadastrado com sucesso!', '✔️', {
+          this.snackBar.open("Usuário cadastrado com sucesso!", "✔️", {
             duration: 5000
           });
-          this.router.navigate(['/']);
+          this.router.navigate(["/"]);
         },
         error => {
-          this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
+          this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
             duration: 5000
           });
           this.loading = false;

@@ -1,6 +1,7 @@
 import {
-  AfterViewInit,
   Component,
+  OnInit,
+  AfterViewInit,
   ViewChild,
   ChangeDetectorRef,
   OnDestroy
@@ -15,16 +16,16 @@ import {
 } from "@angular/material";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import { merge, of as observableOf } from "rxjs";
-import { EmpresaContratante } from "../../models/empresaContratante";
-import { EmpresaContratanteService } from "../../services/empresa-contratante/empresa-contratante.service";
-import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
+import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
+import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
+import { EmpresaCredenciadaEditModalComponent } from "./empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
 
 @Component({
-  selector: "app-empresa-contratante",
-  templateUrl: "./empresa-contratante.component.html",
-  styleUrls: ["./empresa-contratante.component.scss"]
+  selector: "app-empresa-credenciada",
+  templateUrl: "./empresa-credenciada.component.html",
+  styleUrls: ["./empresa-credenciada.component.scss"]
 })
-export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
+export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
@@ -35,8 +36,9 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     "telefone",
     "ações"
   ];
+
   dataSource = new MatTableDataSource();
-  data: EmpresaContratante[];
+  data: EmpresaCredenciada[];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -58,14 +60,16 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
   };
 
   constructor(
-    private empresaContratanteService: EmpresaContratanteService,
+    private empresaCredenciadaService: EmpresaCredenciadaService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+    });
 
     this.loadEmpresas();
 
@@ -74,12 +78,8 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.cdr.detach();
-  }
-
   loadEmpresas() {
-    this.empresaContratanteService
+    this.empresaCredenciadaService
       .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
         cnpj: this.filter.cnpj,
         nomeFantasia: this.filter.nomeFantasia,
@@ -97,11 +97,15 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
         },
         error => {
           this.isLoadingResults = false;
-          this.isLoadingResults = true;
-          console.log(error);
+          this.isRateLimitReached = false;
+
           return observableOf([]);
         }
       );
+  }
+
+  ngOnDestroy() {
+    this.cdr.detach();
   }
 
   applyFilter(filterValue: string, type: string) {
@@ -119,14 +123,14 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
   }
 
   edit(item: any) {
-    const dialogRef = this.dialog.open(EmpresaContratanteEditModalComponent, {
+    const dialogRef = this.dialog.open(EmpresaCredenciadaEditModalComponent, {
       data: item
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.empresaContratanteService.update(result).subscribe(
-          (val: EmpresaContratante) => {
+        this.empresaCredenciadaService.update(result).subscribe(
+          (val: EmpresaCredenciada) => {
             const index = this.data.findIndex(item => item.id === result.id);
             const newArray = [...this.data];
             newArray[index] = val;
@@ -147,12 +151,10 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
   }
 
   confirmDelete() {
-    if (!this.selectedId) {
-      return;
-    }
+    if (!this.selectedId) return;
 
-    this.empresaContratanteService.delete(this.selectedId).subscribe(
-      res => {
+    this.empresaCredenciadaService.delete(this.selectedId).subscribe(
+      () => {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;

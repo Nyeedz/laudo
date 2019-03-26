@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "../../guards/auth/auth.guard";
 import { DashboardComponent } from "./dashboard.component";
 import { EmpresaContratanteComponent } from "../empresa-contratante/empresa-contratante.component";
+import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-credenciada.component";
 
 const routes: Routes = [
   {
@@ -10,7 +11,11 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: "empresa-contratante",
+        path: "empresas-credenciadas",
+        component: EmpresaCredenciadaComponent
+      },
+      {
+        path: "empresas-contratantes",
         component: EmpresaContratanteComponent
       }
     ],
