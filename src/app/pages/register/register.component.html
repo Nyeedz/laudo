@@ -4,7 +4,7 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
       Voltar para o login
     </button>
-    <mat-horizontal-stepper [linear]="false" #stepper>
+    <mat-horizontal-stepper [linear]="true" #stepper>
       <mat-step [stepControl]="firstForm">
         <form [formGroup]="firstForm">
           <mat-form-field>
@@ -14,7 +14,7 @@
               formControlName="username"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'username')"
+            <mat-error *ngIf="firstForm?.hasError('required', 'username')"
               >Usuário é obrigatório</mat-error
             >
           </mat-form-field>
@@ -27,7 +27,7 @@
               type="email"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'email')"
+            <mat-error *ngIf="firstForm?.hasError('required', 'email')"
               >E-mail é obrigatório</mat-error
             >
           </mat-form-field>
@@ -39,7 +39,7 @@
               formControlName="nome"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'nome')"
+            <mat-error *ngIf="firstForm?.hasError('required', 'nome')"
               >Nome é obrigatório</mat-error
             >
           </mat-form-field>
@@ -54,13 +54,11 @@
             <mat-icon matSuffix (click)="hide = !hide">{{
               hide ? "visibility_off" : "visibility"
             }}</mat-icon>
-            <mat-error *ngIf="registerForm?.hasError('required', 'password')"
+            <mat-error *ngIf="firstForm?.hasError('required', 'password')"
               >Senha é obrigatória</mat-error
             >
             <mat-error
-              *ngIf="
-                submitted && registerForm?.hasError('minlength', 'password')
-              "
+              *ngIf="submitted && firstForm?.hasError('minlength', 'password')"
               >Senha muito curta</mat-error
             >
           </mat-form-field>
@@ -78,16 +76,14 @@
               hide ? "visibility_off" : "visibility"
             }}</mat-icon>
             <mat-error
-              *ngIf="registerForm?.hasError('required', 'confirmPassword')"
+              *ngIf="firstForm?.hasError('required', 'confirmPassword')"
               >Senha é obrigatória</mat-error
             >
             <mat-error
-              *ngIf="registerForm?.hasError('minlength', 'confirmPassword')"
+              *ngIf="firstForm?.hasError('minlength', 'confirmPassword')"
               >Senha muito curta</mat-error
             >
-            <mat-error *ngIf="!registerForm?.errors"
-              >Senhas diferentes</mat-error
-            >
+            <mat-error *ngIf="!firstForm?.errors">Senhas diferentes</mat-error>
           </mat-form-field>
           <div class="btnBox">
             <button color="primary" mat-raised-button matStepperNext>
@@ -106,7 +102,7 @@
               required
               (blur)="consultaCep($event.target.value)"
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'cep')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'cep')"
               >Cep é obrigatório</mat-error
             >
           </mat-form-field>
@@ -118,7 +114,7 @@
               formControlName="bairro"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'bairro')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'bairro')"
               >Bairro é obrigatório</mat-error
             >
           </mat-form-field>
@@ -130,7 +126,7 @@
               formControlName="cidade"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'cidade')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'cidade')"
               >Cidade é obrigatório</mat-error
             >
           </mat-form-field>
@@ -142,7 +138,7 @@
               formControlName="estado"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'estado')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'estado')"
               >Estado é obrigatório</mat-error
             >
           </mat-form-field>
@@ -154,7 +150,7 @@
               formControlName="endereco"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'endereco')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'endereco')"
               >Endereço é obrigatório</mat-error
             >
           </mat-form-field>
@@ -167,12 +163,17 @@
               type="number"
               required
             />
-            <mat-error *ngIf="registerForm?.hasError('required', 'numero')"
+            <mat-error *ngIf="secondForm?.hasError('required', 'numero')"
               >Número é obrigatório</mat-error
             >
           </mat-form-field>
 
-          <button color="primary" [disabled]="loading" (click)="onSubmit()" mat-raised-button>
+          <button
+            color="primary"
+            [disabled]="loading"
+            (click)="onSubmit()"
+            mat-raised-button
+          >
             Cadastrar
           </button>
         </form>

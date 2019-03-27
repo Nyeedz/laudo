@@ -69,7 +69,8 @@ export class RegisterComponent implements OnInit {
       bairro: dados.bairro,
       cidade: dados.localidade,
       estado: dados.uf,
-      endereco: dados.logradouro
+      endereco: dados.logradouro,
+      numero: dados.numero
     });
   }
 
@@ -79,7 +80,8 @@ export class RegisterComponent implements OnInit {
       bairro: null,
       cidade: null,
       estado: null,
-      endereco: null
+      endereco: null,
+      numero: null
     });
   }
 

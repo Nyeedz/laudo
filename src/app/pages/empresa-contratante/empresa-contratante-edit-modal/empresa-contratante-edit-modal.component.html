@@ -7,41 +7,123 @@
 <mat-dialog-content>
   <form class="form" [formGroup]="form">
     <mat-form-field class="mat-form-field">
-      <input formControlName="cnpj" matInput placeholder="Cnpj" />
+      <input formControlName="cnpj" matInput placeholder="Cnpj" required />
+      <mat-error *ngIf="form?.hasError('required', 'cnpj')"
+        >Cnpj é obrigatório</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="mat-form-field">
       <input
         formControlName="nome_fantasia"
         matInput
         placeholder="Nome Fantasia"
+        required
       />
+      <mat-error *ngIf="form?.hasError('required', 'nome_fantasia')"
+        >Nome fantasia é obrigatório</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="mat-form-field">
       <input
         formControlName="razao_social"
         matInput
         placeholder="Razão Social"
+        required
       />
+      <mat-error *ngIf="form?.hasError('required', 'razao_social')"
+        >Razão social é obrigatório</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="mat-form-field">
-      <input formControlName="telefone" matInput placeholder="Telefone" />
+      <input
+        formControlName="telefone"
+        matInput
+        placeholder="Telefone"
+        required
+      />
+      <mat-error *ngIf="form?.hasError('required', 'telefone')"
+        >Telefone é obrigatório</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="mat-form-field">
       <input
         formControlName="inscricao_estadual"
         matInput
         placeholder="Inscrição Estadual"
+        required
       />
+      <mat-error *ngIf="form?.hasError('required', 'inscricao_estadual')"
+        >Inscrição estadual é obrigatório</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="mat-form-field">
       <input
         formControlName="inscricao_municipal"
         matInput
         placeholder="Inscrição Municipal"
+        required
       />
+      <mat-error *ngIf="form?.hasError('required', 'inscricao_municipal')"
+        >Inscrição municipal é obrigatório</mat-error
+      >
     </mat-form-field>
-    <mat-form-field class="mat-form-field">
-      <input formControlName="cep" matInput placeholder="Cep" />
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Cep"
+        formControlName="cep"
+        required
+        (blur)="consultaCep($event.target.value)"
+      />
+      <mat-error *ngIf="form?.hasError('required', 'cep')"
+        >Cep é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Bairro" formControlName="bairro" required />
+      <mat-error *ngIf="form?.hasError('required', 'bairro')"
+        >Bairro é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Cidade" formControlName="cidade" required />
+      <mat-error *ngIf="form?.hasError('required', 'cidade')"
+        >Cidade é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Estado" formControlName="estado" required />
+      <mat-error *ngIf="form?.hasError('required', 'estado')"
+        >Estado é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Endereço"
+        formControlName="endereco"
+        required
+      />
+      <mat-error *ngIf="form?.hasError('required', 'endereco')"
+        >Endereço é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Número"
+        formControlName="numero"
+        type="number"
+        required
+      />
+      <mat-error *ngIf="form?.hasError('required', 'numero')"
+        >Número é obrigatório</mat-error
+      >
     </mat-form-field>
   </form>
 </mat-dialog-content>

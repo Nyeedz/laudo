@@ -4,9 +4,9 @@ import {
   HttpInterceptor,
   HttpRequest,
   HTTP_INTERCEPTORS
-} from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
-import { Observable } from 'rxjs';
+} from "@angular/common/http";
+import { Injectable, NgModule } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class HttpsRequestInterceptor implements HttpInterceptor {
@@ -14,14 +14,16 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = JSON.parse(localStorage.getItem("currentUser"));
     let cloneRequest = req;
 
-    if (user) {
-      const jwt = user.jwt;
-      if (jwt) {
+    if (cloneRequest.url.includes("viacep")) {
+      return next.handle(cloneRequest);
+    }
+    if (user && user.jwt && typeof user === "object") {
+      if (user.jwt) {
         cloneRequest = req.clone({
-          headers: req.headers.set('Authorization', `Bearer ${jwt}`)
+          headers: req.headers.set("Authorization", `Bearer ${user.jwt}`)
         });
       }
     }

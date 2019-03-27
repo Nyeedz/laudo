@@ -98,7 +98,6 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
         error => {
           this.isLoadingResults = false;
           this.isLoadingResults = true;
-          console.log(error);
           return observableOf([]);
         }
       );
