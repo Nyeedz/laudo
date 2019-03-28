@@ -18,6 +18,7 @@ import { merge, of as observableOf } from "rxjs";
 import { EmpresaContratante } from "../../models/empresaContratante";
 import { EmpresaContratanteService } from "../../services/empresa-contratante/empresa-contratante.service";
 import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
+import { EmpresaContratanteCreateModalComponent } from "./empresa-contratante-create-modal/empresa-contratante-create-modal.component";
 
 @Component({
   selector: "app-empresa-contratante",
@@ -110,6 +111,16 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  create(dados: any) {
+    const dialogRef = this.dialog.open(EmpresaContratanteCreateModalComponent, {
+      data: dados
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 
   delete(id: any) {

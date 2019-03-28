@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule,
@@ -24,8 +25,9 @@ import { EmpresaContratanteEditModalComponent } from "../empresa-contratante/emp
 import { EmpresaContratanteComponent } from "../empresa-contratante/empresa-contratante.component";
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
-import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-credenciada.component';
-import { EmpresaCredenciadaEditModalComponent } from '../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
+import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-credenciada.component";
+import { EmpresaCredenciadaEditModalComponent } from "../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
+import { EmpresaContratanteCreateModalComponent } from '../empresa-contratante/empresa-contratante-create-modal/empresa-contratante-create-modal.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +36,15 @@ import { EmpresaCredenciadaEditModalComponent } from '../empresa-credenciada/emp
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,
     EmpresaCredenciadaComponent,
-    EmpresaCredenciadaEditModalComponent
+    EmpresaCredenciadaEditModalComponent,
+    EmpresaContratanteCreateModalComponent
   ],
   imports: [
     CommonModule,
     MatSidenavModule,
     RouterModule,
     SweetAlert2Module.forRoot(),
+    FlexLayoutModule,
     MatIconModule,
     DashboardRoutingModule,
     MatToolbarModule,
@@ -58,6 +62,6 @@ import { EmpresaCredenciadaEditModalComponent } from '../empresa-credenciada/emp
     MatSortModule,
     MatTooltipModule
   ],
-  entryComponents: [EmpresaContratanteEditModalComponent]
+  entryComponents: [EmpresaContratanteEditModalComponent, EmpresaContratanteCreateModalComponent]
 })
 export class DashboardModule {}

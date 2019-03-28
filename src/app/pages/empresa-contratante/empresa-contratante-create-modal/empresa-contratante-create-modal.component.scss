@@ -1,0 +1,23 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > .btn-close {
+    margin: 0 0 20px;
+  }
+}
+.form {
+  .mat-form-field {
+    width: 100%;
+  }
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.button-close {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}

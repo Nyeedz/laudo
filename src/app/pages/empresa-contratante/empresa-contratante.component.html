@@ -1,9 +1,5 @@
 <div class="wrapper">
-  <div
-    class="filter-wrapper"
-    fxLayout="row"
-    fxLayoutAlign="space-around center"
-  >
+  <div fxLayout="row" fxLayoutAlign="space-around center">
     <h3>Pesquisar por:</h3>
     <mat-form-field>
       <input
@@ -33,6 +29,9 @@
         placeholder="E-mail"
       />
     </mat-form-field>
+    <button mat-flat-button color="primary" (click)="create()">
+      Cadastrar nova empresa
+    </button>
   </div>
 
   <div *ngIf="dataSource">

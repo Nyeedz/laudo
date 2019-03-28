@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
 import { first } from "rxjs/operators";
-import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { UserService } from "src/app/services/user/user.service";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 
@@ -21,7 +20,6 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar,
     private viaCepService: ViaCepService
   ) {}
@@ -29,7 +27,18 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.firstForm = this.formBuilder.group({
       username: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.email,
+          Validators.compose([
+            Validators.pattern(
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+            )
+          ])
+        ]
+      ],
       nome: ["", Validators.required],
       password: ["", [Validators.required, Validators.minLength(6)]],
       confirmPassword: ["", Validators.required]
@@ -101,9 +110,13 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open("Usuário cadastrado com sucesso!", "✔️", {
-            duration: 5000
-          });
+          this.snackBar.open(
+            `Usuário ${data.user.username} cadastrado com sucesso!`,
+            "✔️",
+            {
+              duration: 5000
+            }
+          );
           this.router.navigate(["/"]);
         },
         error => {
