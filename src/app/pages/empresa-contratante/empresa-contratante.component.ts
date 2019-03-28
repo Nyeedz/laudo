@@ -119,7 +119,23 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      this.empresaContratanteService.create(result).subscribe(
+        values => {
+          this.loadEmpresas();
+          this.snackBar.open(
+            `✔ Empresa ${values.nome_fantasia} criada com sucesso`,
+            "Ok",
+            {
+              duration: 3000
+            }
+          );
+        },
+        error => {
+          this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+            duration: 300
+          });
+        }
+      );
     });
   }
 
@@ -143,12 +159,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
             this.data = newArray;
             this.cdr.detectChanges();
             this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
-              duration: 5000
+              duration: 3000
             });
           },
           err => {
             this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
-              duration: 5000
+              duration: 3000
             });
           }
         );
@@ -167,12 +183,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
         this.resultsLength -= 1;
         this.selectedId = null;
         this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
-          duration: 5000
+          duration: 3000
         });
       },
       err => {
         this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
-          duration: 5000
+          duration: 3000
         });
       }
     );

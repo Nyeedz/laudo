@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
-import { MatSnackBar } from "@angular/material";
-import { EmpresaContratanteService } from "src/app/services/empresa-contratante/empresa-contratante.service";
-import { Router } from "@angular/router";
+import { MatSnackBar, MatDialogRef } from "@angular/material";
 
 @Component({
   selector: "app-empresa-contratante-create-modal",
@@ -12,37 +10,46 @@ import { Router } from "@angular/router";
 })
 export class EmpresaContratanteCreateModalComponent implements OnInit {
   form: FormGroup;
-  loading: boolean = false;
 
   constructor(
+    public dialogRef: MatDialogRef<EmpresaContratanteCreateModalComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private viaCepService: ViaCepService,
-    private empresaContratanteService: EmpresaContratanteService,
-    private router: Router
+    private viaCepService: ViaCepService
   ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      cnpj: ["", Validators.required],
+      nome_fantasia: ["", Validators.required],
+      razao_social: ["", Validators.required],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.email,
+          Validators.compose([
+            Validators.pattern(
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+            )
+          ])
+        ]
+      ],
+      telefone: ["", Validators.required],
+      inscricao_estadual: ["", Validators.required],
+      inscricao_municipal: ["", Validators.required],
       cep: ["", Validators.required],
-      cidade: ["", Validators.required],
       bairro: ["", Validators.required],
+      cidade: ["", Validators.required],
       estado: ["", Validators.required],
       endereco: ["", Validators.required],
       numero: ["", Validators.required],
-      cnpj: ["", Validators.required],
-      complemento: ["", Validators.required],
-      contato_nome: ["", Validators.required],
-      contato_telefone: ["", Validators.required],
-      email: ["", Validators.required],
-      empresacredenciadas: ["", Validators.required],
-      id: ["", Validators.required],
-      inscricao_estadual: ["", Validators.required],
-      inscricao_municipal: ["", Validators.required],
-      logotipo: ["", Validators.required],
-      nome_fantasia: ["", Validators.required],
-      razao_social: ["", Validators.required],
-      telefone: ["", Validators.required]
+      complemento: [""],
+      contato_nome: [""],
+      contato_telefone: [""],
+      empresacredenciadas: [""],
+      id: [""],
+      logotipo: [""]
     });
   }
 
@@ -92,20 +99,6 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
     }
 
     const dados = this.form.getRawValue();
-    this.loading = true;
-
-    this.empresaContratanteService.create(dados).subscribe(
-      result => {
-        console.log(result);
-        this.router.navigate(["/dashboard/empresas-contratantes"]);
-        this.loading = false;
-      },
-      error => {
-        this.snackBar.open("❌ Erro ao cadastrar a empresa contratante", "Ok", {
-          duration: 5000
-        });
-        this.loading = false;
-      }
-    );
+    this.dialogRef.close(dados);
   }
 }

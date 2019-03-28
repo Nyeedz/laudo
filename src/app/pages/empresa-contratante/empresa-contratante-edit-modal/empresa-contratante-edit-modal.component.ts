@@ -22,32 +22,42 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      cnpj: ["", Validators.required],
+      nome_fantasia: ["", Validators.required],
+      razao_social: ["", Validators.required],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.email,
+          Validators.compose([
+            Validators.pattern(
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+            )
+          ])
+        ]
+      ],
+      telefone: ["", Validators.required],
+      inscricao_estadual: ["", Validators.required],
+      inscricao_municipal: ["", Validators.required],
       cep: ["", Validators.required],
-      cidade: ["", Validators.required],
       bairro: ["", Validators.required],
+      cidade: ["", Validators.required],
       estado: ["", Validators.required],
       endereco: ["", Validators.required],
       numero: ["", Validators.required],
-      cnpj: ["", Validators.required],
-      complemento: ["", Validators.required],
-      contato_nome: ["", Validators.required],
-      contato_telefone: ["", Validators.required],
-      email: ["", Validators.required],
-      empresacredenciadas: ["", Validators.required],
-      id: ["", Validators.required],
-      inscricao_estadual: ["", Validators.required],
-      inscricao_municipal: ["", Validators.required],
-      logotipo: ["", Validators.required],
-      nome_fantasia: ["", Validators.required],
-      razao_social: ["", Validators.required],
-      telefone: ["", Validators.required]
+      complemento: [""],
+      contato_nome: [""],
+      contato_telefone: [""],
+      empresacredenciadas: [""],
+      id: [""],
+      logotipo: [""]
     });
     this.form.patchValue(this.data);
   }
 
   save() {
     if (this.form.invalid) {
-      console.log(this.form);
       return;
     }
 
