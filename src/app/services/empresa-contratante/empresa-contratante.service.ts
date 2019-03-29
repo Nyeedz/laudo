@@ -64,4 +64,8 @@ export class EmpresaContratanteService {
   delete(id: any) {
     return this.http.delete(`${this.apiUrl}/empresacontratantes/${id}`);
   }
+
+  getAll() {
+    return this.http.get(`${this.apiUrl}/empresacontratantes`);
+  }
 }

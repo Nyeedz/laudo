@@ -1,7 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 import { MatSnackBar, MatDialogRef } from "@angular/material";
+import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
 
 @Component({
   selector: "app-empresa-contratante-create-modal",
@@ -10,19 +16,26 @@ import { MatSnackBar, MatDialogRef } from "@angular/material";
 })
 export class EmpresaContratanteCreateModalComponent implements OnInit {
   form: FormGroup;
+  empresasList: any;
 
   constructor(
     public dialogRef: MatDialogRef<EmpresaContratanteCreateModalComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private empresaCredenciadaService: EmpresaCredenciadaService
   ) {}
 
   ngOnInit() {
+    this.empresaCredenciadaService.getAll().subscribe(result => {
+      this.empresasList = result;
+    });
+
     this.form = this.formBuilder.group({
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],
       razao_social: ["", Validators.required],
+      empresacredenciadas: ["", Validators.required],
       email: [
         "",
         [
@@ -47,7 +60,6 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       complemento: [""],
       contato_nome: [""],
       contato_telefone: [""],
-      empresacredenciadas: [""],
       id: [""],
       logotipo: [""]
     });

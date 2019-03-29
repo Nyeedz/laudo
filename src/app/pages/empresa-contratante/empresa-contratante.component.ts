@@ -10,7 +10,6 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialogRef,
   MatDialog
 } from "@angular/material";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
@@ -119,23 +118,21 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.empresaContratanteService.create(result).subscribe(
-        values => {
-          this.loadEmpresas();
-          this.snackBar.open(
-            `✔ Empresa ${values.nome_fantasia} criada com sucesso`,
-            "Ok",
-            {
+      if (result) {
+        this.empresaContratanteService.create(result).subscribe(
+          () => {
+            this.loadEmpresas();
+            this.snackBar.open(`✔ Empresa criada com sucesso`, "Ok", {
               duration: 3000
-            }
-          );
-        },
-        error => {
-          this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
-            duration: 300
-          });
-        }
-      );
+            });
+          },
+          error => {
+            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+              duration: 3000
+            });
+          }
+        );
+      }
     });
   }
 

@@ -144,13 +144,15 @@
 </mat-dialog-content>
 
 <div mat-dialog-actions class="actions">
-  <button (click)="save()" mat-raised-button color="primary" cdkFocusInitial>
+  <button
+    (click)="save()"
+    mat-raised-button
+    color="primary"
+    [disabled]="form.invalid"
+  >
     <mat-icon>
       save
     </mat-icon>
     Salvar
-  </button>
-  <button mat-raised-button color="primary" matDialogClose cdkFocusInitial>
-    Fechar
   </button>
 </div>

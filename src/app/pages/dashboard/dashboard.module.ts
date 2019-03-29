@@ -16,7 +16,9 @@ import {
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCardModule,
+  MatSelectModule
 } from "@angular/material";
 import { RouterModule } from "@angular/router";
 import { SweetAlert2Module } from "@toverux/ngx-sweetalert2";
@@ -27,17 +29,21 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-credenciada.component";
 import { EmpresaCredenciadaEditModalComponent } from "../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
-import { EmpresaContratanteCreateModalComponent } from '../empresa-contratante/empresa-contratante-create-modal/empresa-contratante-create-modal.component';
+import { EmpresaContratanteCreateModalComponent } from "../empresa-contratante/empresa-contratante-create-modal/empresa-contratante-create-modal.component";
+import { EmpresaCredenciadaCreateModalComponent } from "../empresa-credenciada/empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
 
 @NgModule({
   declarations: [
     DashboardComponent,
     NavbarComponent,
+    // empresa contratante
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,
+    EmpresaContratanteCreateModalComponent,
+    // empresa credenciada
     EmpresaCredenciadaComponent,
     EmpresaCredenciadaEditModalComponent,
-    EmpresaContratanteCreateModalComponent
+    EmpresaCredenciadaCreateModalComponent
   ],
   imports: [
     CommonModule,
@@ -60,8 +66,15 @@ import { EmpresaContratanteCreateModalComponent } from '../empresa-contratante/e
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSortModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCardModule,
+    MatSelectModule
   ],
-  entryComponents: [EmpresaContratanteEditModalComponent, EmpresaContratanteCreateModalComponent]
+  entryComponents: [
+    EmpresaContratanteEditModalComponent,
+    EmpresaContratanteCreateModalComponent,
+    EmpresaCredenciadaEditModalComponent,
+    EmpresaCredenciadaCreateModalComponent
+  ]
 })
 export class DashboardModule {}

@@ -1,30 +1,36 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from "@angular/material";
-import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
+import { Component, OnInit } from "@angular/core";
+import { MatDialogRef, MatSnackBar } from "@angular/material";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { EmpresaContratanteService } from "src/app/services/empresa-contratante/empresa-contratante.service";
 
 @Component({
-  selector: "app-empresa-credenciada-edit-modal",
-  templateUrl: "./empresa-credenciada-edit-modal.component.html",
-  styleUrls: ["./empresa-credenciada-edit-modal.component.scss"]
+  selector: "app-empresa-credenciada-create-modal",
+  templateUrl: "./empresa-credenciada-create-modal.component.html",
+  styleUrls: ["./empresa-credenciada-create-modal.component.scss"]
 })
-export class EmpresaCredenciadaEditModalComponent implements OnInit {
+export class EmpresaCredenciadaCreateModalComponent implements OnInit {
   form: FormGroup;
+  empresasList: any;
 
   constructor(
-    public dialogRef: MatDialogRef<EmpresaCredenciadaEditModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EmpresaCredenciada,
+    public dialogRef: MatDialogRef<EmpresaCredenciadaCreateModalComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private empresaContatanteService: EmpresaContratanteService
   ) {}
 
   ngOnInit() {
+    this.empresaContatanteService.getAll().subscribe(result => {
+      this.empresasList = result;
+    });
+
     this.form = this.formBuilder.group({
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],
       razao_social: ["", Validators.required],
+      empresacredenciadas: ["", Validators.required],
       email: [
         "",
         [
@@ -49,20 +55,9 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
       complemento: [""],
       contato_nome: [""],
       contato_telefone: [""],
-      empresacredenciadas: [""],
       id: [""],
       logotipo: [""]
     });
-    this.form.patchValue(this.data);
-  }
-
-  save() {
-    if (this.form.invalid) {
-      return;
-    }
-
-    const formData = this.form.getRawValue();
-    this.dialogRef.close(formData);
   }
 
   consultaCep(cep) {
@@ -103,5 +98,14 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
       endereco: null,
       numero: null
     });
+  }
+
+  create() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    const dados = this.form.getRawValue();
+    this.dialogRef.close(dados);
   }
 }

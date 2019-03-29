@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   AfterViewInit,
   ViewChild,
   ChangeDetectorRef,
@@ -11,7 +10,6 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialogRef,
   MatDialog
 } from "@angular/material";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
@@ -19,6 +17,7 @@ import { merge, of as observableOf } from "rxjs";
 import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
 import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
 import { EmpresaCredenciadaEditModalComponent } from "./empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
+import { EmpresaCredenciadaCreateModalComponent } from "./empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
 
 @Component({
   selector: "app-empresa-credenciada",
@@ -41,7 +40,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   data: EmpresaCredenciada[];
 
   resultsLength = 0;
-  isLoadingResults = true;
+  isLoadingResults = false;
   isRateLimitReached = false;
   selectedId: string;
 
@@ -79,6 +78,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   }
 
   loadEmpresas() {
+    this.isLoadingResults = true;
     this.empresaCredenciadaService
       .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
         cnpj: this.filter.cnpj,
@@ -115,6 +115,30 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  create(dados: any) {
+    const dialogRef = this.dialog.open(EmpresaCredenciadaCreateModalComponent, {
+      data: dados
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.empresaCredenciadaService.create(result).subscribe(
+          () => {
+            this.loadEmpresas();
+            this.snackBar.open("✔ Empresa criada com sucesso", "Ok", {
+              duration: 5000
+            });
+          },
+          error => {
+            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+              duration: 300
+            });
+          }
+        );
+      }
+    });
   }
 
   delete(id: any) {

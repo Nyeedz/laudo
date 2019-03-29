@@ -64,4 +64,8 @@ export class EmpresaCredenciadaService {
   delete(id: any) {
     return this.http.delete(`${this.apiUrl}/empresacredenciadas/${id}`);
   }
+
+  getAll() {
+    return this.http.get(`${this.apiUrl}/empresacredenciadas`);
+  }
 }
