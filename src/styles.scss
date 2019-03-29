@@ -60,6 +60,8 @@ body {
   padding: 1rem 1rem 2rem;
   max-height: calc(100% - 64px);
   overflow: auto;
+  height: 100%;
+  overflow: auto;
 }
 
 .mat-progress-bar {

@@ -4,6 +4,7 @@ import { AuthGuard } from "../../guards/auth/auth.guard";
 import { DashboardComponent } from "./dashboard.component";
 import { EmpresaContratanteComponent } from "../empresa-contratante/empresa-contratante.component";
 import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-credenciada.component";
+import { PerfilComponent } from "../perfil/perfil.component";
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
       {
         path: "empresas-credenciadas",
         component: EmpresaCredenciadaComponent
+      },
+      {
+        path: "perfil",
+        component: PerfilComponent
       },
       {
         path: "empresas-contratantes",

@@ -31,11 +31,13 @@ import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-cred
 import { EmpresaCredenciadaEditModalComponent } from "../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
 import { EmpresaContratanteCreateModalComponent } from "../empresa-contratante/empresa-contratante-create-modal/empresa-contratante-create-modal.component";
 import { EmpresaCredenciadaCreateModalComponent } from "../empresa-credenciada/empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
+import { PerfilComponent } from "../perfil/perfil.component";
 
 @NgModule({
   declarations: [
     DashboardComponent,
     NavbarComponent,
+    PerfilComponent,
     // empresa contratante
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,

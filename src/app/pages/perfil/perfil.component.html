@@ -1,0 +1,108 @@
+<div class="wrapper">
+  <div class="profile-box">
+    <div class="picture">
+      <div class="mock-image"></div>
+    </div>
+    <form [formGroup]="form" class="forms">
+      <mat-form-field class="mat-form-field">
+        <input
+          formControlName="username"
+          matInput
+          placeholder="Username"
+          required
+        />
+        <mat-error *ngIf="form?.hasError('required', 'username')"
+          >Username é obrigatório</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="mat-form-field">
+        <input formControlName="nome" matInput placeholder="Nome" required />
+        <mat-error *ngIf="form?.hasError('required', 'nome')"
+          >E-mail é obrigatório</mat-error
+        >
+        <mat-error *ngIf="firstForm?.hasError('nome', 'nome')"
+          >Formato de e-mail errado</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="mat-form-field">
+        <input formControlName="email" matInput placeholder="E-mail" />
+        <mat-error *ngIf="form?.hasError('required', 'email')"
+          >E-mail é obrigatório</mat-error
+        >
+        <mat-error *ngIf="firstForm?.hasError('email', 'email')"
+          >Formato de e-mail errado</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field">
+        <input
+          formControlName="endereco"
+          matInput
+          placeholder="Endereço"
+          required
+        />
+        <mat-error *ngIf="form?.hasError('required', 'endereco')"
+          >Endereço é obrigatório</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field">
+        <input
+          formControlName="numero"
+          matInput
+          placeholder="Número"
+          required
+        />
+        <mat-error *ngIf="form?.hasError('required', 'numero')"
+          >Número é obrigatório</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field">
+        <input
+          formControlName="bairro"
+          matInput
+          placeholder="Bairro"
+          required
+        />
+        <mat-error *ngIf="form?.hasError('required', 'bairro')"
+          >Bairro é obrigatório</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="mat-form-field">
+        <input
+          formControlName="cidade"
+          matInput
+          placeholder="Cidade"
+          required
+        />
+        <mat-error *ngIf="form?.hasError('required', 'cidade')"
+          >Cidade é obrigatório</mat-error
+        >
+      </mat-form-field>
+    </form>
+    <div class="companies">
+      <mat-form-field>
+        <mat-label>Selecione suas empresas</mat-label>
+        <mat-select
+          (selectionChange)="change($event.value)"
+          [(value)]="selected"
+        >
+          <mat-option value="credenciada">Empresa Credenciada</mat-option>
+          <mat-option value="contratante">Empresas Contratantes</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-list role="list" *ngIf="credenciadaShow">
+        <mat-list-item role="listitem">{{
+          credenciada.nome_fantasia
+        }}</mat-list-item>
+      </mat-list>
+      <mat-list role="list" *ngIf="contratanteShow">
+        <mat-list-item role="listitem">{{
+          contratante.nome_fantasia
+        }}</mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>
