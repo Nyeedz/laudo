@@ -31,6 +31,7 @@ import { EmpresaContratanteComponent } from '../empresa-contratante/empresa-cont
 import { EmpresaCredenciadaCreateModalComponent } from '../empresa-credenciada/empresa-credenciada-create-modal/empresa-credenciada-create-modal.component';
 import { EmpresaCredenciadaEditModalComponent } from '../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
 import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-credenciada.component';
+import { PerfilComponent } from '../perfil/perfil.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
@@ -38,6 +39,7 @@ import { DashboardComponent } from './dashboard.component';
   declarations: [
     DashboardComponent,
     NavbarComponent,
+    PerfilComponent,
     // empresa contratante
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,

@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { User } from '../../models/user';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Router } from "@angular/router";
+import { User } from "../../models/user";
+import { AuthenticationService } from "../../services/authentication/authentication.service";
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: "app-navbar",
+  templateUrl: "./navbar.component.html",
+  styleUrls: ["./navbar.component.scss"]
 })
 export class NavbarComponent implements OnInit {
   @Output() drawerToggle = new EventEmitter();
@@ -25,7 +25,11 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
+  }
+
+  perfil() {
+    this.router.navigate(["/dashboard/perfil"]);
   }
 
   toggleDrawer() {
