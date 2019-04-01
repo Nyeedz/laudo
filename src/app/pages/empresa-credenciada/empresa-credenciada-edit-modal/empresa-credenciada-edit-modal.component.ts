@@ -1,8 +1,10 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from "@angular/material";
 import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { FileSystemFileEntry } from 'ngx-file-drop';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: "app-empresa-credenciada-edit-modal",
@@ -10,15 +12,67 @@ import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
   styleUrls: ["./empresa-credenciada-edit-modal.component.scss"]
 })
 export class EmpresaCredenciadaEditModalComponent implements OnInit {
+  cropFinished = false;
   form: FormGroup;
+  imageBase64: any = null;
+  croppedImage: any = '';
+  croppedFile: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<EmpresaCredenciadaEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EmpresaCredenciada,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private cdr: ChangeDetectorRef
   ) {}
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    this.croppedFile = event.file;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  dropped(e) {
+    console.log(e);
+    const droppedFile = e.files[0];
+    const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+    const reader = new FileReader();
+
+    fileEntry.file(file => {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64 = reader.result;
+        this.cdr.detectChanges();
+      };
+    });
+  }
+
+  confirmImage() {
+    console.log('confirmou');
+    this.cropFinished = true;
+  }
+
+  changeImage() {
+    this.cropFinished = false;
+    this.imageBase64 = null;
+    this.croppedImage = '';
+  }
+
+  fileOver(e) {
+    console.log(e);
+  }
+
+  fileLeave(e) {
+    console.log(e);
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -53,6 +107,14 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
       id: [""],
       logotipo: [""]
     });
+
+    if (this.data.logotipo) {
+      this.croppedImage = '//localhost:1337' + this.data.logotipo['url'];
+      this.imageBase64 = '';
+      this.cropFinished = true;
+      this.cdr.detectChanges();
+    }
+
     this.form.patchValue(this.data);
   }
 
@@ -62,7 +124,7 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
     }
 
     const formData = this.form.getRawValue();
-    this.dialogRef.close(formData);
+    this.dialogRef.close({ dados: formData, file: this.croppedFile });
   }
 
   consultaCep(cep) {

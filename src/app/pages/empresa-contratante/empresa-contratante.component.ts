@@ -4,36 +4,37 @@ import {
   ViewChild,
   ChangeDetectorRef,
   OnDestroy
-} from "@angular/core";
+} from '@angular/core';
 import {
   MatPaginator,
   MatSort,
   MatTableDataSource,
   MatSnackBar,
   MatDialog
-} from "@angular/material";
-import { SwalComponent } from "@toverux/ngx-sweetalert2";
-import { merge, of as observableOf } from "rxjs";
-import { EmpresaContratante } from "../../models/empresaContratante";
-import { EmpresaContratanteService } from "../../services/empresa-contratante/empresa-contratante.service";
-import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
-import { EmpresaContratanteCreateModalComponent } from "./empresa-contratante-create-modal/empresa-contratante-create-modal.component";
+} from '@angular/material';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import { merge, of as observableOf } from 'rxjs';
+import { EmpresaContratante } from '../../models/empresaContratante';
+import { EmpresaContratanteService } from '../../services/empresa-contratante/empresa-contratante.service';
+import { EmpresaContratanteEditModalComponent } from './empresa-contratante-edit-modal/empresa-contratante-edit-modal.component';
+import { EmpresaContratanteCreateModalComponent } from './empresa-contratante-create-modal/empresa-contratante-create-modal.component';
+import { UploadService } from 'src/app/services/upload/upload.service';
 
 @Component({
-  selector: "app-empresa-contratante",
-  templateUrl: "./empresa-contratante.component.html",
-  styleUrls: ["./empresa-contratante.component.scss"]
+  selector: 'app-empresa-contratante',
+  templateUrl: './empresa-contratante.component.html',
+  styleUrls: ['./empresa-contratante.component.scss']
 })
 export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
-  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
+  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    "cnpj",
-    "nome_fantasia",
-    "razao_social",
-    "email",
-    "telefone",
-    "ações"
+    'cnpj',
+    'nome_fantasia',
+    'razao_social',
+    'email',
+    'telefone',
+    'ações'
   ];
   dataSource = new MatTableDataSource();
   data: EmpresaContratante[];
@@ -61,6 +62,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     private empresaContratanteService: EmpresaContratanteService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private upload: UploadService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -118,16 +120,29 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.empresaContratanteService.create(result).subscribe(
-          () => {
+      if (result && result.dados) {
+        this.empresaContratanteService.create(result.dados).subscribe(
+          empresa => {
+            if (result.file) {
+              const arquivo = new FormData();
+              arquivo.append('ref', 'empresacon');
+              arquivo.append('refId', empresa['id']);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
+
+              this.upload.send(arquivo).subscribe(res => {
+                console.log(res)
+                this.loadEmpresas();
+              })
+            }
+
             this.loadEmpresas();
-            this.snackBar.open(`✔ Empresa criada com sucesso`, "Ok", {
+            this.snackBar.open(`✔ Empresa criada com sucesso`, 'Ok', {
               duration: 3000
             });
           },
           error => {
-            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+            this.snackBar.open('❌ Erro ao cadastrar empresa', 'Ok', {
               duration: 3000
             });
           }
@@ -147,13 +162,28 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.empresaContratanteService.update(result).subscribe(
+      if (result && result.dados) {
+        this.empresaContratanteService.update(result.dados).subscribe(
           (val: EmpresaContratante) => {
             const index = this.data.findIndex(item => item.id === result.id);
             const newArray = [...this.data];
             newArray[index] = val;
             this.data = newArray;
+
+            if (result.file) {
+              const arquivo = new FormData();
+              arquivo.append('ref', 'empresacon');
+              arquivo.append('refId', val.id);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
+
+              this.upload.send(arquivo).subscribe(res => {
+                console.log(res)
+                this.loadEmpresas();
+              })
+            }
+
+            this.loadEmpresas();
             this.cdr.detectChanges();
             this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
               duration: 3000
@@ -179,12 +209,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
-        this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
+        this.snackBar.open('✔ Empresa excluida com sucesso', 'Ok', {
           duration: 3000
         });
       },
       err => {
-        this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
+        this.snackBar.open('❌ Erro ao excluir empresa', 'Ok', {
           duration: 3000
         });
       }

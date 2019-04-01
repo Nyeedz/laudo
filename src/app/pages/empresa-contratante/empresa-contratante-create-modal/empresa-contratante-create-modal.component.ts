@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
@@ -8,6 +8,8 @@ import {
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 import { MatSnackBar, MatDialogRef } from "@angular/material";
 import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { FileSystemFileEntry } from 'ngx-file-drop';
 
 @Component({
   selector: "app-empresa-contratante-create-modal",
@@ -15,16 +17,68 @@ import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/
   styleUrls: ["./empresa-contratante-create-modal.component.scss"]
 })
 export class EmpresaContratanteCreateModalComponent implements OnInit {
+  cropFinished = false;
   form: FormGroup;
+  imageBase64: any = null;
+  croppedImage: any = '';
   empresasList: any;
+  croppedFile: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<EmpresaContratanteCreateModalComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private viaCepService: ViaCepService,
-    private empresaCredenciadaService: EmpresaCredenciadaService
+    private empresaCredenciadaService: EmpresaCredenciadaService,
+    private cdr: ChangeDetectorRef
   ) {}
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    this.croppedFile = event.file;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  fileOver(e) {
+    console.log(e);
+  }
+
+  fileLeave(e) {
+    console.log(e);
+  }
+
+  dropped(e) {
+    console.log(e);
+    const droppedFile = e.files[0];
+    const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+    const reader = new FileReader();
+
+    fileEntry.file(file => {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64 = reader.result;
+        this.cdr.detectChanges();
+      };
+    });
+  }
+
+  confirmImage() {
+    console.log('confirmou');
+    this.cropFinished = true;
+  }
+
+  changeImage() {
+    this.cropFinished = false;
+    this.imageBase64 = null;
+    this.croppedImage = '';
+  }
 
   ngOnInit() {
     this.empresaCredenciadaService.getAll().subscribe(result => {
@@ -35,7 +89,7 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],
       razao_social: ["", Validators.required],
-      empresacredenciadas: ["", Validators.required],
+      empresacredenciadas: [""],
       email: [
         "",
         [
@@ -111,6 +165,6 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
     }
 
     const dados = this.form.getRawValue();
-    this.dialogRef.close(dados);
+    this.dialogRef.close({ dados, file: this.croppedFile });
   }
 }

@@ -39,7 +39,7 @@ export class EmpresaCredenciadaService {
     }
 
     return this.http.get<EmpresaContratante[]>(
-      `${this.apiUrl}/empresacredenciadas`,
+      `${this.apiUrl}/empresacres`,
       {
         params
       }
@@ -47,25 +47,25 @@ export class EmpresaCredenciadaService {
   }
 
   getPageSize() {
-    return this.http.get<number>(`${this.apiUrl}/empresacredenciadas/count`);
+    return this.http.get<number>(`${this.apiUrl}/empresacres/count`);
   }
 
   create(empresa: EmpresaContratante) {
-    return this.http.post(`${this.apiUrl}/empresacredenciadas`, empresa);
+    return this.http.post(`${this.apiUrl}/empresacres`, empresa);
   }
 
   update(empresa: EmpresaContratante) {
     return this.http.put(
-      `${this.apiUrl}/empresacredenciadas/${empresa.id}`,
+      `${this.apiUrl}/empresacres/${empresa.id}`,
       empresa
     );
   }
 
   delete(id: any) {
-    return this.http.delete(`${this.apiUrl}/empresacredenciadas/${id}`);
+    return this.http.delete(`${this.apiUrl}/empresacres/${id}`);
   }
 
   getAll() {
-    return this.http.get(`${this.apiUrl}/empresacredenciadas`);
+    return this.http.get(`${this.apiUrl}/empresacres`);
   }
 }

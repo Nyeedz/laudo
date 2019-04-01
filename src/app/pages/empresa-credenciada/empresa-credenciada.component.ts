@@ -1,39 +1,40 @@
 import {
-  Component,
   AfterViewInit,
-  ViewChild,
   ChangeDetectorRef,
-  OnDestroy
-} from "@angular/core";
+  Component,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import {
+  MatDialog,
   MatPaginator,
-  MatSort,
-  MatTableDataSource,
   MatSnackBar,
-  MatDialog
-} from "@angular/material";
-import { SwalComponent } from "@toverux/ngx-sweetalert2";
-import { merge, of as observableOf } from "rxjs";
-import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
-import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
-import { EmpresaCredenciadaEditModalComponent } from "./empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
-import { EmpresaCredenciadaCreateModalComponent } from "./empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
+  MatSort,
+  MatTableDataSource
+} from '@angular/material';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import { merge, of as observableOf } from 'rxjs';
+import { EmpresaCredenciada } from 'src/app/models/empresaCredenciada';
+import { EmpresaCredenciadaService } from 'src/app/services/empresa-credenciada/empresa-credenciada.service';
+import { UploadService } from '../../services/upload/upload.service';
+import { EmpresaCredenciadaCreateModalComponent } from './empresa-credenciada-create-modal/empresa-credenciada-create-modal.component';
+import { EmpresaCredenciadaEditModalComponent } from './empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
 
 @Component({
-  selector: "app-empresa-credenciada",
-  templateUrl: "./empresa-credenciada.component.html",
-  styleUrls: ["./empresa-credenciada.component.scss"]
+  selector: 'app-empresa-credenciada',
+  templateUrl: './empresa-credenciada.component.html',
+  styleUrls: ['./empresa-credenciada.component.scss']
 })
 export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
-  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
+  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    "cnpj",
-    "nome_fantasia",
-    "razao_social",
-    "email",
-    "telefone",
-    "ações"
+    'cnpj',
+    'nome_fantasia',
+    'razao_social',
+    'email',
+    'telefone',
+    'ações'
   ];
 
   dataSource = new MatTableDataSource();
@@ -62,6 +63,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     private empresaCredenciadaService: EmpresaCredenciadaService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private upload: UploadService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -123,16 +125,29 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.empresaCredenciadaService.create(result).subscribe(
-          () => {
+      if (result && result.dados) {
+        this.empresaCredenciadaService.create(result.dados).subscribe(
+          empresa => {
+            if (result.file) {
+              const arquivo = new FormData();
+              arquivo.append('ref', 'empresacre');
+              arquivo.append('refId', empresa['id']);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
+
+              this.upload.send(arquivo).subscribe(res => {
+                console.log(res);
+                this.loadEmpresas();
+              });
+            }
+
             this.loadEmpresas();
-            this.snackBar.open("✔ Empresa criada com sucesso", "Ok", {
+            this.snackBar.open('✔ Empresa criada com sucesso', 'Ok', {
               duration: 5000
             });
           },
           error => {
-            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+            this.snackBar.open('❌ Erro ao cadastrar empresa', 'Ok', {
               duration: 300
             });
           }
@@ -152,20 +167,34 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.empresaCredenciadaService.update(result).subscribe(
+      if (result && result.dados) {
+        this.empresaCredenciadaService.update(result.dados).subscribe(
           (val: EmpresaCredenciada) => {
             const index = this.data.findIndex(item => item.id === result.id);
             const newArray = [...this.data];
             newArray[index] = val;
             this.data = newArray;
+
+            if (result.file) {
+              const arquivo = new FormData();
+              arquivo.append('ref', 'empresacre');
+              arquivo.append('refId', val.id);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
+
+              this.upload.send(arquivo).subscribe(res => {
+                console.log(res);
+                this.loadEmpresas();
+              });
+            }
+
             this.cdr.detectChanges();
-            this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
+            this.snackBar.open('✔ Empresa alterada com sucesso', 'Ok', {
               duration: 5000
             });
           },
           err => {
-            this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
+            this.snackBar.open('❌ Erro ao editar empresa', 'Ok', {
               duration: 5000
             });
           }
@@ -175,19 +204,19 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   }
 
   confirmDelete() {
-    if (!this.selectedId) return;
+    if (!this.selectedId) { return; }
 
     this.empresaCredenciadaService.delete(this.selectedId).subscribe(
       () => {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
-        this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
+        this.snackBar.open('✔ Empresa excluida com sucesso', 'Ok', {
           duration: 5000
         });
       },
       err => {
-        this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
+        this.snackBar.open('❌ Erro ao excluir empresa', 'Ok', {
           duration: 5000
         });
       }
