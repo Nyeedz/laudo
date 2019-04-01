@@ -110,7 +110,7 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open(`Usuário cadastrado com sucesso!`, "✔️", {
+          this.snackBar.open(`✔️ Usuário cadastrado com sucesso!`, "Ok", {
             duration: 5000
           });
           this.router.navigate(["/"]);

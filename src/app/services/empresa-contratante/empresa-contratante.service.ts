@@ -39,7 +39,7 @@ export class EmpresaContratanteService {
     }
 
     return this.http.get<EmpresaContratante[]>(
-      `${this.apiUrl}/empresacontratantes`,
+      `${this.apiUrl}/empresacons`,
       {
         params
       }
@@ -47,25 +47,25 @@ export class EmpresaContratanteService {
   }
 
   getPageSize() {
-    return this.http.get<number>(`${this.apiUrl}/empresacontratantes/count`);
+    return this.http.get<number>(`${this.apiUrl}/empresacons/count`);
   }
 
   create(empresa: EmpresaContratante) {
-    return this.http.post(`${this.apiUrl}/empresacontratantes`, empresa);
+    return this.http.post(`${this.apiUrl}/empresacons`, empresa);
   }
 
   update(empresa: EmpresaContratante) {
     return this.http.put(
-      `${this.apiUrl}/empresacontratantes/${empresa.id}`,
+      `${this.apiUrl}/empresacons/${empresa.id}`,
       empresa
     );
   }
 
   delete(id: any) {
-    return this.http.delete(`${this.apiUrl}/empresacontratantes/${id}`);
+    return this.http.delete(`${this.apiUrl}/empresacons/${id}`);
   }
 
   getAll() {
-    return this.http.get(`${this.apiUrl}/empresacontratantes`);
+    return this.http.get(`${this.apiUrl}/empresacons`);
   }
 }

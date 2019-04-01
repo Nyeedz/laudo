@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { UserService } from "src/app/services/user/user.service";
+import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: "app-perfil",
@@ -18,7 +20,9 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private viaCepService: ViaCepService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -37,12 +41,12 @@ export class PerfilComponent implements OnInit {
           ])
         ]
       ],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
-      bairro: ["", Validators.required],
+      cep: ["", Validators.required],
       cidade: ["", Validators.required],
+      bairro: ["", Validators.required],
       estado: ["", Validators.required],
-      empresas: [""]
+      endereco: ["", Validators.required],
+      numero: ["", Validators.required]
     });
 
     this.form.patchValue({
@@ -53,7 +57,8 @@ export class PerfilComponent implements OnInit {
       numero: this.currentUser.user.numero,
       bairro: this.currentUser.user.bairro,
       cidade: this.currentUser.user.cidade,
-      estado: this.currentUser.user.estado
+      estado: this.currentUser.user.estado,
+      cep: this.currentUser.user.cep
     });
   }
 
@@ -61,19 +66,57 @@ export class PerfilComponent implements OnInit {
     if (event) {
       if (event.includes("credenciada")) {
         this.credenciadaShow = true;
-        this.credenciadaShow = false;
+        this.contratanteShow = false;
         this.userService.getById(this.currentUser.user.id).subscribe(result => {
-          this.credenciada = result.empresacredenciada;
+          this.credenciada = result.empresacres;
         });
       } else {
-        this.credenciadaShow = false
-        this.contratanteShow = true
+        this.credenciadaShow = false;
+        this.contratanteShow = true;
         this.userService.getById(this.currentUser.user.id).subscribe(result => {
-          result.empresacontratantes.map(value => {
-            this.contratante = value
-          })
+          this.contratante = result.empresacons;
         });
       }
     }
+  }
+
+  consultaCep(cep) {
+    cep.replace(/\D+/g, "");
+    const validaCep = /^[0-9]{8}$/;
+    if (cep != "" && validaCep.test(cep)) {
+      this.resetaDadosForm(cep);
+      this.viaCepService.getCep(cep).subscribe(
+        result => {
+          this.populaDadosCep(result);
+        },
+        error => {
+          this.snackBar.open("❌ Cep não encontrado", "OK", {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
+  populaDadosCep(dados) {
+    this.form.patchValue({
+      cep: dados.cep,
+      bairro: dados.bairro,
+      cidade: dados.localidade,
+      estado: dados.uf,
+      endereco: dados.logradouro,
+      numero: dados.numero
+    });
+  }
+
+  resetaDadosForm(cep) {
+    this.form.patchValue({
+      cep: cep,
+      bairro: null,
+      cidade: null,
+      estado: null,
+      endereco: null,
+      numero: null
+    });
   }
 }
