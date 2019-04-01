@@ -1,25 +1,79 @@
-import { Component, OnInit } from "@angular/core";
-import { MatDialogRef, MatSnackBar } from "@angular/material";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
-import { EmpresaContratanteService } from "src/app/services/empresa-contratante/empresa-contratante.service";
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
+import { EmpresaContratanteService } from 'src/app/services/empresa-contratante/empresa-contratante.service';
+import { FileSystemFileEntry } from 'ngx-file-drop';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
-  selector: "app-empresa-credenciada-create-modal",
-  templateUrl: "./empresa-credenciada-create-modal.component.html",
-  styleUrls: ["./empresa-credenciada-create-modal.component.scss"]
+  selector: 'app-empresa-credenciada-create-modal',
+  templateUrl: './empresa-credenciada-create-modal.component.html',
+  styleUrls: ['./empresa-credenciada-create-modal.component.scss']
 })
 export class EmpresaCredenciadaCreateModalComponent implements OnInit {
+  cropFinished = false;
   form: FormGroup;
+  imageBase64: any = null;
+  croppedImage: any = '';
   empresasList: any;
+  croppedFile: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<EmpresaCredenciadaCreateModalComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private viaCepService: ViaCepService,
-    private empresaContatanteService: EmpresaContratanteService
+    private empresaContatanteService: EmpresaContratanteService,
+    private cdr: ChangeDetectorRef
   ) {}
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    this.croppedFile = event.file;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  fileOver(e) {
+    console.log(e);
+  }
+
+  fileLeave(e) {
+    console.log(e);
+  }
+
+  dropped(e) {
+    console.log(e);
+    const droppedFile = e.files[0];
+    const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+    const reader = new FileReader();
+
+    fileEntry.file(file => {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64 = reader.result;
+        this.cdr.detectChanges();
+      };
+    });
+  }
+
+  confirmImage() {
+    console.log('confirmou');
+    this.cropFinished = true;
+  }
+
+  changeImage() {
+    this.cropFinished = false;
+    this.imageBase64 = null;
+    this.croppedImage = '';
+  }
 
   ngOnInit() {
     this.empresaContatanteService.getAll().subscribe(result => {
@@ -27,50 +81,50 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      cnpj: ["", Validators.required],
-      nome_fantasia: ["", Validators.required],
-      razao_social: ["", Validators.required],
-      empresacredenciadas: ["", Validators.required],
+      cnpj: ['', Validators.required],
+      nome_fantasia: ['', Validators.required],
+      razao_social: ['', Validators.required],
+      empresacredenciadas: ['', Validators.required],
       email: [
-        "",
+        '',
         [
           Validators.required,
           Validators.email,
           Validators.compose([
             Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+              '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
             )
           ])
         ]
       ],
-      telefone: ["", Validators.required],
-      inscricao_estadual: ["", Validators.required],
-      inscricao_municipal: ["", Validators.required],
-      cep: ["", Validators.required],
-      bairro: ["", Validators.required],
-      cidade: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
-      complemento: [""],
-      contato_nome: [""],
-      contato_telefone: [""],
-      id: [""],
-      logotipo: [""]
+      telefone: ['', Validators.required],
+      inscricao_estadual: ['', Validators.required],
+      inscricao_municipal: ['', Validators.required],
+      cep: ['', Validators.required],
+      bairro: ['', Validators.required],
+      cidade: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      numero: ['', Validators.required],
+      complemento: [''],
+      contato_nome: [''],
+      contato_telefone: [''],
+      id: [''],
+      logotipo: ['']
     });
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, "");
+    cep.replace(/\D+/g, '');
     const validaCep = /^[0-9]{8}$/;
-    if (cep != "" && validaCep.test(cep)) {
+    if (cep != '' && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
           this.populaDadosCep(result);
         },
         error => {
-          this.snackBar.open("❌ Cep não encontrado", "OK", {
+          this.snackBar.open('❌ Cep não encontrado', 'OK', {
             duration: 2000
           });
         }
@@ -106,6 +160,6 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
     }
 
     const dados = this.form.getRawValue();
-    this.dialogRef.close(dados);
+    this.dialogRef.close({ dados, file: this.croppedFile });
   }
 }

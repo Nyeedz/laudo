@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h2 matDialogTitle>Alterar avatar</h2>
+  <button class="btn-close" mat-icon-button matDialogClose>
+    <mat-icon> close </mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <file-drop
+    dropZoneClassName="image-upload-dropzone"
+    contentClassName="image-upload-content"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+    [showBrowseBtn]="true"
+    browseBtnClassName="mat-raised-button mat-primary"
+    browseBtnLabel="Enviar arquivo"
+    *ngIf="imageBase64 == null"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+  </file-drop>
+  <image-cropper
+    *ngIf="!cropFinished"
+    [imageBase64]="imageBase64"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="4 / 3"
+    [resizeToWidth]="150"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+  <div class="preview-actions">
+    <img class="avatar-preview" *ngIf="cropFinished" [src]="croppedImage" />
+    <button
+      *ngIf="!cropFinished && croppedImage !== ''"
+      mat-raised-button
+      color="primary"
+      (click)="confirmImage()"
+    >
+      Confirmar
+    </button>
+    <button
+      *ngIf="cropFinished"
+      mat-raised-button
+      color="primary"
+      (click)="changeImage()"
+    >
+      Trocar imagem
+    </button>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="actions">
+  <button mat-flat-button color="warn" (click)="save()">
+    <mat-icon>
+      save
+    </mat-icon>
+    Salvar
+  </button>
+</div>

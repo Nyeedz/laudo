@@ -1,7 +1,8 @@
 <div class="wrapper">
   <div class="profile-box">
     <div class="picture">
-      <div class="mock-image"></div>
+      <img [src]="avatar ? 'http://localhost:1337' + avatar : 'assets/avatar.svg'" alt="">
+      <button mat-raised-button color="primary" (click)="avatarChange()">Trocar foto de perfil</button>
     </div>
     <form [formGroup]="form" class="forms">
       <mat-form-field class="mat-form-field">

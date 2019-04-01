@@ -5,6 +5,49 @@
   </button>
 </div>
 <mat-dialog-content>
+  <file-drop
+    dropZoneClassName="image-upload-dropzone"
+    contentClassName="image-upload-content"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+    [showBrowseBtn]="true"
+    browseBtnClassName="mat-raised-button mat-primary"
+    browseBtnLabel="Enviar arquivo"
+    *ngIf="imageBase64 == null"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+  </file-drop>
+  <image-cropper
+    *ngIf="!cropFinished"
+    [imageBase64]="imageBase64"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="4 / 3"
+    [resizeToWidth]="150"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+  <div class="preview-actions">
+    <img class="avatar-preview" *ngIf="cropFinished" [src]="croppedImage" />
+    <button
+      *ngIf="!cropFinished && croppedImage !== ''"
+      mat-raised-button
+      color="primary"
+      (click)="confirmImage()"
+    >
+      Confirmar
+    </button>
+    <button
+      *ngIf="cropFinished"
+      mat-raised-button
+      color="primary"
+      (click)="changeImage()"
+    >
+      Trocar imagem
+    </button>
+  </div>
   <form class="form" [formGroup]="form">
     <mat-form-field class="mat-form-field">
       <input formControlName="cnpj" matInput placeholder="Cnpj" required />

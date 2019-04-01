@@ -1,52 +1,55 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { UserService } from "src/app/services/user/user.service";
-import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user/user.service';
+import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { PerfilAvatarModalComponent } from './perfil-avatar-modal/perfil-avatar-modal.component';
 
 @Component({
-  selector: "app-perfil",
-  templateUrl: "./perfil.component.html",
-  styleUrls: ["./perfil.component.scss"]
+  selector: 'app-perfil',
+  templateUrl: './perfil.component.html',
+  styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent implements OnInit {
   form: FormGroup;
-  currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  empresaList: string[] = ["Empresas Credenciadas", "Empresas Contratantes"];
-  credenciadaShow: boolean = false;
-  contratanteShow: boolean = false;
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  empresaList: string[] = ['Empresas Credenciadas', 'Empresas Contratantes'];
+  credenciadaShow = false;
+  contratanteShow = false;
   credenciada: any;
   contratante: any;
+  avatar: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private viaCepService: ViaCepService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      username: ["", Validators.required],
-      nome: ["", Validators.required],
+      username: ['', Validators.required],
+      nome: ['', Validators.required],
       email: [
-        { value: "", disabled: true },
+        { value: '', disabled: true },
         [
           Validators.required,
           Validators.email,
           Validators.compose([
             Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+              '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
             )
           ])
         ]
       ],
-      cep: ["", Validators.required],
-      cidade: ["", Validators.required],
-      bairro: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required]
+      cep: ['', Validators.required],
+      cidade: ['', Validators.required],
+      bairro: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      numero: ['', Validators.required]
     });
 
     this.form.patchValue({
@@ -60,11 +63,13 @@ export class PerfilComponent implements OnInit {
       estado: this.currentUser.user.estado,
       cep: this.currentUser.user.cep
     });
+
+    this.avatar = this.currentUser.user.foto!.url
   }
 
   change(event) {
     if (event) {
-      if (event.includes("credenciada")) {
+      if (event.includes('credenciada')) {
         this.credenciadaShow = true;
         this.contratanteShow = false;
         this.userService.getById(this.currentUser.user.id).subscribe(result => {
@@ -81,21 +86,33 @@ export class PerfilComponent implements OnInit {
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, "");
+    cep.replace(/\D+/g, '');
     const validaCep = /^[0-9]{8}$/;
-    if (cep != "" && validaCep.test(cep)) {
+    if (cep != '' && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
           this.populaDadosCep(result);
         },
         error => {
-          this.snackBar.open("❌ Cep não encontrado", "OK", {
+          this.snackBar.open('❌ Cep não encontrado', 'OK', {
             duration: 2000
           });
         }
       );
     }
+  }
+
+  avatarChange() {
+    const dialogRef = this.dialog.open(PerfilAvatarModalComponent, {
+      height: '400px',
+      width: '400px',
+      data: { avatar: this.avatar, user: this.currentUser.user }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 
   populaDadosCep(dados) {

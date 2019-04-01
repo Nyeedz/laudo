@@ -59,6 +59,7 @@ body {
 .wrapper {
   padding: 1rem 1rem 2rem;
   max-height: calc(100% - 64px);
+  height: 100%;
   overflow: auto;
   height: 100%;
   overflow: auto;
@@ -70,6 +71,49 @@ body {
   left: 0;
 }
 
+.image-upload-dropzone {
+  margin: auto;
+  height: 150px;
+  min-width: 150px;
+  max-width: 200px;
+  border: 2px solid #6aa84f;
+  border-radius: 4px;
+}
+
+.image-upload-content {
+  color: #6aa84f;
+  height: 150px;
+  min-width: 150px;
+  max-width: 200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logotipo-image-cropper {
+  width: 150px;
+}
+
 .space {
   flex: 1 1 auto;
+}
+
+image-cropper {
+  width: 200px !important;
+  margin: auto;
+  height: auto !important;
+}
+
+.preview-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  img {
+    max-width: 200px;
+  }
+  .avatar-preview {
+    margin-bottom: 1rem;
+  }
 }
