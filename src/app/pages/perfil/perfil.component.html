@@ -120,19 +120,19 @@
           <mat-option value="contratante">Empresas Contratantes</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-list role="list" *ngIf="credenciadaShow">
-        <mat-list-item
-          *ngFor="let empresacres of credenciada"
-          role="listitem"
-          >{{ empresacres.nome_fantasia }}</mat-list-item
-        >
+      <mat-list role="list" *ngFor="let empresacres of credenciada">
+        <mat-list-item *ngIf="credenciadaShow" role="listitem">
+          <h4 mat-line>
+            {{ empresacres.nome_fantasia }}
+          </h4>
+          <p mat-line>{{ empresacres.updatedAt | date }}</p>
+        </mat-list-item>
       </mat-list>
-      <mat-list role="list" *ngIf="contratanteShow">
-        <mat-list-item
-          *ngFor="let empresacons of contratante"
-          role="listitem"
-          >{{ empresacons.nome_fantasia }}</mat-list-item
-        >
+      <mat-list role="list" *ngFor="let empresacons of contratante">
+        <mat-list-item *ngIf="contratanteShow" role="listitem">
+          <h4 mat-line>{{ empresacons.nome_fantasia }}</h4>
+          <p mat-line>{{ empresacons.updatedAt | date }}</p>
+        </mat-list-item>
       </mat-list>
     </div>
   </div>

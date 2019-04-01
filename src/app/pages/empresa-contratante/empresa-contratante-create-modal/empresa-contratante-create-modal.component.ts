@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
@@ -6,7 +6,7 @@ import {
   FormControl
 } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
-import { MatSnackBar, MatDialogRef } from "@angular/material";
+import { MatSnackBar, MatDialogRef, MatPaginator } from "@angular/material";
 import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
 
 @Component({
@@ -18,6 +18,8 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   form: FormGroup;
   empresasList: any;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  
   constructor(
     public dialogRef: MatDialogRef<EmpresaContratanteCreateModalComponent>,
     private formBuilder: FormBuilder,
@@ -27,6 +29,7 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.paginator._intl.itemsPerPageLabel = "Registros por página";
     this.empresaCredenciadaService.getAll().subscribe(result => {
       this.empresasList = result;
     });

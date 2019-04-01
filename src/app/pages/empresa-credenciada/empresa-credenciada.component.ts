@@ -10,7 +10,8 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialog
+  MatDialog,
+  MatPaginatorIntl
 } from "@angular/material";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import { merge, of as observableOf } from "rxjs";
@@ -66,6 +67,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Registros por página";
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
     });

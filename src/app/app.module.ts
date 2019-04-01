@@ -1,5 +1,5 @@
 import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { NgModule, LOCALE_ID } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule,
@@ -19,6 +19,10 @@ import { AuthInterceptor } from "./interceptors/auth-interceptor";
 import { LoginComponent } from "./pages/login/login.component";
 import { RegisterComponent } from "./pages/register/register.component";
 import { CompareValidatorDirective } from "./shared/compare-validator.directive";
+
+import { registerLocaleData } from "@angular/common";
+import ptBr from "@angular/common/locales/pt";
+registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
@@ -45,7 +49,7 @@ import { CompareValidatorDirective } from "./shared/compare-validator.directive"
     MatStepperModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: "pt-PT" }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
