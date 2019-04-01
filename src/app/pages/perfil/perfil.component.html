@@ -116,7 +116,7 @@
           (selectionChange)="change($event.value)"
           [(value)]="selected"
         >
-          <mat-option value="credenciada">Empresa Credenciada</mat-option>
+          <mat-option value="credenciada">Empresas Credenciadas</mat-option>
           <mat-option value="contratante">Empresas Contratantes</mat-option>
         </mat-select>
       </mat-form-field>
@@ -128,9 +128,11 @@
         >
       </mat-list>
       <mat-list role="list" *ngIf="contratanteShow">
-        <mat-list-item *ngFor="let empresacons of contratante" role="listitem">{{
-          empresacons.nome_fantasia
-        }}</mat-list-item>
+        <mat-list-item
+          *ngFor="let empresacons of contratante"
+          role="listitem"
+          >{{ empresacons.nome_fantasia }}</mat-list-item
+        >
       </mat-list>
     </div>
   </div>

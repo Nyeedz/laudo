@@ -68,13 +68,13 @@ export class PerfilComponent implements OnInit {
         this.credenciadaShow = true;
         this.contratanteShow = false;
         this.userService.getById(this.currentUser.user.id).subscribe(result => {
-          this.credenciada = result.empresacres;
+          this.credenciada = result['empresacres'];
         });
       } else {
         this.credenciadaShow = false;
         this.contratanteShow = true;
         this.userService.getById(this.currentUser.user.id).subscribe(result => {
-          this.contratante = result.empresacons;
+          this.contratante = result['empresacons'];
         });
       }
     }
