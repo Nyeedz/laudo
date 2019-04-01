@@ -31,6 +31,7 @@ import { EmpresaContratanteComponent } from '../empresa-contratante/empresa-cont
 import { EmpresaCredenciadaCreateModalComponent } from '../empresa-credenciada/empresa-credenciada-create-modal/empresa-credenciada-create-modal.component';
 import { EmpresaCredenciadaEditModalComponent } from '../empresa-credenciada/empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
 import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-credenciada.component';
+import { PerfilAvatarModalComponent } from '../perfil/perfil-avatar-modal/perfil-avatar-modal.component';
 import { PerfilComponent } from '../perfil/perfil.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
@@ -40,6 +41,7 @@ import { DashboardComponent } from './dashboard.component';
     DashboardComponent,
     NavbarComponent,
     PerfilComponent,
+    PerfilAvatarModalComponent,
     // empresa contratante
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,
@@ -47,7 +49,7 @@ import { DashboardComponent } from './dashboard.component';
     // empresa credenciada
     EmpresaCredenciadaComponent,
     EmpresaCredenciadaEditModalComponent,
-    EmpresaCredenciadaCreateModalComponent
+    EmpresaCredenciadaCreateModalComponent,
   ],
   imports: [
     CommonModule,
@@ -80,7 +82,8 @@ import { DashboardComponent } from './dashboard.component';
     EmpresaContratanteEditModalComponent,
     EmpresaContratanteCreateModalComponent,
     EmpresaCredenciadaEditModalComponent,
-    EmpresaCredenciadaCreateModalComponent
+    EmpresaCredenciadaCreateModalComponent,
+    PerfilAvatarModalComponent
   ]
 })
 export class DashboardModule {}
