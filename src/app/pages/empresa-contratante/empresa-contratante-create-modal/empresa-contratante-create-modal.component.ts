@@ -23,8 +23,6 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   empresasList: any;
   croppedFile: any = null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  
   constructor(
     public dialogRef: MatDialogRef<EmpresaContratanteCreateModalComponent>,
     private formBuilder: FormBuilder,
@@ -82,11 +80,6 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Registros por página";
-    this.empresaCredenciadaService.getAll().subscribe(result => {
-      this.empresasList = result;
-    });
-
     this.form = this.formBuilder.group({
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],

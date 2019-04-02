@@ -65,7 +65,7 @@ export class PerfilComponent implements OnInit {
       cep: this.currentUser.user.cep
     });
 
-    this.avatar = this.currentUser.user.foto!.url;
+    this.avatar = this.currentUser.user.foto ? this.currentUser.user.foto.url : null;
   }
 
   change(event) {
@@ -119,7 +119,16 @@ export class PerfilComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if (result) {
+        setTimeout(() => {
+          this.avatar = '/uploads/' + result[0].hash;
+        }, 500)
+        const user = this.currentUser.user;
+        user.foto = {...result[0], url: `/uploads/${result[0].hash}`};
+        localStorage.setItem('currentUser', JSON.stringify({ ...this.currentUser, user }));
+        // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91.png
+        // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91
+      }
     });
   }
 
