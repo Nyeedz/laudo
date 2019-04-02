@@ -43,6 +43,18 @@
       matSortDisableClear
       matSortDirection="desc"
     >
+      <ng-container matColumnDef="logotipo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Logotipo</th>
+        <td mat-cell *matCellDef="let row">
+          <ngx-avatar
+            *ngIf="row.logotipo"
+            [src]="concatUrl(row.logotipo.url)"
+            [round]="true"
+            size="60"
+          >
+          </ngx-avatar>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="cnpj">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>CNPJ</th>
         <td mat-cell *matCellDef="let row">{{ row.cnpj }}</td>

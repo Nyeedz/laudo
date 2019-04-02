@@ -1,9 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
-  Validators,
-  FormControl
+  Validators
 } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 import { MatSnackBar, MatDialogRef, MatPaginator } from "@angular/material";

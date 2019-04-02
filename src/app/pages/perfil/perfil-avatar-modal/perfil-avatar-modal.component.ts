@@ -1,18 +1,18 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FileSystemFileEntry } from 'ngx-file-drop';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { UploadService } from '../../../services/upload/upload.service';
+import { ChangeDetectorRef, Component, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { FileSystemFileEntry } from "ngx-file-drop";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { UploadService } from "../../../services/upload/upload.service";
 
 @Component({
-  selector: 'app-perfil-avatar-modal',
-  templateUrl: './perfil-avatar-modal.component.html',
-  styleUrls: ['./perfil-avatar-modal.component.scss']
+  selector: "app-perfil-avatar-modal",
+  templateUrl: "./perfil-avatar-modal.component.html",
+  styleUrls: ["./perfil-avatar-modal.component.scss"]
 })
 export class PerfilAvatarModalComponent {
   cropFinished = false;
   imageBase64: any = null;
-  croppedImage: any = '';
+  croppedImage: any = "";
   empresasList: any;
   croppedFile: any = null;
 
@@ -23,8 +23,8 @@ export class PerfilAvatarModalComponent {
     private upload: UploadService
   ) {
     if (this.data.user.foto) {
-      this.croppedImage = '//localhost:1337' + this.data.user.foto['url'];
-      this.imageBase64 = '';
+      this.croppedImage = "//localhost:1337" + this.data.user.foto["url"];
+      this.imageBase64 = "";
       this.cropFinished = true;
     }
   }
@@ -58,14 +58,14 @@ export class PerfilAvatarModalComponent {
   }
 
   confirmImage() {
-    console.log('confirmou');
+    console.log("confirmou");
     this.cropFinished = true;
   }
 
   changeImage() {
     this.cropFinished = false;
     this.imageBase64 = null;
-    this.croppedImage = '';
+    this.croppedImage = "";
   }
 
   fileOver(e) {
@@ -78,11 +78,14 @@ export class PerfilAvatarModalComponent {
 
   save() {
     if (this.croppedFile) {
+      console.log(this.data.user);
       const arquivo = new FormData();
-      arquivo.append('ref', 'users');
-      arquivo.append('refId', this.data.user.id);
-      arquivo.append('field', 'foto');
-      arquivo.append('files', this.croppedFile);
+      arquivo.append("ref", "user");
+      arquivo.append("refId", this.data.user._id);
+      arquivo.append("field", "foto");
+      arquivo.append("files", this.croppedFile);
+      arquivo.append("path", "/user/avatar");
+      arquivo.append("source", "users-permissions");
 
       this.upload.send(arquivo).subscribe(res => {
         this.dialogRef.close(res);

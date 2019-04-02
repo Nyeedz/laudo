@@ -4,37 +4,38 @@ import {
   Component,
   OnDestroy,
   ViewChild
-} from '@angular/core';
+} from "@angular/core";
 import {
   MatDialog,
   MatPaginator,
   MatSnackBar,
   MatSort,
   MatTableDataSource
-} from '@angular/material';
-import { SwalComponent } from '@toverux/ngx-sweetalert2';
-import { merge, of as observableOf } from 'rxjs';
-import { EmpresaCredenciada } from 'src/app/models/empresaCredenciada';
-import { EmpresaCredenciadaService } from 'src/app/services/empresa-credenciada/empresa-credenciada.service';
-import { UploadService } from '../../services/upload/upload.service';
-import { EmpresaCredenciadaCreateModalComponent } from './empresa-credenciada-create-modal/empresa-credenciada-create-modal.component';
-import { EmpresaCredenciadaEditModalComponent } from './empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
+} from "@angular/material";
+import { SwalComponent } from "@toverux/ngx-sweetalert2";
+import { merge, of as observableOf } from "rxjs";
+import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
+import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
+import { UploadService } from "../../services/upload/upload.service";
+import { EmpresaCredenciadaCreateModalComponent } from "./empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
+import { EmpresaCredenciadaEditModalComponent } from "./empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
 
 @Component({
-  selector: 'app-empresa-credenciada',
-  templateUrl: './empresa-credenciada.component.html',
-  styleUrls: ['./empresa-credenciada.component.scss']
+  selector: "app-empresa-credenciada",
+  templateUrl: "./empresa-credenciada.component.html",
+  styleUrls: ["./empresa-credenciada.component.scss"]
 })
 export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
+  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    'cnpj',
-    'nome_fantasia',
-    'razao_social',
-    'email',
-    'telefone',
-    'ações'
+    "logotipo",
+    "cnpj",
+    "nome_fantasia",
+    "razao_social",
+    "email",
+    "telefone",
+    "ações"
   ];
 
   dataSource = new MatTableDataSource();
@@ -131,10 +132,10 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
           empresa => {
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append('ref', 'empresacre');
-              arquivo.append('refId', empresa['id']);
-              arquivo.append('field', 'logotipo');
-              arquivo.append('files', result.file);
+              arquivo.append("ref", "empresacre");
+              arquivo.append("refId", empresa["id"]);
+              arquivo.append("field", "logotipo");
+              arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 console.log(res);
@@ -143,12 +144,12 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
             }
 
             this.loadEmpresas();
-            this.snackBar.open('✔ Empresa criada com sucesso', 'Ok', {
+            this.snackBar.open("✔ Empresa criada com sucesso", "Ok", {
               duration: 5000
             });
           },
           error => {
-            this.snackBar.open('❌ Erro ao cadastrar empresa', 'Ok', {
+            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
               duration: 300
             });
           }
@@ -178,10 +179,10 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
 
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append('ref', 'empresacre');
-              arquivo.append('refId', val.id);
-              arquivo.append('field', 'logotipo');
-              arquivo.append('files', result.file);
+              arquivo.append("ref", "empresacre");
+              arquivo.append("refId", val.id);
+              arquivo.append("field", "logotipo");
+              arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 console.log(res);
@@ -190,12 +191,12 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
             }
 
             this.cdr.detectChanges();
-            this.snackBar.open('✔ Empresa alterada com sucesso', 'Ok', {
+            this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
               duration: 5000
             });
           },
           err => {
-            this.snackBar.open('❌ Erro ao editar empresa', 'Ok', {
+            this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
               duration: 5000
             });
           }
@@ -205,19 +206,21 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   }
 
   confirmDelete() {
-    if (!this.selectedId) { return; }
+    if (!this.selectedId) {
+      return;
+    }
 
     this.empresaCredenciadaService.delete(this.selectedId).subscribe(
       () => {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
-        this.snackBar.open('✔ Empresa excluida com sucesso', 'Ok', {
+        this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
           duration: 5000
         });
       },
       err => {
-        this.snackBar.open('❌ Erro ao excluir empresa', 'Ok', {
+        this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
           duration: 5000
         });
       }
