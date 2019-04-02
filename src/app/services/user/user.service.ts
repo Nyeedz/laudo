@@ -34,8 +34,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/auth/local/register`, user);
   }
 
-  update(user: User) {
-    return this.http.put(`${this.apiUrl}/users/${user.id}`, user);
+  update(userId: User, user: User) {
+    return this.http.put(`${this.apiUrl}/users/${userId}`, user);
   }
 
   delete(id: any) {
