@@ -57,15 +57,17 @@ export class PerfilComponent implements OnInit {
       username: this.currentUser.user.username,
       nome: this.currentUser.user.nome,
       email: this.currentUser.user.email,
+      cep: this.currentUser.user.cep,
       endereco: this.currentUser.user.endereco,
-      numero: this.currentUser.user.numero,
       bairro: this.currentUser.user.bairro,
       cidade: this.currentUser.user.cidade,
       estado: this.currentUser.user.estado,
-      cep: this.currentUser.user.cep
+      numero: this.currentUser.user.numero
     });
 
-    this.avatar = this.currentUser.user.foto!.url;
+    this.avatar = this.currentUser.user.foto
+      ? this.currentUser.user.foto.url
+      : null;
   }
 
   change(event) {
@@ -78,7 +80,7 @@ export class PerfilComponent implements OnInit {
           .subscribe(result => {
             this.credenciada = result["empresacres"];
             this.cdr.detectChanges();
-            console.log(this.credenciada)
+            console.log(this.credenciada);
           });
       } else {
         this.credenciadaShow = false;
@@ -143,5 +145,40 @@ export class PerfilComponent implements OnInit {
       endereco: null,
       numero: null
     });
+  }
+
+  save() {
+    const dadosForm = this.form.getRawValue();
+    return this.userService
+      .update(this.currentUser.user._id, dadosForm)
+      .subscribe(
+        result => {
+          if (result) {
+            this.snackBar.open(
+              `✔️ Usuário ${result["nome"]} cadastrado com sucesso!`,
+              "Ok",
+              {
+                duration: 5000
+              }
+            );
+
+            localStorage.setItem(
+              "currentUser",
+              JSON.stringify({
+                ...this.currentUser,
+                user: result
+              })
+            );
+
+            this.form.patchValue(result);
+          }
+        },
+        error => {
+          this.snackBar.open(`❌ Não foi possível atualizar o usuário`, "Ok", {
+            duration: 5000
+          });
+          console.log(error);
+        }
+      );
   }
 }

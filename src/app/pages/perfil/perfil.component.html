@@ -2,7 +2,11 @@
   <div class="profile-box">
     <div class="picture">
       <img
-        [src]="avatar ? 'http://localhost:1337' + avatar : 'assets/avatar.svg'"
+        [src]="
+          avatar !== null
+            ? 'http://localhost:1337' + avatar
+            : 'assets/avatar.svg'
+        "
         alt=""
       />
       <button mat-raised-button color="primary" (click)="avatarChange()">
@@ -114,6 +118,15 @@
           >Número é obrigatório</mat-error
         >
       </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
     </form>
     <div class="companies">
       <mat-form-field>
@@ -128,9 +141,13 @@
       </mat-form-field>
 
       <!-- verificar primeiro se n tem item na lista -->
-      <h4 *ngIf="credenciadaShow && credenciada.length === 0" mat-line>n tem empresa credenciada</h4>
+      <h4 *ngIf="credenciadaShow && credenciada.length === 0" mat-line>
+        Não possuí empresa credenciada
+      </h4>
 
-      <h4 *ngIf="contratanteShow && contratante.length === 0" mat-line>n tem empresa contratante</h4>
+      <h4 *ngIf="contratanteShow && contratante.length === 0" mat-line>
+        Não possuí empresa contratante
+      </h4>
 
       <mat-list role="list" *ngFor="let empresacres of credenciada">
         <mat-list-item *ngIf="credenciadaShow" role="listitem">

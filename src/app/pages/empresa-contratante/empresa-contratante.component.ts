@@ -80,11 +80,6 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  concatUrl(img) {
-    if (img === null) return "../../../assets/avatar.svg";
-    return img ? this.apiUrl.concat(img) : "../../../assets/avatar.svg";
-  }
-
   ngOnDestroy() {
     this.cdr.detach();
   }

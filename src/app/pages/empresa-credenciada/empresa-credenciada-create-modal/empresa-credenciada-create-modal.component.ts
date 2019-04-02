@@ -84,7 +84,7 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
       cnpj: ['', Validators.required],
       nome_fantasia: ['', Validators.required],
       razao_social: ['', Validators.required],
-      empresacredenciadas: ['', Validators.required],
+      empresacredenciadas: [''],
       email: [
         '',
         [
