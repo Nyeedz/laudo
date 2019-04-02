@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from "@angular/material";
 import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
-import { FileSystemFileEntry } from 'ngx-file-drop';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { FileSystemFileEntry } from "ngx-file-drop";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { EmpresaContratanteService } from "src/app/services/empresa-contratante/empresa-contratante.service";
 
 @Component({
   selector: "app-empresa-credenciada-edit-modal",
@@ -15,8 +16,9 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
   cropFinished = false;
   form: FormGroup;
   imageBase64: any = null;
-  croppedImage: any = '';
+  croppedImage: any = "";
   croppedFile: any = null;
+  empresasList: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<EmpresaCredenciadaEditModalComponent>,
@@ -24,7 +26,8 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private viaCepService: ViaCepService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private empresaContratanteService: EmpresaContratanteService
   ) {}
 
   imageCropped(event: ImageCroppedEvent) {
@@ -56,14 +59,14 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
   }
 
   confirmImage() {
-    console.log('confirmou');
+    console.log("confirmou");
     this.cropFinished = true;
   }
 
   changeImage() {
     this.cropFinished = false;
     this.imageBase64 = null;
-    this.croppedImage = '';
+    this.croppedImage = "";
   }
 
   fileOver(e) {
@@ -75,10 +78,15 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.empresaContratanteService.getAll().subscribe(result => {
+      if (result) this.empresasList = result;
+    });
+
     this.form = this.formBuilder.group({
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],
       razao_social: ["", Validators.required],
+      empresacons: [""],
       email: [
         "",
         [
@@ -103,14 +111,13 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
       complemento: [""],
       contato_nome: [""],
       contato_telefone: [""],
-      empresacredenciadas: [""],
       id: [""],
       logotipo: [""]
     });
 
     if (this.data.logotipo) {
-      this.croppedImage = '//localhost:1337' + this.data.logotipo['url'];
-      this.imageBase64 = '';
+      this.croppedImage = "//localhost:1337" + this.data.logotipo["url"];
+      this.imageBase64 = "";
       this.cropFinished = true;
       this.cdr.detectChanges();
     }

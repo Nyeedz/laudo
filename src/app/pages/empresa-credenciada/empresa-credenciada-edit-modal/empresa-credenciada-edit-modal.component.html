@@ -77,6 +77,16 @@
         >Razão social é obrigatório</mat-error
       >
     </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Empresas contratantes</mat-label>
+      <mat-select formControlName="empresacons" multiple>
+        <mat-option *ngFor="let empresa of empresasList" [value]="empresa.id">{{
+          empresa.razao_social
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field class="mat-form-field">
       <input
         formControlName="email"

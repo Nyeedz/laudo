@@ -31,8 +31,22 @@
   ></image-cropper>
   <div class="preview-actions">
     <img class="avatar-preview" *ngIf="cropFinished" [src]="croppedImage" />
-    <button *ngIf="!cropFinished && croppedImage !== ''" mat-raised-button color="primary" (click)="confirmImage()">Confirmar</button>
-    <button *ngIf="cropFinished" mat-raised-button color="primary" (click)="changeImage()">Trocar imagem</button>
+    <button
+      *ngIf="!cropFinished && croppedImage !== ''"
+      mat-raised-button
+      color="primary"
+      (click)="confirmImage()"
+    >
+      Confirmar
+    </button>
+    <button
+      *ngIf="cropFinished"
+      mat-raised-button
+      color="primary"
+      (click)="changeImage()"
+    >
+      Trocar imagem
+    </button>
   </div>
   <form class="form" [formGroup]="form">
     <mat-form-field class="mat-form-field">
@@ -62,6 +76,15 @@
       <mat-error *ngIf="form?.hasError('required', 'razao_social')"
         >Razão social é obrigatório</mat-error
       >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Empresas credenciadas</mat-label>
+      <mat-select formControlName="empresacredenciadas" multiple>
+        <mat-option *ngFor="let empresa of empresasList" [value]="empresa.id">{{
+          empresa.razao_social
+        }}</mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field class="mat-form-field">
       <input

@@ -1,14 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 import { MatSnackBar, MatDialogRef, MatPaginator } from "@angular/material";
 import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { FileSystemFileEntry } from 'ngx-file-drop';
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { FileSystemFileEntry } from "ngx-file-drop";
 
 @Component({
   selector: "app-empresa-contratante-create-modal",
@@ -19,7 +15,7 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   cropFinished = false;
   form: FormGroup;
   imageBase64: any = null;
-  croppedImage: any = '';
+  croppedImage: any = "";
   empresasList: any;
   croppedFile: any = null;
 
@@ -69,17 +65,20 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
   }
 
   confirmImage() {
-    console.log('confirmou');
+    console.log("confirmou");
     this.cropFinished = true;
   }
 
   changeImage() {
     this.cropFinished = false;
     this.imageBase64 = null;
-    this.croppedImage = '';
+    this.croppedImage = "";
   }
 
   ngOnInit() {
+    this.empresaCredenciadaService.getAll().subscribe(result => {
+      this.empresasList = result;
+    });
     this.form = this.formBuilder.group({
       cnpj: ["", Validators.required],
       nome_fantasia: ["", Validators.required],

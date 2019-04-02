@@ -19,7 +19,6 @@ import { EmpresaContratanteService } from "../../services/empresa-contratante/em
 import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
 import { EmpresaContratanteCreateModalComponent } from "./empresa-contratante-create-modal/empresa-contratante-create-modal.component";
 import { UploadService } from "src/app/services/upload/upload.service";
-import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-empresa-contratante",
@@ -33,6 +32,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     "logotipo",
     "cnpj",
     "nome_fantasia",
+    "empresacres",
     "razao_social",
     "email",
     "telefone",
@@ -41,12 +41,11 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
   dataSource = new MatTableDataSource();
   data: EmpresaContratante[];
 
-  private apiUrl = environment.apiUrl;
-
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
   selectedId: string;
+  empresacres: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -97,6 +96,9 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
           const [empresa, pageSize] = res;
 
           this.data = empresa;
+          this.data.map(value => {
+            this.empresacres = value["empresacres"];
+          });
           this.resultsLength = pageSize;
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
@@ -135,7 +137,6 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
               arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
-                console.log(res);
                 this.loadEmpresas();
               });
             }
@@ -182,7 +183,6 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
               arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
-                console.log(res);
                 this.loadEmpresas();
               });
             }

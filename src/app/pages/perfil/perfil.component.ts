@@ -80,7 +80,6 @@ export class PerfilComponent implements OnInit {
           .subscribe(result => {
             this.credenciada = result["empresacres"];
             this.cdr.detectChanges();
-            console.log(this.credenciada);
           });
       } else {
         this.credenciadaShow = false;
@@ -123,11 +122,14 @@ export class PerfilComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         setTimeout(() => {
-          this.avatar = '/uploads/' + result[0].hash;
-        }, 500)
+          this.avatar = "/uploads/" + result[0].hash;
+        }, 500);
         const user = this.currentUser.user;
-        user.foto = {...result[0], url: `/uploads/${result[0].hash}`};
-        localStorage.setItem('currentUser', JSON.stringify({ ...this.currentUser, user }));
+        user.foto = { ...result[0], url: `/uploads/${result[0].hash}` };
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ ...this.currentUser, user })
+        );
         // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91.png
         // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91
       }

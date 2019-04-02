@@ -32,6 +32,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     "logotipo",
     "cnpj",
     "nome_fantasia",
+    "empresacons",
     "razao_social",
     "email",
     "telefone",
@@ -40,6 +41,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
 
   dataSource = new MatTableDataSource();
   data: EmpresaCredenciada[];
+  empresacons: any;
 
   resultsLength = 0;
   isLoadingResults = false;
@@ -95,6 +97,9 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
           const [empresa, pageSize] = res;
 
           this.data = empresa;
+          this.data.map(value => {
+            this.empresacons = value["empresacons"];
+          });
           this.resultsLength = pageSize;
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
@@ -138,7 +143,6 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
               arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
-                console.log(res);
                 this.loadEmpresas();
               });
             }
@@ -185,7 +189,6 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
               arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
-                console.log(res);
                 this.loadEmpresas();
               });
             }

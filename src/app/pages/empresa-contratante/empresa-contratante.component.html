@@ -74,6 +74,15 @@
         <td mat-cell *matCellDef="let row">{{ row.razao_social }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="empresacres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Empresas Credenciadas
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <p *ngFor="let dados of empresacres">{{ dados.nome_fantasia }}</p>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</th>
         <td mat-cell *matCellDef="let row">{{ row.email }}</td>
