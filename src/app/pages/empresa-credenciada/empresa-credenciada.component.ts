@@ -193,6 +193,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
               });
             }
 
+            this.loadEmpresas();
             this.cdr.detectChanges();
             this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
               duration: 5000

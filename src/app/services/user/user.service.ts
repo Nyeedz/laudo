@@ -34,7 +34,7 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/auth/local/register`, user);
   }
 
-  update(userId: User, user: User) {
+  update(userId: User, user: any) {
     return this.http.put(`${this.apiUrl}/users/${userId}`, user);
   }
 

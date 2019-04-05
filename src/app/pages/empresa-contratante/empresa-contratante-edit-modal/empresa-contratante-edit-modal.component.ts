@@ -5,7 +5,7 @@ import { FileSystemFileEntry } from "ngx-file-drop";
 import { ImageCroppedEvent } from "ngx-image-cropper";
 import { ViaCepService } from "../../../services/viaCep/via-cep.service";
 import { EmpresaContratante } from "../../../models/empresaContratante";
-import { EmpresaCredenciadaService } from 'src/app/services/empresa-credenciada/empresa-credenciada.service';
+import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
 
 @Component({
   selector: "app-empresa-contratante-edit-modal",
@@ -82,13 +82,13 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
       this.empresasList = result;
     });
     this.form = this.formBuilder.group({
-      cnpj: ["", Validators.required],
+      cnpj: [""],
       nome_fantasia: ["", Validators.required],
-      razao_social: ["", Validators.required],
+      razao_social: [""],
       email: [
         "",
         [
-          Validators.required,
+          ,
           Validators.email,
           Validators.compose([
             Validators.pattern(
@@ -97,15 +97,15 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
           ])
         ]
       ],
-      telefone: ["", Validators.required],
-      inscricao_estadual: ["", Validators.required],
-      inscricao_municipal: ["", Validators.required],
-      cep: ["", Validators.required],
-      bairro: ["", Validators.required],
-      cidade: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
+      telefone: [""],
+      inscricao_estadual: [""],
+      inscricao_municipal: [""],
+      cep: [""],
+      bairro: [""],
+      cidade: [""],
+      estado: [""],
+      endereco: [""],
+      numero: [""],
       complemento: [""],
       contato_nome: [""],
       contato_telefone: [""],
@@ -158,7 +158,8 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
       cidade: dados.localidade,
       estado: dados.uf,
       endereco: dados.logradouro,
-      numero: dados.numero
+      numero: dados.numero,
+      complemento: dados.complemento
     });
   }
 
@@ -169,7 +170,8 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
       cidade: null,
       estado: null,
       endereco: null,
-      numero: null
+      numero: null,
+      complemento: null
     });
   }
 }

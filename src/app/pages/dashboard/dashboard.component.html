@@ -1,8 +1,12 @@
 <mat-drawer-container class="drawer-container" [hasBackdrop]="false">
-  <mat-drawer class="sidenav" #drawer mode="side">
+  <mat-drawer class="sidenav" #drawer mode="side" *ngIf="credenciado || admin">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a routerLink="/dashboard/empresas-credenciadas" mat-list-item>
+      <a
+        routerLink="/dashboard/empresas-credenciadas"
+        mat-list-item
+        *ngIf="credenciado"
+      >
         Empresas Credenciada
       </a>
       <a routerLink="/dashboard/empresas-contratantes" mat-list-item>

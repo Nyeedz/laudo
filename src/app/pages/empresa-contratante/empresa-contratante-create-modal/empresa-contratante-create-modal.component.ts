@@ -80,14 +80,13 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       this.empresasList = result;
     });
     this.form = this.formBuilder.group({
-      cnpj: ["", Validators.required],
+      cnpj: [""],
       nome_fantasia: ["", Validators.required],
-      razao_social: ["", Validators.required],
+      razao_social: [""],
       empresacredenciadas: [""],
       email: [
         "",
         [
-          Validators.required,
           Validators.email,
           Validators.compose([
             Validators.pattern(
@@ -96,15 +95,15 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
           ])
         ]
       ],
-      telefone: ["", Validators.required],
-      inscricao_estadual: ["", Validators.required],
-      inscricao_municipal: ["", Validators.required],
-      cep: ["", Validators.required],
-      bairro: ["", Validators.required],
-      cidade: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
+      telefone: [""],
+      inscricao_estadual: [""],
+      inscricao_municipal: [""],
+      cep: [""],
+      bairro: [""],
+      cidade: [""],
+      estado: [""],
+      endereco: [""],
+      numero: [""],
       complemento: [""],
       contato_nome: [""],
       contato_telefone: [""],
@@ -138,7 +137,8 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       cidade: dados.localidade,
       estado: dados.uf,
       endereco: dados.logradouro,
-      numero: dados.numero
+      numero: dados.numero,
+      complemento: dados.complemento
     });
   }
 
@@ -149,7 +149,8 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       cidade: null,
       estado: null,
       endereco: null,
-      numero: null
+      numero: null,
+      complemento: null
     });
   }
 

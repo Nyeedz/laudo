@@ -19,6 +19,7 @@ import { EmpresaContratanteService } from "../../services/empresa-contratante/em
 import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
 import { EmpresaContratanteCreateModalComponent } from "./empresa-contratante-create-modal/empresa-contratante-create-modal.component";
 import { UploadService } from "src/app/services/upload/upload.service";
+import { UserService } from "src/app/services/user/user.service";
 
 @Component({
   selector: "app-empresa-contratante",
@@ -66,7 +67,8 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private upload: UploadService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private userService: UserService
   ) {}
 
   ngAfterViewInit() {
@@ -141,13 +143,24 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
               });
             }
 
+            const user = JSON.parse(localStorage.getItem("currentUser"));
+            const body = {
+              empresacons: [{ _id: empresa["_id"] }]
+            };
+            this.userService.update(user.user._id, body).subscribe(
+              () => {},
+              error => {
+                console.log(error);
+              }
+            );
+
             this.loadEmpresas();
-            this.snackBar.open(`✔ Empresa criada com sucesso`, "Ok", {
+            this.snackBar.open(`✔ Sua Empresa foi criada com sucesso`, "Ok", {
               duration: 3000
             });
           },
           error => {
-            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+            this.snackBar.open("❌ Erro ao cadastrar sua empresa", "Ok", {
               duration: 3000
             });
           }

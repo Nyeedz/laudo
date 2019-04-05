@@ -1,22 +1,23 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { User } from '../../models/user';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { UserService } from '../../services/user/user.service';
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { MatDrawer } from "@angular/material";
+import { Subscription } from "rxjs";
+import { first } from "rxjs/operators";
+import { User } from "../../models/user";
+import { AuthenticationService } from "../../services/authentication/authentication.service";
+import { UserService } from "../../services/user/user.service";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  @ViewChild('drawer') drawer: MatDrawer;
+  @ViewChild("drawer") drawer: MatDrawer;
   currentUser: User;
   currentUserSubscription: Subscription;
-  user: Object;
-  idUser: any;
+  credenciado: boolean = false;
+  admin: boolean = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -25,12 +26,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(
       user => {
         this.currentUser = user;
+        if (
+          this.currentUser["user"]["role"]["_id"] === environment.credenciadoId
+        ) {
+          this.admin = false;
+          this.credenciado = true;
+        } else if (
+          this.currentUser["user"]["role"]["id"] === environment.adminId
+        ) {
+          this.admin = true;
+          this.credenciado = false;
+        }
       }
     );
-    this.idUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
+    console.log(this.credenciado);
     this.loadUser();
   }
 

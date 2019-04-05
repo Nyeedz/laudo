@@ -130,8 +130,6 @@ export class PerfilComponent implements OnInit {
           "currentUser",
           JSON.stringify({ ...this.currentUser, user })
         );
-        // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91.png
-        // http://localhost:1337/uploads/c3b33fc3b0ab401791a742b88d35fe91
       }
     });
   }
@@ -165,13 +163,9 @@ export class PerfilComponent implements OnInit {
       .subscribe(
         result => {
           if (result) {
-            this.snackBar.open(
-              `✔️ Usuário ${result["nome"]} cadastrado com sucesso!`,
-              "Ok",
-              {
-                duration: 5000
-              }
-            );
+            this.snackBar.open(`✔️ Seus dados foram salvo com sucesso!`, "Ok", {
+              duration: 5000
+            });
 
             localStorage.setItem(
               "currentUser",

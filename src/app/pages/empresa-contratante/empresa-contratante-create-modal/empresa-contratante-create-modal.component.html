@@ -50,11 +50,9 @@
   </div>
   <form class="form" [formGroup]="form">
     <mat-form-field class="mat-form-field">
-      <input formControlName="cnpj" matInput placeholder="Cnpj" required />
-      <mat-error *ngIf="form?.hasError('required', 'cnpj')"
-        >Cnpj é obrigatório</mat-error
-      >
+      <input formControlName="cnpj" matInput placeholder="Cnpj" />
     </mat-form-field>
+
     <mat-form-field class="mat-form-field">
       <input
         formControlName="nome_fantasia"
@@ -66,16 +64,13 @@
         >Nome fantasia é obrigatório</mat-error
       >
     </mat-form-field>
+
     <mat-form-field class="mat-form-field">
       <input
         formControlName="razao_social"
         matInput
         placeholder="Razão Social"
-        required
       />
-      <mat-error *ngIf="form?.hasError('required', 'razao_social')"
-        >Razão social é obrigatório</mat-error
-      >
     </mat-form-field>
 
     <mat-form-field>
@@ -92,93 +87,60 @@
         formControlName="email"
         matInput
         placeholder="E-mail"
-        required
         type="email"
       />
-      <mat-error *ngIf="form?.hasError('required', 'email')"
-        >E-mail é obrigatório</mat-error
-      >
-      <mat-error *ngIf="form?.hasError('email', 'email')"
+      <!-- <mat-error *ngIf="form?.hasError('email', 'email')"
         >Formato de e-mail inválido</mat-error
-      >
+      > -->
     </mat-form-field>
+
     <mat-form-field class="mat-form-field">
-      <input
-        formControlName="telefone"
-        matInput
-        placeholder="Telefone"
-        required
-      />
-      <mat-error *ngIf="form?.hasError('required', 'telefone')"
-        >Telefone é obrigatório</mat-error
-      >
+      <input formControlName="telefone" matInput placeholder="Telefone" />
     </mat-form-field>
+
     <mat-form-field class="mat-form-field">
       <input
         formControlName="inscricao_estadual"
         matInput
         placeholder="Inscrição Estadual"
-        required
       />
-      <mat-error *ngIf="form?.hasError('required', 'inscricao_estadual')"
-        >Inscrição estadual é obrigatório</mat-error
-      >
     </mat-form-field>
+
     <mat-form-field class="mat-form-field">
       <input
         formControlName="inscricao_municipal"
         matInput
         placeholder="Inscrição Municipal"
-        required
       />
-      <mat-error *ngIf="form?.hasError('required', 'inscricao_municipal')"
-        >Inscrição municipal é obrigatório</mat-error
-      >
     </mat-form-field>
+
     <mat-form-field>
       <input
         matInput
         placeholder="Cep"
         formControlName="cep"
-        required
         (blur)="consultaCep($event.target.value)"
       />
-      <mat-error *ngIf="form?.hasError('required', 'cep')"
-        >Cep é obrigatório</mat-error
-      >
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Bairro" formControlName="bairro" required />
-      <mat-error *ngIf="form?.hasError('required', 'bairro')"
-        >Bairro é obrigatório</mat-error
-      >
+      <input matInput placeholder="Bairro" formControlName="bairro" />
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Cidade" formControlName="cidade" required />
-      <mat-error *ngIf="form?.hasError('required', 'cidade')"
-        >Cidade é obrigatório</mat-error
-      >
+      <input matInput placeholder="Cidade" formControlName="cidade" />
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Estado" formControlName="estado" required />
-      <mat-error *ngIf="form?.hasError('required', 'estado')"
-        >Estado é obrigatório</mat-error
-      >
+      <input matInput placeholder="Estado" formControlName="estado" />
     </mat-form-field>
 
     <mat-form-field>
-      <input
-        matInput
-        placeholder="Endereço"
-        formControlName="endereco"
-        required
-      />
-      <mat-error *ngIf="form?.hasError('required', 'endereco')"
-        >Endereço é obrigatório</mat-error
-      >
+      <input matInput placeholder="Endereço" formControlName="endereco" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Complemento" formControlName="complemento" />
     </mat-form-field>
 
     <mat-form-field>
@@ -187,11 +149,7 @@
         placeholder="Número"
         formControlName="numero"
         type="number"
-        required
       />
-      <mat-error *ngIf="form?.hasError('required', 'numero')"
-        >Número é obrigatório</mat-error
-      >
     </mat-form-field>
   </form>
 </mat-dialog-content>

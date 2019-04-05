@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost:1337",
-  viaCepUrl: "https://viacep.com.br/ws"
+  viaCepUrl: "https://viacep.com.br/ws",
+  credenciadoId: "5ca2566e49130e1ee81180ba",
+  adminId: "5ca2566e49130e1ee81180b9"
 };
 
 /*

@@ -1,21 +1,21 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
-import { EmpresaContratanteService } from 'src/app/services/empresa-contratante/empresa-contratante.service';
-import { FileSystemFileEntry } from 'ngx-file-drop';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { MatDialogRef, MatSnackBar } from "@angular/material";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { EmpresaContratanteService } from "src/app/services/empresa-contratante/empresa-contratante.service";
+import { FileSystemFileEntry } from "ngx-file-drop";
+import { ImageCroppedEvent } from "ngx-image-cropper";
 
 @Component({
-  selector: 'app-empresa-credenciada-create-modal',
-  templateUrl: './empresa-credenciada-create-modal.component.html',
-  styleUrls: ['./empresa-credenciada-create-modal.component.scss']
+  selector: "app-empresa-credenciada-create-modal",
+  templateUrl: "./empresa-credenciada-create-modal.component.html",
+  styleUrls: ["./empresa-credenciada-create-modal.component.scss"]
 })
 export class EmpresaCredenciadaCreateModalComponent implements OnInit {
   cropFinished = false;
   form: FormGroup;
   imageBase64: any = null;
-  croppedImage: any = '';
+  croppedImage: any = "";
   empresasList: any;
   croppedFile: any = null;
 
@@ -65,14 +65,14 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
   }
 
   confirmImage() {
-    console.log('confirmou');
+    console.log("confirmou");
     this.cropFinished = true;
   }
 
   changeImage() {
     this.cropFinished = false;
     this.imageBase64 = null;
-    this.croppedImage = '';
+    this.croppedImage = "";
   }
 
   ngOnInit() {
@@ -81,50 +81,50 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      cnpj: ['', Validators.required],
-      nome_fantasia: ['', Validators.required],
-      razao_social: ['', Validators.required],
-      empresacredenciadas: [''],
+      cnpj: ["", Validators],
+      nome_fantasia: [""],
+      razao_social: ["", Validators],
+      empresacredenciadas: [""],
       email: [
-        '',
+        "",
         [
-          Validators.required,
+          ,
           Validators.email,
           Validators.compose([
             Validators.pattern(
-              '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
             )
           ])
         ]
       ],
-      telefone: ['', Validators.required],
-      inscricao_estadual: ['', Validators.required],
-      inscricao_municipal: ['', Validators.required],
-      cep: ['', Validators.required],
-      bairro: ['', Validators.required],
-      cidade: ['', Validators.required],
-      estado: ['', Validators.required],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      contato_nome: [''],
-      contato_telefone: [''],
-      id: [''],
-      logotipo: ['']
+      telefone: [""],
+      inscricao_estadual: [""],
+      inscricao_municipal: [""],
+      cep: [""],
+      bairro: [""],
+      cidade: [""],
+      estado: [""],
+      endereco: [""],
+      numero: [""],
+      complemento: [""],
+      contato_nome: [""],
+      contato_telefone: [""],
+      id: [""],
+      logotipo: [""]
     });
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, '');
+    cep.replace(/\D+/g, "");
     const validaCep = /^[0-9]{8}$/;
-    if (cep != '' && validaCep.test(cep)) {
+    if (cep != "" && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
           this.populaDadosCep(result);
         },
         error => {
-          this.snackBar.open('❌ Cep não encontrado', 'OK', {
+          this.snackBar.open("❌ Cep não encontrado", "OK", {
             duration: 2000
           });
         }
@@ -139,7 +139,8 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
       cidade: dados.localidade,
       estado: dados.uf,
       endereco: dados.logradouro,
-      numero: dados.numero
+      numero: dados.numero,
+      complemento: dados.complemento
     });
   }
 
@@ -150,7 +151,8 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
       cidade: null,
       estado: null,
       endereco: null,
-      numero: null
+      numero: null,
+      complemento: null
     });
   }
 
