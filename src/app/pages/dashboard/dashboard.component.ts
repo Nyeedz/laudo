@@ -16,8 +16,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild("drawer") drawer: MatDrawer;
   currentUser: User;
   currentUserSubscription: Subscription;
-  credenciado: boolean = false;
-  admin: boolean = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -26,23 +24,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(
       user => {
         this.currentUser = user;
-        if (
-          this.currentUser["user"]["role"]["_id"] === environment.credenciadoId
-        ) {
-          this.admin = false;
-          this.credenciado = true;
-        } else if (
-          this.currentUser["user"]["role"]["id"] === environment.adminId
-        ) {
-          this.admin = true;
-          this.credenciado = false;
-        }
       }
     );
   }
 
   ngOnInit() {
-    console.log(this.credenciado);
     this.loadUser();
   }
 
