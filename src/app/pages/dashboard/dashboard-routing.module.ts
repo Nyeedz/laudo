@@ -1,27 +1,32 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { AuthGuard } from "../../guards/auth/auth.guard";
-import { DashboardComponent } from "./dashboard.component";
-import { EmpresaContratanteComponent } from "../empresa-contratante/empresa-contratante.component";
-import { EmpresaCredenciadaComponent } from "../empresa-credenciada/empresa-credenciada.component";
-import { PerfilComponent } from "../perfil/perfil.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../../guards/auth/auth.guard';
+import { EmpresaContratanteComponent } from '../empresa-contratante/empresa-contratante.component';
+import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-credenciada.component';
+import { PerfilComponent } from '../perfil/perfil.component';
+import { UserComponent } from '../user/user.component';
+import { DashboardComponent } from './dashboard.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: DashboardComponent,
     children: [
       {
-        path: "empresas-credenciadas",
+        path: 'empresas-credenciadas',
         component: EmpresaCredenciadaComponent
       },
       {
-        path: "perfil",
+        path: 'perfil',
         component: PerfilComponent
       },
       {
-        path: "empresas-contratantes",
+        path: 'empresas-contratantes',
         component: EmpresaContratanteComponent
+      },
+      {
+        path: 'users',
+        component: UserComponent
       }
     ],
     canActivate: [AuthGuard]

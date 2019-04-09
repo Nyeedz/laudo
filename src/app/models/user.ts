@@ -15,4 +15,5 @@ export class User {
   telefone: any;
   empresacons: any;
   empresacres: any;
+  foto: any;
 }

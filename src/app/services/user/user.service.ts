@@ -1,21 +1,41 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { User } from "src/app/models/user";
-import { environment } from "../../../environments/environment";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { forkJoin } from 'rxjs';
+import { User } from 'src/app/models/user';
+import { environment } from '../../../environments/environment';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class UserService {
   private apiUrl = environment.apiUrl;
-  jwt = JSON.parse(localStorage.getItem("currentUser"));
+  jwt = JSON.parse(localStorage.getItem('currentUser'));
 
   constructor(private http: HttpClient) {}
 
-  getAll() {
+  dataSource(sort: string, start: number, limit: number = 10, filter: any) {
+    return forkJoin([
+      this.getAll(sort, start, limit, filter)
+    ]);
+  }
+
+  getAll(sort: string, start: number, limit: number, filter: any) {
+    let params = new HttpParams()
+      .set('_start', start.toString())
+      .set('_limit', limit.toString());
+
+    if (filter.nome) {
+      params = params.append('nome_contains', filter.nome);
+    }
+    if (filter.email) {
+      params = params.append('email_contains', filter.email);
+    }
+
     return this.http.get<User[]>(`${this.apiUrl}/users`, {
-      headers: {
-        Authorization: `Bearer ${this.jwt.jwt}`
-      }
+      params
     });
+  }
+
+  getPageSize() {
+    return this.http.get<number>(`${this.apiUrl}/users/count`);
   }
 
   getMe() {
@@ -34,7 +54,7 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/auth/local/register`, user);
   }
 
-  update(userId: User, user: any) {
+  update(user: Partial<User>, userId: any) {
     return this.http.put(`${this.apiUrl}/users/${userId}`, user);
   }
 

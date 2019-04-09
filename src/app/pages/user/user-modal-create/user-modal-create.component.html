@@ -1,0 +1,200 @@
+<div class="modal-header">
+  <h2 matDialogTitle>Cadastrar novo usuário</h2>
+  <button class="btn-close" mat-icon-button matDialogClose>
+    <mat-icon> close </mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <file-drop
+    dropZoneClassName="image-upload-dropzone"
+    contentClassName="image-upload-content"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+    [showBrowseBtn]="true"
+    browseBtnClassName="mat-raised-button mat-primary"
+    browseBtnLabel="Enviar arquivo"
+    *ngIf="imageBase64 == null"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+  </file-drop>
+  <image-cropper
+    *ngIf="!cropFinished"
+    [imageBase64]="imageBase64"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="4 / 3"
+    [resizeToWidth]="150"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+  <div class="preview-actions">
+    <img class="avatar-preview" *ngIf="cropFinished" [src]="croppedImage" />
+    <button
+      *ngIf="!cropFinished && croppedImage !== ''"
+      mat-raised-button
+      color="primary"
+      (click)="confirmImage()"
+    >
+      Confirmar
+    </button>
+    <button
+      *ngIf="cropFinished"
+      mat-raised-button
+      color="primary"
+      (click)="changeImage()"
+    >
+      Trocar imagem
+    </button>
+  </div>
+  <form class="form" [formGroup]="form">
+    <mat-form-field class="mat-form-field">
+      <input
+        formControlName="nome"
+        matInput
+        placeholder="Nome"
+        required
+      />
+      <mat-error *ngIf="form?.hasError('required', 'nome')"
+        >Nome é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field">
+      <input
+        formControlName="username"
+        matInput
+        placeholder="Nome de usuário"
+        required
+      />
+      <mat-error *ngIf="form?.hasError('required', 'username')"
+        >Nome de usuário é obrigatório</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Empresas credenciadas</mat-label>
+      <mat-select formControlName="empresacres" multiple>
+        <mat-option *ngFor="let empresa of credenciadasList" [value]="empresa.id">{{
+          empresa.razao_social
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Empresas contratantes</mat-label>
+      <mat-select formControlName="empresacons" multiple>
+        <mat-option *ngFor="let empresa of contratantesList" [value]="empresa.id">{{
+          empresa.razao_social
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field">
+      <input
+        formControlName="email"
+        matInput
+        placeholder="E-mail"
+        type="email"
+      />
+      <!-- <mat-error *ngIf="form?.hasError('email', 'email')"
+        >Formato de e-mail inválido</mat-error
+      > -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Senha"
+        [type]="!hide ? 'password' : 'text'"
+        formControlName="password"
+        required
+      />
+      <mat-icon matSuffix (click)="hide = !hide">{{
+        hide ? "visibility_off" : "visibility"
+      }}</mat-icon>
+      <mat-error *ngIf="form?.hasError('required', 'password')"
+        >Senha é obrigatória</mat-error
+      >
+      <mat-error *ngIf="form?.hasError('minlength', 'password')"
+        >Senha muito curta</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Confirmar Senha"
+        [type]="!hide ? 'password' : 'text'"
+        formControlName="confirmPassword"
+        required
+        compare="password"
+      />
+      <mat-icon matSuffix (click)="hide = !hide">{{
+        hide ? "visibility_off" : "visibility"
+      }}</mat-icon>
+      <mat-error
+        *ngIf="form?.hasError('required', 'confirmPassword')"
+        >Senha é obrigatória</mat-error
+      >
+      <mat-error
+        *ngIf="form?.hasError('minlength', 'confirmPassword')"
+        >Senha muito curta</mat-error
+      >
+      <mat-error *ngIf="!form?.errors">Senhas diferentes</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field">
+      <input formControlName="telefone" matInput placeholder="Telefone" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Cep"
+        formControlName="cep"
+        (blur)="consultaCep($event.target.value)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Bairro" formControlName="bairro" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Cidade" formControlName="cidade" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Estado" formControlName="estado" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Endereço" formControlName="endereco" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Número"
+        formControlName="numero"
+        type="number"
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="actions">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="create()"
+    [disabled]="form.invalid"
+  >
+    <mat-icon>
+      save
+    </mat-icon>
+    Cadastrar
+  </button>
+</div>
