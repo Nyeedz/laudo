@@ -160,7 +160,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
             });
           },
           error => {
-            this.snackBar.open("❌ Erro ao cadastrar sua empresa", "Ok", {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 3000
             });
           }
@@ -206,8 +206,8 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
               duration: 3000
             });
           },
-          err => {
-            this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
+          error => {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 3000
             });
           }
@@ -230,8 +230,8 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
           duration: 3000
         });
       },
-      err => {
-        this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
+      error => {
+        this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
           duration: 3000
         });
       }

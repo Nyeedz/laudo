@@ -144,7 +144,6 @@
       <h4 *ngIf="credenciadaShow && credenciada.length === 0" mat-line>
         Não possuí empresa credenciada
       </h4>
-
       <h4 *ngIf="contratanteShow && contratante.length === 0" mat-line>
         Não possuí empresa contratante
       </h4>
@@ -159,7 +158,9 @@
       </mat-list>
       <mat-list role="list" *ngFor="let empresacons of contratante">
         <mat-list-item *ngIf="contratanteShow" role="listitem">
-          <h4 mat-line>{{ empresacons.nome_fantasia }}</h4>
+          <h4 mat-line>
+            {{ empresacons.nome_fantasia }}
+          </h4>
           <p mat-line>{{ empresacons.updatedAt | date }}</p>
         </mat-list-item>
       </mat-list>

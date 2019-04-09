@@ -100,6 +100,7 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
+
     const dados = {
       ...this.firstForm.getRawValue(),
       ...this.secondForm.getRawValue()
@@ -109,7 +110,7 @@ export class RegisterComponent implements OnInit {
       .register(dados)
       .pipe(first())
       .subscribe(
-        data => {
+        () => {
           this.snackBar.open(`✔️ Usuário cadastrado com sucesso!`, "Ok", {
             duration: 5000
           });

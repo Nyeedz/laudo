@@ -58,7 +58,6 @@ export class PerfilAvatarModalComponent {
   }
 
   confirmImage() {
-    console.log("confirmou");
     this.cropFinished = true;
   }
 
@@ -68,13 +67,9 @@ export class PerfilAvatarModalComponent {
     this.croppedImage = "";
   }
 
-  fileOver(e) {
-    console.log(e);
-  }
+  fileOver(e) {}
 
-  fileLeave(e) {
-    console.log(e);
-  }
+  fileLeave(e) {}
 
   save() {
     if (this.croppedFile) {

@@ -179,7 +179,7 @@ export class PerfilComponent implements OnInit {
           }
         },
         error => {
-          this.snackBar.open(`❌ Não foi possível atualizar o usuário`, "Ok", {
+          this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
             duration: 5000
           });
           console.log(error);
