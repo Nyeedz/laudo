@@ -153,7 +153,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
             });
           },
           error => {
-            this.snackBar.open("❌ Erro ao cadastrar empresa", "Ok", {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 300
             });
           }
@@ -199,8 +199,8 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
               duration: 5000
             });
           },
-          err => {
-            this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
+          error => {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 5000
             });
           }
@@ -223,8 +223,8 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
           duration: 5000
         });
       },
-      err => {
-        this.snackBar.open("❌ Erro ao excluir empresa", "Ok", {
+      error => {
+        this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
           duration: 5000
         });
       }
