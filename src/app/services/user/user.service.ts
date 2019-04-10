@@ -1,32 +1,30 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { forkJoin } from 'rxjs';
-import { User } from 'src/app/models/user';
-import { environment } from '../../../environments/environment';
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { forkJoin } from "rxjs";
+import { User } from "src/app/models/user";
+import { environment } from "../../../environments/environment";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class UserService {
   private apiUrl = environment.apiUrl;
-  jwt = JSON.parse(localStorage.getItem('currentUser'));
+  jwt = JSON.parse(localStorage.getItem("currentUser"));
 
   constructor(private http: HttpClient) {}
 
   dataSource(sort: string, start: number, limit: number = 10, filter: any) {
-    return forkJoin([
-      this.getAll(sort, start, limit, filter)
-    ]);
+    return forkJoin([this.getAll(sort, start, limit, filter)]);
   }
 
   getAll(sort: string, start: number, limit: number, filter: any) {
     let params = new HttpParams()
-      .set('_start', start.toString())
-      .set('_limit', limit.toString());
+      .set("_start", start.toString())
+      .set("_limit", limit.toString());
 
     if (filter.nome) {
-      params = params.append('nome_contains', filter.nome);
+      params = params.append("nome_contains", filter.nome);
     }
     if (filter.email) {
-      params = params.append('email_contains', filter.email);
+      params = params.append("email_contains", filter.email);
     }
 
     return this.http.get<User[]>(`${this.apiUrl}/users`, {
@@ -54,9 +52,13 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/auth/local/register`, user);
   }
 
-  update(user: Partial<User>, userId: any) {
+  update(userId: string, user: Partial<User>) {
     return this.http.put(`${this.apiUrl}/users/${userId}`, user);
   }
+
+  // update(user: Partial<User>, userId: any) {
+  //   return this.http.put(`${this.apiUrl}/users/${userId}`, user);
+  // }
 
   delete(id: any) {
     return this.http.delete(`${this.apiUrl}/users/${id}`);

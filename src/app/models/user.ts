@@ -2,6 +2,7 @@ export class User {
   id: any;
   username: any;
   email: any;
+  provider: any;
   confirmed: boolean;
   blocked: boolean;
   nome: any;
@@ -13,7 +14,8 @@ export class User {
   estado: string;
   cep: string;
   telefone: any;
+  foto: any;
   empresacons: any;
   empresacres: any;
-  foto: any;
+  role: any;
 }

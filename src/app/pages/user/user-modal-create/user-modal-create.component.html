@@ -50,12 +50,7 @@
   </div>
   <form class="form" [formGroup]="form">
     <mat-form-field class="mat-form-field">
-      <input
-        formControlName="nome"
-        matInput
-        placeholder="Nome"
-        required
-      />
+      <input formControlName="nome" matInput placeholder="Nome" required />
       <mat-error *ngIf="form?.hasError('required', 'nome')"
         >Nome é obrigatório</mat-error
       >
@@ -76,18 +71,22 @@
     <mat-form-field>
       <mat-label>Empresas credenciadas</mat-label>
       <mat-select formControlName="empresacres" multiple>
-        <mat-option *ngFor="let empresa of credenciadasList" [value]="empresa.id">{{
-          empresa.razao_social
-        }}</mat-option>
+        <mat-option
+          *ngFor="let empresa of credenciadasList"
+          [value]="empresa.id"
+          >{{ empresa.nome_fantasia }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Empresas contratantes</mat-label>
       <mat-select formControlName="empresacons" multiple>
-        <mat-option *ngFor="let empresa of contratantesList" [value]="empresa.id">{{
-          empresa.razao_social
-        }}</mat-option>
+        <mat-option
+          *ngFor="let empresa of contratantesList"
+          [value]="empresa.id"
+          >{{ empresa.nome_fantasia }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
 
@@ -134,12 +133,10 @@
       <mat-icon matSuffix (click)="hide = !hide">{{
         hide ? "visibility_off" : "visibility"
       }}</mat-icon>
-      <mat-error
-        *ngIf="form?.hasError('required', 'confirmPassword')"
+      <mat-error *ngIf="form?.hasError('required', 'confirmPassword')"
         >Senha é obrigatória</mat-error
       >
-      <mat-error
-        *ngIf="form?.hasError('minlength', 'confirmPassword')"
+      <mat-error *ngIf="form?.hasError('minlength', 'confirmPassword')"
         >Senha muito curta</mat-error
       >
       <mat-error *ngIf="!form?.errors">Senhas diferentes</mat-error>
