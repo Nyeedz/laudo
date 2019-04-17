@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService
       .login(user)
-      .pipe(first())
       .subscribe(
         () => {
           this.router.navigate(["/dashboard/perfil"]);

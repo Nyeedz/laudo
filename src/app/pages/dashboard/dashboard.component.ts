@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatDrawer } from "@angular/material";
 import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
@@ -12,12 +12,13 @@ import { environment } from "src/environments/environment";
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"]
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
   @ViewChild("drawer") drawer: MatDrawer;
   currentUser: User;
   currentUserSubscription: Subscription;
   credenciado: boolean = false;
-  admin: boolean = false;
+  adminCredenciado: boolean = false;
+  adminContratante: boolean = false;
   contratante: boolean = false;
 
   constructor(
@@ -26,39 +27,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loadUser();
-    this.currentUserSubscription = this.authenticationService.currentUser.subscribe(
+    this.userService.getMe().subscribe(
       user => {
-        if (user) {
-          this.currentUser = user;
-          if (
-            this.currentUser["user"]["role"]["_id"] ===
-            environment["credenciadoId"]
-          ) {
-            this.admin = false;
-            this.contratante = false;
-            this.credenciado = true;
-          } else if (
-            this.currentUser["user"]["role"]["_id"] === environment["adminId"]
-          ) {
-            this.contratante = false;
-            this.credenciado = false;
-            this.admin = true;
-          } else if (
-            this.currentUser["user"]["role"]["_id"] ===
-            environment["contratanteId"]
-          ) {
-            this.credenciado = false;
-            this.admin = false;
-            this.contratante = true;
-          }
-        }
+        this.adminCredenciado = user["adminCredenciado"];
+        this.adminContratante = user["adminContratante"];
+      },
+      error => {
+        this.adminCredenciado = false;
+        this.adminContratante = false;
+        console.log(error);
       }
     );
-  }
-
-  ngOnDestroy() {
-    this.currentUserSubscription.unsubscribe();
   }
 
   deleteUser(id: number) {

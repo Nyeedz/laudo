@@ -2,10 +2,18 @@
   <mat-drawer class="sidenav" #drawer mode="side">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a routerLink="/dashboard/empresas-credenciadas" *ngIf="credenciado || admin" mat-list-item>
+      <a
+        routerLink="/dashboard/empresas-credenciadas"
+        *ngIf="adminCredenciado"
+        mat-list-item
+      >
         Empresas Credenciada
       </a>
-      <a routerLink="/dashboard/empresas-contratantes" *ngIf="contratante || admin" mat-list-item>
+      <a
+        routerLink="/dashboard/empresas-contratantes"
+        *ngIf="adminContratante"
+        mat-list-item
+      >
         Empresas Contratantes
       </a>
       <a routerLink="/dashboard/users" mat-list-item>

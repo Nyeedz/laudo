@@ -48,11 +48,14 @@ body {
   align-items: center;
 
   &.auth {
-    background: linear-gradient(
-      to top right,
-      map-get($laudo-pallete, 600),
-      map-get($laudo-pallete, 100)
-    );
+    background-image: url("./assets/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background: linear-gradient(
+    //   to top right,
+    //   map-get($laudo-pallete, 600),
+    //   map-get($laudo-pallete, 100)
+    // );
   }
 }
 

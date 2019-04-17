@@ -4,37 +4,37 @@ import {
   Component,
   OnDestroy,
   ViewChild
-} from '@angular/core';
+} from "@angular/core";
 import {
   MatDialog,
   MatPaginator,
   MatSnackBar,
   MatSort,
   MatTableDataSource
-} from '@angular/material';
-import { SwalComponent } from '@toverux/ngx-sweetalert2';
-import { merge, of as observableOf } from 'rxjs';
-import { User } from '../../models/user';
-import { UploadService } from '../../services/upload/upload.service';
-import { UserService } from '../../services/user/user.service';
-import { UserModalCreateComponent } from './user-modal-create/user-modal-create.component';
-import { UserEditModalComponent } from './user-edit-modal/user-edit-modal.component';
+} from "@angular/material";
+import { SwalComponent } from "@toverux/ngx-sweetalert2";
+import { merge, of as observableOf } from "rxjs";
+import { User } from "../../models/user";
+import { UploadService } from "../../services/upload/upload.service";
+import { UserService } from "../../services/user/user.service";
+import { UserModalCreateComponent } from "./user-modal-create/user-modal-create.component";
+import { UserEditModalComponent } from "./user-edit-modal/user-edit-modal.component";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.scss"]
 })
 export class UserComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
+  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    'foto',
-    'nome',
-    'email',
-    'cep',
-    'cidade',
-    'ações'
+    "foto",
+    "nome",
+    "email",
+    "cep",
+    "cidade",
+    "ações"
   ];
 
   dataSource = new MatTableDataSource();
@@ -65,7 +65,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Registros por página';
+    this.paginator._intl.itemsPerPageLabel = "Registros por página";
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
     });
@@ -90,7 +90,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
           this.data = users;
           this.data.map(value => {
-            this.users = value['users'];
+            this.users = value["users"];
           });
           this.resultsLength = 0;
           this.isLoadingResults = false;
@@ -139,17 +139,19 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
         this.userService.register(users).subscribe(
           user => {
-            console.log(user);
+            if (user) console.log(user);
             if (credenciadas.length > 0 || contratantes.length > 0) {
-              this.userService.update(
-                { empresacons: contratantes, empresacres: credenciadas },
-                user['user']['id']
-              ).subscribe(newUser => {
-                this.loadUsers();
-              })
+              this.userService
+                .update(
+                  { empresacons: contratantes, empresacres: credenciadas },
+                  user["user"]["id"]
+                )
+                .subscribe(newUser => {
+                  this.loadUsers();
+                });
             } else {
               this.loadUsers();
-              this.snackBar.open('✔ Usuário criado com sucesso', 'Ok', {
+              this.snackBar.open("✔ Usuário criado com sucesso", "Ok", {
                 duration: 5000
               });
             }
@@ -157,7 +159,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
             if (result.file) {
               const arquivo = new FormData();
               arquivo.append("ref", "user");
-              arquivo.append("refId", user['user']['id']);
+              arquivo.append("refId", user["user"]["id"]);
               arquivo.append("field", "foto");
               arquivo.append("files", result.file);
               arquivo.append("path", "/user/avatar");
@@ -169,7 +171,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
             }
           },
           error => {
-            this.snackBar.open('❌ Erro ao cadastrar usuário', 'Ok', {
+            this.snackBar.open("❌ Erro ao cadastrar usuário", "Ok", {
               duration: 300
             });
           }
@@ -205,17 +207,17 @@ export class UserComponent implements AfterViewInit, OnDestroy {
         };
 
         this.userService.update(user, user._id).subscribe(
-          (val) => {
+          val => {
             const index = this.data.findIndex(item => item.id === result.id);
-            const newArray = [...this.data];
+            const newArray: any = [...this.data];
             newArray[index] = val;
-            console.log(val)
+            console.log(val);
             this.data = newArray;
 
             if (result.file) {
               const arquivo = new FormData();
               arquivo.append("ref", "user");
-              arquivo.append("refId", user['user']['id']);
+              arquivo.append("refId", user["user"]["id"]);
               arquivo.append("field", "foto");
               arquivo.append("files", result.file);
               arquivo.append("path", "/user/avatar");
@@ -244,13 +246,13 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
   confirmDelete() {
     if (!this.selectedId) {
-      console.log(this.selectedId)
+      console.log(this.selectedId);
       return;
     }
 
     this.userService.delete(this.selectedId).subscribe(
       () => {
-        this.data = this.data.filter(item => item['_id'] !== this.selectedId);
+        this.data = this.data.filter(item => item["_id"] !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
         this.snackBar.open("✔ Usuário excluido com sucesso", "Ok", {

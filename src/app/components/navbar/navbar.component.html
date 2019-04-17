@@ -9,10 +9,11 @@
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
     <span>{{ currentUser.user.username }}</span>
-    <span class="space"></span>
+    <div class="space"></div>
     <button mat-icon-button [matMenuTriggerFor]="auth">
       <mat-icon>person_outline</mat-icon>
     </button>
+
     <mat-menu
       #auth="matMenu"
       fxLayout="column"

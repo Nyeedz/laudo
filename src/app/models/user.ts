@@ -7,6 +7,7 @@ export class User {
   blocked: boolean;
   nome: any;
   ativo: boolean;
+  admin: boolean;
   endereco: string;
   numero: string;
   bairro: string;
