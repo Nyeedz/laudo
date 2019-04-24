@@ -19,6 +19,7 @@ import { UploadService } from "../../services/upload/upload.service";
 import { UserService } from "../../services/user/user.service";
 import { UserModalCreateComponent } from "./user-modal-create/user-modal-create.component";
 import { UserEditModalComponent } from "./user-edit-modal/user-edit-modal.component";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-user",
@@ -96,7 +97,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
         },
-        error => {
+        () => {
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
 
@@ -138,15 +139,20 @@ export class UserComponent implements AfterViewInit, OnDestroy {
         };
 
         this.userService.register(users).subscribe(
-          user => {
-            if (user) console.log(user);
+          async user => {
+            await this.userService
+              .update(
+                { role: { _id: environment.adminId } },
+                user["user"]["id"]
+              )
+              .toPromise();
             if (credenciadas.length > 0 || contratantes.length > 0) {
               this.userService
                 .update(
                   { empresacons: contratantes, empresacres: credenciadas },
                   user["user"]["id"]
                 )
-                .subscribe(newUser => {
+                .subscribe(() => {
                   this.loadUsers();
                 });
             } else {
@@ -170,7 +176,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
               });
             }
           },
-          error => {
+          () => {
             this.snackBar.open("❌ Erro ao cadastrar usuário", "Ok", {
               duration: 300
             });
@@ -211,13 +217,12 @@ export class UserComponent implements AfterViewInit, OnDestroy {
             const index = this.data.findIndex(item => item.id === result.id);
             const newArray: any = [...this.data];
             newArray[index] = val;
-            console.log(val);
             this.data = newArray;
 
             if (result.file) {
               const arquivo = new FormData();
               arquivo.append("ref", "user");
-              arquivo.append("refId", user["user"]["id"]);
+              arquivo.append("refId", result["dados"]["_id"]);
               arquivo.append("field", "foto");
               arquivo.append("files", result.file);
               arquivo.append("path", "/user/avatar");
@@ -230,12 +235,13 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
             this.loadUsers();
             this.cdr.detectChanges();
-            this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
+            this.snackBar.open("✔ Usuário alterado com sucesso", "Ok", {
               duration: 5000
             });
           },
           err => {
-            this.snackBar.open("❌ Erro ao editar empresa", "Ok", {
+            console.log(err);
+            this.snackBar.open("❌ Erro ao editar usuário", "Ok", {
               duration: 5000
             });
           }

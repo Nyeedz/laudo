@@ -147,7 +147,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
             const body = {
               empresacons: [{ _id: empresa["_id"] }]
             };
-            this.userService.update(user.user._id, body).subscribe(
+            this.userService.update(body, user.user._id).subscribe(
               () => {},
               error => {
                 console.log(error);

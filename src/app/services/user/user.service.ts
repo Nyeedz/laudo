@@ -52,7 +52,7 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/auth/local/register`, user);
   }
 
-  update(userId: string, user: Partial<User>) {
+  update(user: Partial<User>, userId: string) {
     return this.http.put(`${this.apiUrl}/users/${userId}`, user);
   }
 

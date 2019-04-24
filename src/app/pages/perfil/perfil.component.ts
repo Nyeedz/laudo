@@ -75,21 +75,17 @@ export class PerfilComponent implements OnInit {
       if (event.includes("credenciada")) {
         this.credenciadaShow = true;
         this.contratanteShow = false;
-        this.userService
-          .getById(this.currentUser.user._id)
-          .subscribe(result => {
-            this.credenciada = result["empresacres"];
-            this.cdr.detectChanges();
-          });
+        this.userService.getMe().subscribe(result => {
+          this.credenciada = result["empresacres"];
+          this.cdr.detectChanges();
+        });
       } else {
         this.credenciadaShow = false;
         this.contratanteShow = true;
-        this.userService
-          .getById(this.currentUser.user._id)
-          .subscribe(result => {
-            this.contratante = result["empresacons"];
-            this.cdr.detectChanges();
-          });
+        this.userService.getMe().subscribe(result => {
+          this.contratante = result["empresacons"];
+          this.cdr.detectChanges();
+        });
       }
     }
   }
@@ -159,7 +155,7 @@ export class PerfilComponent implements OnInit {
   save() {
     const dadosForm = this.form.getRawValue();
     return this.userService
-      .update(this.currentUser.user._id, dadosForm)
+      .update(dadosForm, this.currentUser.user._id)
       .subscribe(
         result => {
           if (result) {
@@ -179,10 +175,9 @@ export class PerfilComponent implements OnInit {
           }
         },
         error => {
-          this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+          this.snackBar.open(`❌ Erro ao editar suas informações`, "Ok", {
             duration: 5000
           });
-          console.log(error);
         }
       );
   }

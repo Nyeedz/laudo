@@ -77,7 +77,7 @@
       <mat-label>Empresas credenciadas</mat-label>
       <mat-select formControlName="empresacres" multiple>
         <mat-option *ngFor="let empresa of credenciadasList" [value]="empresa.id">{{
-          empresa.razao_social
+          empresa.nome_fantasia
         }}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -86,7 +86,7 @@
       <mat-label>Empresas contratantes</mat-label>
       <mat-select formControlName="empresacons" multiple>
         <mat-option *ngFor="let empresa of contratantesList" [value]="empresa.id">{{
-          empresa.razao_social
+          empresa.nome_fantasia
         }}</mat-option>
       </mat-select>
     </mat-form-field>

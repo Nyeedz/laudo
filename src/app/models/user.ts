@@ -18,5 +18,5 @@ export class User {
   foto: any;
   empresacons: any;
   empresacres: any;
-  role: any;
+  role: object;
 }
