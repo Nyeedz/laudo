@@ -25,25 +25,19 @@ export class EmpresaCredenciadaService {
       .set("_start", start.toString())
       .set("_limit", limit.toString());
 
-    if (filter.cnpj) {
-      params = params.append("cnpj_contains", filter.cnpj);
-    }
-    if (filter.nomeFantasia) {
-      params = params.append("nome_fantasia_contains", filter.nomeFantasia);
-    }
-    if (filter.razaoSocial) {
-      params = params.append("razao_social_contains", filter.razaoSocial);
-    }
-    if (filter.email) {
-      params = params.append("email_contains", filter.email);
-    }
+    if (filter.cnpj) params = params.append("cnpj_contains", filter.cnpj);
 
-    return this.http.get<EmpresaContratante[]>(
-      `${this.apiUrl}/empresacres`,
-      {
-        params
-      }
-    );
+    if (filter.nomeFantasia)
+      params = params.append("nome_fantasia_contains", filter.nomeFantasia);
+
+    if (filter.razaoSocial)
+      params = params.append("razao_social_contains", filter.razaoSocial);
+
+    if (filter.email) params = params.append("email_contains", filter.email);
+
+    return this.http.get<EmpresaContratante[]>(`${this.apiUrl}/empresacres`, {
+      params
+    });
   }
 
   getPageSize() {
@@ -55,10 +49,7 @@ export class EmpresaCredenciadaService {
   }
 
   update(empresa: EmpresaContratante) {
-    return this.http.put(
-      `${this.apiUrl}/empresacres/${empresa.id}`,
-      empresa
-    );
+    return this.http.put(`${this.apiUrl}/empresacres/${empresa.id}`, empresa);
   }
 
   delete(id: any) {

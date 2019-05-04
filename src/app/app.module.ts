@@ -10,15 +10,15 @@ import {
   MatProgressSpinnerModule,
   MatSnackBarModule,
   MatStepperModule
-} from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AuthInterceptor } from './interceptors/auth-interceptor';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { CompareValidatorDirective } from './shared/compare-validator.directive';
+} from "@angular/material";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { AuthInterceptor } from "./interceptors/auth-interceptor";
+import { LoginComponent } from "./pages/login/login.component";
+import { RegisterComponent } from "./pages/register/register.component";
+import { CompareValidatorDirective } from "./shared/compare-validator.directive";
 
 import { registerLocaleData } from "@angular/common";
 import ptBr from "@angular/common/locales/pt";

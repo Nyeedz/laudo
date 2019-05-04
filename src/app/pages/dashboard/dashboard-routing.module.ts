@@ -6,6 +6,7 @@ import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-cred
 import { PerfilComponent } from '../perfil/perfil.component';
 import { UserComponent } from '../user/user.component';
 import { DashboardComponent } from './dashboard.component';
+import { VistoriaComponent } from '../vistoria/vistoria.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: UserComponent
+      },
+      {
+        path: 'vistoria',
+        component: VistoriaComponent
       }
     ],
     canActivate: [AuthGuard]

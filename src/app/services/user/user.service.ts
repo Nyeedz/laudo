@@ -20,12 +20,9 @@ export class UserService {
       .set("_start", start.toString())
       .set("_limit", limit.toString());
 
-    if (filter.nome) {
-      params = params.append("nome_contains", filter.nome);
-    }
-    if (filter.email) {
-      params = params.append("email_contains", filter.email);
-    }
+    if (filter.nome) params = params.append("nome_contains", filter.nome);
+
+    if (filter.email) params = params.append("email_contains", filter.email);
 
     return this.http.get<User[]>(`${this.apiUrl}/users`, {
       params
