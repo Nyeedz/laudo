@@ -1,26 +1,18 @@
-<div fxLayout="row" fxLayoutAlign="space-around center">
+<div fxLayout="column" fxLayoutAlign="space-around center">
   <div class="card-width">
     <form [formGroup]="form" fxLayout="column">
       <mat-card>
-        <mat-card-content>
-            <mat-form-field>
-                <mat-label>Favorite food</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let food of foods" [value]="food.value">
-                    {{food.viewValue}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+        <mat-card-content fxLayout="column">
           <mat-form-field>
-            <input
-              formControlName="nome"
-              matInput
-              placeholder="Nome"
-              required
-            />
-            <mat-error *ngIf="form?.hasError('required', 'nome')"
-              >nome é obrigatório</mat-error
-            >
+            <mat-label>Tipos de laudo</mat-label>
+            <mat-select formControlName="tipos_laudo">
+              <mat-option
+                *ngFor="let tipo_laudo of tipos_laudo"
+                [value]="tipo_laudo.value"
+              >
+                {{ tipo_laudo.value }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field>
@@ -97,11 +89,43 @@
               formControlName="numero"
               matInput
               placeholder="Número"
+              type="number"
               required
             />
             <mat-error *ngIf="form?.hasError('required', 'numero')"
               >Número é obrigatório</mat-error
             >
+          </mat-form-field>
+
+          <mat-form-field style="width: 260px">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="Escolha a data para a vistoria"
+              formControlName="data"
+              (dateChange)="dateChange($event)"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field style="width: 260px">
+            <input
+              matInput
+              placeholder="Escolha o horário para a vistoria"
+              aria-label="Escolha o horário para a vistoria"
+              [ngxTimepicker]="darkPicker"
+              formControlName="hora"
+              readonly
+              (blur)="change($event.target.value)"
+            />
+            <ngx-material-timepicker
+              #darkPicker
+              [ngxMaterialTimepickerTheme]="darkTheme"
+            ></ngx-material-timepicker>
           </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
@@ -121,7 +145,7 @@
             <mat-icon (click)="deleteParte(i)">delete</mat-icon>
           </button>
         </div>
-        <mat-card-content [formGroupName]="i">
+        <mat-card-content [formGroupName]="i" fxLayout="column">
           <mat-form-field>
             <input
               matInput
@@ -172,6 +196,7 @@
           </mat-form-field>
         </mat-card-content>
       </mat-card>
+      <button mat-button (click)="create()">Solicitar</button>
     </form>
   </div>
 </div>

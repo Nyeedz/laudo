@@ -19,12 +19,15 @@
       <a routerLink="/dashboard/users" *ngIf="admin && verify" mat-list-item>
         Usuários
       </a>
+      <a routerLink="/dashboard/vistoria" *ngIf="admin && verify" mat-list-item>
+        Vistoria
+      </a>
       <a
-        routerLink="/dashboard/vistoria"
+        routerLink="/dashboard/solicitacoes"
         *ngIf="admin && verify"
         mat-list-item
       >
-        Vistoria
+        Solicitações
       </a>
     </mat-nav-list>
   </mat-drawer>

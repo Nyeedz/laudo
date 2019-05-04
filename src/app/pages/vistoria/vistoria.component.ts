@@ -1,83 +1,129 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
-import { MatSnackBar } from '@angular/material';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
+import { MatSnackBar, MatDatepickerInputEvent } from "@angular/material";
+import { VistoriaService } from "src/app/services/vistoria/vistoria.service";
+import { Router } from "@angular/router";
+import * as moment from "moment";
+import { NgxMaterialTimepickerTheme } from "ngx-material-timepicker";
+import { SolicitacoesService } from "src/app/services/solicitacoes/solicitacoes.service";
 
 @Component({
-  selector: 'app-vistoria',
-  templateUrl: './vistoria.component.html',
-  styleUrls: ['./vistoria.component.scss']
+  selector: "app-vistoria",
+  templateUrl: "./vistoria.component.html",
+  styleUrls: ["./vistoria.component.scss"]
 })
 export class VistoriaComponent implements OnInit {
+  darkTheme: NgxMaterialTimepickerTheme = {
+    container: {
+      bodyBackgroundColor: "#424242",
+      buttonColor: "#fff"
+    },
+    dial: {
+      dialBackgroundColor: "#555"
+    },
+    clockFace: {
+      clockFaceBackgroundColor: "#555",
+      clockHandColor: "#9fbd90",
+      clockFaceTimeInactiveColor: "#fff"
+    }
+  };
   form: FormGroup;
   partes: FormArray;
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+  tipos_laudo = [
+    { value: "Vistoria locativa de entrada" },
+    { value: "Vistoria locativa de saida" },
+    { value: "Vistoria cautelar de vizinhança" },
+    { value: "Parecer técnico" },
+    { value: "Laudo judicial" },
+    { value: "Laudo de constatação" }
   ];
-  tipos: [
-    'Vistoria locativa de entrada',
-    'Vistoria locativa de saida',
-    'Vistoria cautelar de vizinhança',
-    'Parecer técnico',
-    'Laudo judicial',
-    'Laudo de constatação'
-  ]
-
+  date: Date;
+  // hour: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private viaCepService: ViaCepService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private vistoriaService: VistoriaService,
+    private router: Router,
+    private solicitacoesService: SolicitacoesService
   ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      nome: ['', Validators.required],
-      cep: ['', Validators.required],
-      cidade: ['', Validators.required],
-      bairro: ['', Validators.required],
-      estado: ['', Validators.required],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      partes: this.formBuilder.array([])
+      cep: ["", Validators.required],
+      cidade: ["", Validators.required],
+      bairro: ["", Validators.required],
+      estado: ["", Validators.required],
+      endereco: ["", Validators.required],
+      numero: ["", Validators.required],
+      complemento: [""],
+      partes: this.formBuilder.array([]),
+      tipos_laudo: ["", Validators.required],
+      data: ["", Validators.required],
+      hora: ["", Validators.required]
     });
 
     this.addParte();
   }
 
+  dateChange(newdate) {
+    const _ = moment();
+    const date = moment(newdate).add({
+      hours: _.hour(),
+      minutes: _.minute(),
+      seconds: _.second()
+    });
+    this.date = date.toDate();
+    console.log(this.date);
+  }
+
+  change(e) {
+    console.log(e);
+  }
+
   createParte(): FormGroup {
     return this.formBuilder.group({
-      titulo: '',
-      nome_parte: '',
-      email: '',
-      telefone: ''
+      titulo: ["", Validators.required],
+      nome_parte: ["", Validators.required],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.email,
+          Validators.compose([
+            Validators.pattern(
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+            )
+          ])
+        ]
+      ],
+
+      telefone: ["", Validators.required]
     });
   }
 
   addParte(): void {
-    this.partes = this.form.get('partes') as FormArray;
-    this.partes.push(this.createParte())
+    this.partes = this.form.get("partes") as FormArray;
+    this.partes.push(this.createParte());
   }
 
   deleteParte(index) {
-    console.log(this.partes)
-    this.partes.removeAt(index)
+    this.partes.removeAt(index);
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, '');
+    cep.replace(/\D+/g, "");
     const validaCep = /^[0-9]{8}$/;
-    if (cep != '' && validaCep.test(cep)) {
+    if (cep != "" && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
           this.populaDadosCep(result);
         },
-        error => {
-          this.snackBar.open('❌ Cep não encontrado', 'OK', {
+        () => {
+          this.snackBar.open("❌ Cep não encontrado", "OK", {
             duration: 2000
           });
         }
@@ -107,5 +153,41 @@ export class VistoriaComponent implements OnInit {
       numero: null,
       complemento: null
     });
+  }
+
+  create() {
+    if (this.form.invalid) {
+      return;
+    }
+    let datee = new Date();
+    let moment_date = moment(this.form.controls.data.value).format(
+      "DD/MM/YYYY"
+    );
+    let hour = this.form.controls.hora.value;
+    let moment_hour = moment(hour, "hh:mm a").format("HH:mm");
+    let pronto = moment(`${moment_date} ${moment_hour}`, "DD/MM/YYYY HH:mm");
+
+    const dados = {
+      ...this.form.getRawValue(),
+      visita: pronto
+    };
+
+    this.vistoriaService.create(dados).subscribe(
+      res => {
+        this.solicitacoesService
+          .create({ vistoria: res["_id"] })
+          .subscribe(() => {
+            this.snackBar.open(`✔️ Vistoria Solicitada com sucesso!`, "Ok", {
+              duration: 3000
+            });
+            this.router.navigate(["/dashboard/solicitacoes"]);
+          });
+      },
+      () => {
+        this.snackBar.open("❌ Erro ao solicitar a vistoria", "Ok", {
+          duration: 3000
+        });
+      }
+    );
   }
 }

@@ -7,6 +7,7 @@ import { PerfilComponent } from '../perfil/perfil.component';
 import { UserComponent } from '../user/user.component';
 import { DashboardComponent } from './dashboard.component';
 import { VistoriaComponent } from '../vistoria/vistoria.component';
+import { SolicitacoesComponent } from '../solicitacoes/solicitacoes.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'vistoria',
         component: VistoriaComponent
+      },
+      {
+        path: 'solicitacoes',
+        component: SolicitacoesComponent
       }
     ],
     canActivate: [AuthGuard]

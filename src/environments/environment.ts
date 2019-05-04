@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://laudoapi.herokuapp.com",
+  // apiUrl: "https://laudoapi.herokuapp.com",
+  apiUrl: "http://localhost:1337",
   viaCepUrl: "https://viacep.com.br/ws",
   credenciadoId: "5ca2566e49130e1ee81180ba",
   contratanteId: "5ca2566e49130e1ee81180bb",

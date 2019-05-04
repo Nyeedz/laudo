@@ -1,7 +1,6 @@
 export class Vistoria {
   id: any;
   fachada: any;
-  nome: string;
   cep: string;
   endereco: string;
   cidade: string;
@@ -10,5 +9,5 @@ export class Vistoria {
   tipo_laudo: string;
   data: Date;
   hora: Date;
-  partes: JSON;
+  partes: any
 }

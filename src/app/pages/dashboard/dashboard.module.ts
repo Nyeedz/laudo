@@ -18,8 +18,11 @@ import {
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from "@angular/material";
+import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
 import { SweetAlert2Module } from "@toverux/ngx-sweetalert2";
 import { AvatarModule } from "ngx-avatar";
@@ -40,6 +43,7 @@ import { UserComponent } from "../user/user.component";
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { VistoriaComponent } from "../vistoria/vistoria.component";
+import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
 
 @NgModule({
   declarations: [
@@ -48,6 +52,7 @@ import { VistoriaComponent } from "../vistoria/vistoria.component";
     PerfilComponent,
     PerfilAvatarModalComponent,
     VistoriaComponent,
+    SolicitacoesComponent,
     // empresa contratante
     EmpresaContratanteComponent,
     EmpresaContratanteEditModalComponent,
@@ -85,8 +90,11 @@ import { VistoriaComponent } from "../vistoria/vistoria.component";
     MatProgressSpinnerModule,
     MatSortModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxMaterialTimepickerModule
   ],
   entryComponents: [
     EmpresaContratanteEditModalComponent,

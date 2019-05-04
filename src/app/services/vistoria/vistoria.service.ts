@@ -31,7 +31,7 @@ export class VistoriaService {
     return this.http.get<number>(`${this.apiUrl}/vistorias/count`);
   }
 
-  register(vistoria: Vistoria) {
+  create(vistoria: Vistoria) {
     return this.http.post(`${this.apiUrl}/vistorias`, vistoria);
   }
 
