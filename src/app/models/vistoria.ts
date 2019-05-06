@@ -9,5 +9,6 @@ export class Vistoria {
   tipo_laudo: string;
   data: Date;
   hora: Date;
-  partes: any
+  partes: any;
+  createdAt?: any
 }

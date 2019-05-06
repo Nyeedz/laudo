@@ -1,3 +1,5 @@
+import { Vistoria } from './vistoria';
+
 export class User {
   id: any;
   username: any;
@@ -19,4 +21,5 @@ export class User {
   empresacons: any;
   empresacres: any;
   role: object;
+  vistorias?: Vistoria[];
 }

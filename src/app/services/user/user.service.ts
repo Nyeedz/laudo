@@ -29,16 +29,20 @@ export class UserService {
     });
   }
 
+  get() {
+    return this.http.get(`${this.apiUrl}/users`);
+  }
+
   getPageSize() {
     return this.http.get<number>(`${this.apiUrl}/users/count`);
   }
 
   getMe() {
-    return this.http.get(`${this.apiUrl}/users/me`);
+    return this.http.get<User>(`${this.apiUrl}/users/me`);
   }
 
   getById(id: any) {
-    return this.http.get(`${this.apiUrl}/users/${id}`, {
+    return this.http.get<User>(`${this.apiUrl}/users/${id}`, {
       headers: {
         Authorization: `Bearer ${this.jwt.jwt}`
       }

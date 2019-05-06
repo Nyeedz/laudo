@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { SolicitacoesService } from "src/app/services/solicitacoes/solicitacoes.service";
 import {
   MatPaginator,
@@ -9,13 +9,16 @@ import {
 } from "@angular/material";
 import { Solicitacoes } from "src/app/models/solicitacoes";
 import { merge, of as observableOf } from "rxjs";
+import { AuthenticationService } from "src/app/services/authentication/authentication.service";
+import { UserService } from "src/app/services/user/user.service";
+import { Vistoria } from "src/app/models/vistoria";
 
 @Component({
   selector: "app-solicitacoes",
   templateUrl: "./solicitacoes.component.html",
   styleUrls: ["./solicitacoes.component.scss"]
 })
-export class SolicitacoesComponent implements OnInit {
+export class SolicitacoesComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -32,16 +35,29 @@ export class SolicitacoesComponent implements OnInit {
   dataSource = new MatTableDataSource();
   data: Solicitacoes[];
   status: any;
-  vistoria: any;
+  vistoria: Vistoria;
   filter: {
     status;
   } = {
     status
   };
 
-  constructor(private solicitacoesService: SolicitacoesService) {}
+  vistorias: Vistoria[] = [];
 
-  ngAfterViewInit() {
+  constructor(
+    private solicitacoesService: SolicitacoesService,
+    private userService: UserService
+  ) {
+    this.userService.getMe().subscribe(result => {
+      this.vistorias = result.vistorias || [];
+
+      if (this.vistorias.length > 0) {
+        this.initTable();
+      }
+    });
+  }
+
+  initTable() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     this.loadSolicitacoes();
@@ -51,7 +67,7 @@ export class SolicitacoesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngAfterViewInit() {}
 
   loadSolicitacoes() {
     this.solicitacoesService
@@ -62,7 +78,6 @@ export class SolicitacoesComponent implements OnInit {
         const [solicitacoes, pageSize] = res;
 
         this.data = solicitacoes;
-        console.log(this.data);
 
         this.data.map(value => {
           this.status = value["status"];

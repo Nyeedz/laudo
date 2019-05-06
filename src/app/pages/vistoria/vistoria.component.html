@@ -97,13 +97,21 @@
             >
           </mat-form-field>
 
-          <mat-form-field style="width: 260px">
+          <mat-form-field>
+            <mat-label>Selecione o usuário responsável pela vistoria</mat-label>
+            <mat-select formControlName="user">
+              <mat-option *ngFor="let user of users" [value]="user._id">
+                {{ user.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="width: 360px">
             <input
               matInput
               [matDatepicker]="picker"
               placeholder="Escolha a data para a vistoria"
               formControlName="data"
-              (dateChange)="dateChange($event)"
             />
             <mat-datepicker-toggle
               matSuffix
@@ -112,7 +120,7 @@
             <mat-datepicker touchUi #picker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field style="width: 260px">
+          <mat-form-field style="width: 360px">
             <input
               matInput
               placeholder="Escolha o horário para a vistoria"
@@ -120,7 +128,6 @@
               [ngxTimepicker]="darkPicker"
               formControlName="hora"
               readonly
-              (blur)="change($event.target.value)"
             />
             <ngx-material-timepicker
               #darkPicker

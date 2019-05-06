@@ -7,6 +7,8 @@ import { Router } from "@angular/router";
 import * as moment from "moment";
 import { NgxMaterialTimepickerTheme } from "ngx-material-timepicker";
 import { SolicitacoesService } from "src/app/services/solicitacoes/solicitacoes.service";
+import { User } from "src/app/models/user";
+import { UserService } from "src/app/services/user/user.service";
 
 @Component({
   selector: "app-vistoria",
@@ -39,7 +41,7 @@ export class VistoriaComponent implements OnInit {
     { value: "Laudo de constatação" }
   ];
   date: Date;
-  // hour: any;
+  users: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,10 +49,14 @@ export class VistoriaComponent implements OnInit {
     private snackBar: MatSnackBar,
     private vistoriaService: VistoriaService,
     private router: Router,
-    private solicitacoesService: SolicitacoesService
+    private solicitacoesService: SolicitacoesService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
+    this.userService.get().subscribe(result => {
+      this.users = result;
+    });
     this.form = this.formBuilder.group({
       cep: ["", Validators.required],
       cidade: ["", Validators.required],
@@ -62,25 +68,11 @@ export class VistoriaComponent implements OnInit {
       partes: this.formBuilder.array([]),
       tipos_laudo: ["", Validators.required],
       data: ["", Validators.required],
-      hora: ["", Validators.required]
+      hora: ["", Validators.required],
+      user: ["", Validators.required]
     });
 
     this.addParte();
-  }
-
-  dateChange(newdate) {
-    const _ = moment();
-    const date = moment(newdate).add({
-      hours: _.hour(),
-      minutes: _.minute(),
-      seconds: _.second()
-    });
-    this.date = date.toDate();
-    console.log(this.date);
-  }
-
-  change(e) {
-    console.log(e);
   }
 
   createParte(): FormGroup {
@@ -159,7 +151,6 @@ export class VistoriaComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    let datee = new Date();
     let moment_date = moment(this.form.controls.data.value).format(
       "DD/MM/YYYY"
     );
@@ -175,7 +166,7 @@ export class VistoriaComponent implements OnInit {
     this.vistoriaService.create(dados).subscribe(
       res => {
         this.solicitacoesService
-          .create({ vistoria: res["_id"] })
+          .create({ vistoria: res["_id"], status: [{ value: "Em aberto" }] })
           .subscribe(() => {
             this.snackBar.open(`✔️ Vistoria Solicitada com sucesso!`, "Ok", {
               duration: 3000
