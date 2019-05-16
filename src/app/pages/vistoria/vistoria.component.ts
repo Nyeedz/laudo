@@ -18,15 +18,15 @@ import { UserService } from "src/app/services/user/user.service";
 export class VistoriaComponent implements OnInit {
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
-      bodyBackgroundColor: "#424242",
-      buttonColor: "#fff"
+      bodyBackgroundColor: "#fff",
+      buttonColor: "#d3a03d"
     },
     dial: {
-      dialBackgroundColor: "#555"
+      dialBackgroundColor: "#d3a03d"
     },
     clockFace: {
-      clockFaceBackgroundColor: "#555",
-      clockHandColor: "#9fbd90",
+      clockFaceBackgroundColor: "#d3a03d",
+      clockHandColor: "#e7c882",
       clockFaceTimeInactiveColor: "#fff"
     }
   };

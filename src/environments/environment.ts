@@ -4,12 +4,13 @@
 
 export const environment = {
   production: false,
-  // apiUrl: "http://localhost:1337",
+  apiUrl: "http://localhost:1337",
+  adminId: "5ca2566e49130e1ee81180b9",
   viaCepUrl: "https://viacep.com.br/ws",
   credenciadoId: "5ca2566e49130e1ee81180ba",
   contratanteId: "5ca2566e49130e1ee81180bb",
-  apiUrl: "https://laudoapi.herokuapp.com",
-  adminId: "5cc26e21f33be90017136155"
+  // apiUrl: "https://laudoapi.herokuapp.com",
+  // adminId: "5cc26e21f33be90017136155"
 };
 
 /*

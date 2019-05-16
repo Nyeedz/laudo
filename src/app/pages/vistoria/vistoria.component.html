@@ -104,6 +104,9 @@
                 {{ user.nome }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="form?.hasError('required', 'user')"
+              >Usuário responsável é obrigatório</mat-error
+            >
           </mat-form-field>
 
           <mat-form-field style="width: 360px">
@@ -118,6 +121,9 @@
               [for]="picker"
             ></mat-datepicker-toggle>
             <mat-datepicker touchUi #picker></mat-datepicker>
+            <mat-error *ngIf="form?.hasError('required', 'data')"
+              >Data para a vistoria é obrigatório</mat-error
+            >
           </mat-form-field>
 
           <mat-form-field style="width: 360px">
@@ -133,6 +139,9 @@
               #darkPicker
               [ngxMaterialTimepickerTheme]="darkTheme"
             ></ngx-material-timepicker>
+            <mat-error *ngIf="form?.hasError('required', 'hora')"
+              >Hora para a vistoria é obrigatório</mat-error
+            >
           </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
@@ -203,7 +212,18 @@
           </mat-form-field>
         </mat-card-content>
       </mat-card>
-      <button mat-button (click)="create()">Solicitar</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="create()"
+        [disabled]="form.invalid"
+        style="margin-bottom: 1rem; margin-top: 1rem"
+      >
+        <mat-icon>
+          save
+        </mat-icon>
+        Solicitar
+      </button>
     </form>
   </div>
 </div>

@@ -81,10 +81,10 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      cnpj: ["", Validators],
-      nome_fantasia: [""],
-      razao_social: ["", Validators],
-      empresacredenciadas: [""],
+      cnpj: [""],
+      nome_fantasia: ["", Validators.required],
+      razao_social: [""],
+      empresacons: [""],
       email: [
         "",
         [

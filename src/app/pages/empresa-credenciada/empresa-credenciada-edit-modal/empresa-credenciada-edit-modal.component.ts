@@ -123,6 +123,7 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
     }
 
     this.form.patchValue(this.data);
+    console.log(this.data)
   }
 
   save() {
