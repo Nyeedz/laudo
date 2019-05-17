@@ -76,6 +76,7 @@ export class PerfilComponent implements OnInit {
         this.credenciadaShow = true;
         this.contratanteShow = false;
         this.userService.getMe().subscribe(result => {
+          console.log('teste')
           this.credenciada = result["empresacres"];
           this.cdr.detectChanges();
         });
@@ -83,6 +84,7 @@ export class PerfilComponent implements OnInit {
         this.credenciadaShow = false;
         this.contratanteShow = true;
         this.userService.getMe().subscribe(result => {
+          console.log('teste')
           this.contratante = result["empresacons"];
           this.cdr.detectChanges();
         });

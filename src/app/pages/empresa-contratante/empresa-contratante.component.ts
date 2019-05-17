@@ -4,49 +4,52 @@ import {
   ViewChild,
   ChangeDetectorRef,
   OnDestroy
-} from "@angular/core";
+} from '@angular/core';
 import {
   MatPaginator,
   MatSort,
   MatTableDataSource,
   MatSnackBar,
   MatDialog
-} from "@angular/material";
-import { SwalComponent } from "@toverux/ngx-sweetalert2";
-import { merge, of as observableOf } from "rxjs";
-import { EmpresaContratante } from "../../models/empresaContratante";
-import { EmpresaContratanteService } from "../../services/empresa-contratante/empresa-contratante.service";
-import { EmpresaContratanteEditModalComponent } from "./empresa-contratante-edit-modal/empresa-contratante-edit-modal.component";
-import { EmpresaContratanteCreateModalComponent } from "./empresa-contratante-create-modal/empresa-contratante-create-modal.component";
-import { UploadService } from "src/app/services/upload/upload.service";
-import { UserService } from "src/app/services/user/user.service";
+} from '@angular/material';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import { merge, of as observableOf } from 'rxjs';
+import { EmpresaContratante } from '../../models/empresaContratante';
+import { EmpresaContratanteService } from '../../services/empresa-contratante/empresa-contratante.service';
+import { EmpresaContratanteEditModalComponent } from './empresa-contratante-edit-modal/empresa-contratante-edit-modal.component';
+import { EmpresaContratanteCreateModalComponent } from './empresa-contratante-create-modal/empresa-contratante-create-modal.component';
+import { UploadService } from 'src/app/services/upload/upload.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: "app-empresa-contratante",
-  templateUrl: "./empresa-contratante.component.html",
-  styleUrls: ["./empresa-contratante.component.scss"]
+  selector: 'app-empresa-contratante',
+  templateUrl: './empresa-contratante.component.html',
+  styleUrls: ['./empresa-contratante.component.scss']
 })
 export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
-  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
+  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    "logotipo",
-    "cnpj",
-    "nome_fantasia",
-    "empresacres",
-    "razao_social",
-    "email",
-    "telefone",
-    "ações"
+    'logotipo',
+    'cnpj',
+    'nome_fantasia',
+    'empresacres',
+    'razao_social',
+    'email',
+    'telefone',
+    'ações'
   ];
   dataSource = new MatTableDataSource();
   data: EmpresaContratante[];
+  admin = false;
 
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
   selectedId: string;
   empresacres: any;
+  contratante: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -70,6 +73,20 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private userService: UserService
   ) {}
+
+  ngOnInit() {
+    this.userService.getMe().subscribe(
+      user => {
+        if (user['role']['_id'] === environment.adminId) {
+          this.admin = true;
+          this.contratante = user['adminContratante'];
+        }
+      },
+      () => {
+        this.admin = false;
+      }
+    );
+  }
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -99,7 +116,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
 
           this.data = empresa;
           this.data.map(value => {
-            this.empresacres = value["empresacres"];
+            this.empresacres = value['empresacres'];
           });
           this.resultsLength = pageSize;
           this.isLoadingResults = false;
@@ -133,19 +150,19 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
           empresa => {
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append("ref", "empresacon");
-              arquivo.append("refId", empresa["id"]);
-              arquivo.append("field", "logotipo");
-              arquivo.append("files", result.file);
+              arquivo.append('ref', 'empresacon');
+              arquivo.append('refId', empresa['id']);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 this.loadEmpresas();
               });
             }
 
-            const user = JSON.parse(localStorage.getItem("currentUser"));
+            const user = JSON.parse(localStorage.getItem('currentUser'));
             const body = {
-              empresacons: [{ _id: empresa["_id"] }]
+              empresacons: [{ _id: empresa['_id'] }]
             };
             this.userService.update(body, user.user._id).subscribe(
               () => {},
@@ -155,12 +172,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
             );
 
             this.loadEmpresas();
-            this.snackBar.open(`✔ Sua Empresa foi criada com sucesso`, "Ok", {
+            this.snackBar.open(`✔ Sua Empresa foi criada com sucesso`, 'Ok', {
               duration: 3000
             });
           },
           error => {
-            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+            this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
               duration: 3000
             });
           }
@@ -190,10 +207,10 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
 
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append("ref", "empresacon");
-              arquivo.append("refId", val.id);
-              arquivo.append("field", "logotipo");
-              arquivo.append("files", result.file);
+              arquivo.append('ref', 'empresacon');
+              arquivo.append('refId', val.id);
+              arquivo.append('field', 'logotipo');
+              arquivo.append('files', result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 this.loadEmpresas();
@@ -202,12 +219,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
 
             this.loadEmpresas();
             this.cdr.detectChanges();
-            this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
+            this.snackBar.open('✔ Empresa alterada com sucesso', 'Ok', {
               duration: 3000
             });
           },
           error => {
-            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+            this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
               duration: 3000
             });
           }
@@ -226,12 +243,12 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
-        this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
+        this.snackBar.open('✔ Empresa excluida com sucesso', 'Ok', {
           duration: 3000
         });
       },
       error => {
-        this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+        this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
           duration: 3000
         });
       }

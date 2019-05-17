@@ -29,7 +29,12 @@
         placeholder="E-mail"
       />
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="create()">
+    <button
+      [disabled]="!admin && !credenciado"
+      mat-flat-button
+      color="primary"
+      (click)="create()"
+    >
       Cadastrar nova empresa
     </button>
   </div>
