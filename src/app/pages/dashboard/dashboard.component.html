@@ -16,10 +16,14 @@
       >
         Empresas Contratantes
       </a>
-      <a routerLink="/dashboard/users" *ngIf="admin && verify" mat-list-item>
+      <a routerLink="/dashboard/users" *ngIf="admin" mat-list-item>
         Usuários
       </a>
-      <a routerLink="/dashboard/vistoria" *ngIf="admin && verify" mat-list-item>
+      <a
+        routerLink="/dashboard/vistoria"
+        *ngIf="admin || vistoriador"
+        mat-list-item
+      >
         Vistoria
       </a>
       <a routerLink="/dashboard/solicitacoes" mat-list-item>

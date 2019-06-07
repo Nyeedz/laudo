@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       .login(user)
       .subscribe(
         () => {
-          this.router.navigate(["/dashboard/perfil"]);
+          this.router.navigate(["/dashboard/solicitacoes"]);
         },
         error => {
           this.snackBar.open(`❌ ${error.error.message}`, "Ok", {

@@ -4,13 +4,11 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://laudoapi.herokuapp.com",
-  adminId: "5cc26e21f33be90017136155",
+  apiUrl: "http://localhost:1337",
+  adminId: "5cf87c67d33ac219947cb49e",
   viaCepUrl: "https://viacep.com.br/ws",
-  credenciadoId: "5ca2566e49130e1ee81180ba",
-  contratanteId: "5ca2566e49130e1ee81180bb",
-  // apiUrl: "https://laudoapi.herokuapp.com",
-  // adminId: "5cc26e21f33be90017136155"
+  vistoriadorId: "5cf9ce19cbe53f1acc66dc4a"
+  // apiUrl: "https://laudoapi.herokuapp.com"
 };
 
 /*
