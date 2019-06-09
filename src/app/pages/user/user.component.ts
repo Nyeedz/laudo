@@ -140,12 +140,6 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
         this.userService.register(users).subscribe(
           async user => {
-            await this.userService
-              .update(
-                { role: { _id: environment.adminId } },
-                user["user"]["id"]
-              )
-              .toPromise();
             if (credenciadas.length > 0 || contratantes.length > 0) {
               this.userService
                 .update(

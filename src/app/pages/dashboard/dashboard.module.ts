@@ -20,7 +20,8 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatRadioModule
 } from "@angular/material";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
@@ -44,6 +45,7 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { VistoriaComponent } from "../vistoria/vistoria.component";
 import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
+import { SolicitacoesEditModalComponent } from '../solicitacoes/solicitacoes-edit-modal/solicitacoes-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
     EmpresaCredenciadaCreateModalComponent,
     UserComponent,
     UserModalCreateComponent,
-    UserEditModalComponent
+    UserEditModalComponent,
+    SolicitacoesEditModalComponent
   ],
   imports: [
     CommonModule,
@@ -94,7 +97,8 @@ import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
     MatNativeDateModule,
     MatCardModule,
     MatSelectModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    MatRadioModule
   ],
   entryComponents: [
     EmpresaContratanteEditModalComponent,
@@ -103,7 +107,8 @@ import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
     EmpresaCredenciadaCreateModalComponent,
     UserModalCreateComponent,
     UserEditModalComponent,
-    PerfilAvatarModalComponent
+    PerfilAvatarModalComponent,
+    SolicitacoesEditModalComponent
   ]
 })
 export class DashboardModule {}

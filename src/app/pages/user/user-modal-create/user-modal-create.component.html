@@ -96,6 +96,7 @@
         matInput
         placeholder="E-mail"
         type="email"
+        required
       />
       <!-- <mat-error *ngIf="form?.hasError('email', 'email')"
         >Formato de e-mail inválido</mat-error
@@ -179,6 +180,11 @@
         type="number"
       />
     </mat-form-field>
+    <mat-radio-group formControlName="tipoUser">
+      <mat-radio-button value="1">Vistoriador</mat-radio-button>
+      <mat-radio-button value="2">Credenciado</mat-radio-button>
+      <mat-radio-button value="3">Contratante</mat-radio-button>
+    </mat-radio-group>
   </form>
 </mat-dialog-content>
 

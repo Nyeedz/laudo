@@ -1,5 +1,4 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
-import { SolicitacoesService } from "src/app/services/solicitacoes/solicitacoes.service";
 import {
   MatPaginator,
   MatSort,
@@ -13,6 +12,7 @@ import { Vistoria } from "src/app/models/vistoria";
 import { environment } from "src/environments/environment";
 import { VistoriaService } from "src/app/services/vistoria/vistoria.service";
 import { Laudo } from "src/app/models/laudo";
+import { SolicitacoesEditModalComponent } from './solicitacoes-edit-modal/solicitacoes-edit-modal.component';
 
 @Component({
   selector: "app-solicitacoes",
@@ -50,7 +50,8 @@ export class SolicitacoesComponent {
 
   constructor(
     private userService: UserService,
-    private vistoriaService: VistoriaService
+    private vistoriaService: VistoriaService,
+    private dialog: MatDialog
   ) {}
 
   initTable() {
@@ -102,5 +103,13 @@ export class SolicitacoesComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  edit(item: any) {
+    const dialogRef = this.dialog.open(SolicitacoesEditModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+    });
   }
 }

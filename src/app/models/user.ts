@@ -21,5 +21,8 @@ export class User {
   empresacons: any;
   empresacres: any;
   role: object;
+  vistoriador: boolean
+  credenciado: boolean
+  contratante: boolean
   vistorias?: Vistoria[];
 }

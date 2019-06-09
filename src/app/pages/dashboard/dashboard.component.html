@@ -4,14 +4,14 @@
     <mat-nav-list>
       <a
         routerLink="/dashboard/empresas-credenciadas"
-        *ngIf="admin || credenciado"
+        *ngIf="admin || (user && user['credenciado'])"
         mat-list-item
       >
         Empresas Credenciada
       </a>
       <a
         routerLink="/dashboard/empresas-contratantes"
-        *ngIf="admin || contratante"
+        *ngIf="admin || (user && user['contratante'])"
         mat-list-item
       >
         Empresas Contratantes
@@ -21,7 +21,7 @@
       </a>
       <a
         routerLink="/dashboard/vistoria"
-        *ngIf="admin || vistoriador"
+        *ngIf="admin || (user && user['vistoriador'])"
         mat-list-item
       >
         Vistoria

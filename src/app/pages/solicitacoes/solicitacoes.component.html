@@ -80,7 +80,7 @@
           <button
             mat-icon-button
             (click)="edit(row)"
-            *ngIf="row.status == !'Em aberto'"
+            *ngIf="row.status !== 'Em aberto'"
           >
             <mat-icon
               color="primary"
@@ -92,7 +92,7 @@
           <button
             mat-icon-button
             (click)="delete(row.id)"
-            *ngIf="row.status == !'Em aberto'"
+            *ngIf="row.status !== 'Em aberto'"
           >
             <mat-icon
               color="warn"

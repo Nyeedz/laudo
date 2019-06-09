@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   contratante: boolean = false;
   verify: boolean = false;
   vistoriador: boolean = false;
+  user: User;
 
   constructor(private userService: UserService) {}
 
@@ -30,9 +31,8 @@ export class DashboardComponent implements OnInit {
         if (user["role"]["_id"] === environment.adminId) {
           this.admin = true;
           this.verify = user["verify"];
-        } else if (user["role"]["_id"] === environment.vistoriadorId) {
-          this.vistoriador = true;
         }
+        this.user = user;
       },
       () => {
         this.admin = false;
