@@ -81,36 +81,25 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      cnpj: [""],
+      cnpj: [],
       nome_fantasia: ["", Validators.required],
-      razao_social: [""],
-      empresacons: [""],
-      email: [
-        "",
-        [
-          ,
-          Validators.email,
-          Validators.compose([
-            Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
-            )
-          ])
-        ]
-      ],
-      telefone: [""],
-      inscricao_estadual: [""],
-      inscricao_municipal: [""],
-      cep: [""],
-      bairro: [""],
-      cidade: [""],
-      estado: [""],
-      endereco: [""],
-      numero: [""],
-      complemento: [""],
-      contato_nome: [""],
-      contato_telefone: [""],
-      id: [""],
-      logotipo: [""]
+      razao_social: [],
+      empresacons: [],
+      email: ["", [Validators.required, Validators.email]],
+      telefone: [],
+      inscricao_estadual: [],
+      inscricao_municipal: [],
+      cep: [],
+      bairro: [],
+      cidade: [],
+      estado: [],
+      endereco: [],
+      numero: [],
+      complemento: [],
+      contato_nome: [],
+      contato_telefone: [],
+      id: [],
+      logotipo: []
     });
   }
 
@@ -161,7 +150,36 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
       return;
     }
 
-    const dados = this.form.getRawValue();
+    let dados = {};
+
+    if (
+      this.form.controls.empresacons.value === null ||
+      this.form.controls.empresacons.value === "" ||
+      this.form.controls.email.value === null ||
+      this.form.controls.email.value === ""
+    ) {
+      dados = {
+        bairro: this.form.controls.bairro.value,
+        cep: this.form.controls.cep.value,
+        cidade: this.form.controls.cidade.value,
+        cnpj: this.form.controls.cnpj.value,
+        complemento: this.form.controls.complemento.value,
+        contato_nome: this.form.controls.contato_nome.value,
+        contato_telefone: this.form.controls.contato_telefone.value,
+        endereco: this.form.controls.endereco.value,
+        estado: this.form.controls.estado.value,
+        id: this.form.controls.id.value,
+        inscricao_estadual: this.form.controls.inscricao_estadual.value,
+        inscricao_municipal: this.form.controls.inscricao_municipal.value,
+        logotipo: this.form.controls.logotipo.value,
+        nome_fantasia: "teste",
+        numero: this.form.controls.numero.value,
+        razao_social: this.form.controls.razao_social.value,
+        telefone: this.form.controls.telefone.value
+      };
+    } else {
+      dados = this.form.getRawValue();
+    }
     this.dialogRef.close({ dados, file: this.croppedFile });
   }
 }

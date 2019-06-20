@@ -88,10 +88,14 @@
         matInput
         placeholder="E-mail"
         type="email"
+        required
       />
-      <!-- <mat-error *ngIf="form?.hasError('email', 'email')"
+      <mat-error *ngIf="form?.hasError('required', 'email')"
+        >E-mail é obrigatório</mat-error
+      >
+      <mat-error *ngIf="form?.hasError('email', 'email')"
         >Formato de e-mail inválido</mat-error
-      > -->
+      >
     </mat-form-field>
 
     <mat-form-field class="mat-form-field">

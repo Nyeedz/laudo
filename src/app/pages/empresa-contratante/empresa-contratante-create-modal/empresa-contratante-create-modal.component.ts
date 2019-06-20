@@ -84,17 +84,7 @@ export class EmpresaContratanteCreateModalComponent implements OnInit {
       nome_fantasia: ["", Validators.required],
       razao_social: [""],
       empresacredenciadas: [""],
-      email: [
-        "",
-        [
-          Validators.email,
-          Validators.compose([
-            Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
-            )
-          ])
-        ]
-      ],
+      email: ["", [Validators.required, Validators.email]],
       telefone: [""],
       inscricao_estadual: [""],
       inscricao_municipal: [""],
