@@ -33,10 +33,6 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/users?admin=false`);
   }
 
-  getPageSize() {
-    return this.http.get<number>(`${this.apiUrl}/users/count`);
-  }
-
   getMe() {
     return this.http.get<User>(`${this.apiUrl}/users/me`);
   }

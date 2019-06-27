@@ -33,6 +33,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
     "foto",
     "nome",
     "email",
+    "role",
     "cep",
     "cidade",
     "ações"

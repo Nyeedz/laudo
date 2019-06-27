@@ -36,24 +36,24 @@
                 >
               </mat-form-field>
 
-              <mat-form-field style="width: 100%">
+              <mat-form-field style="width: 65%">
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
                 <input
                   matInput
                   [matDatepicker]="picker"
                   placeholder="Escolha a data para a vistoria"
                   formControlName="data"
                 />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
                 <mat-datepicker touchUi #picker></mat-datepicker>
                 <mat-error *ngIf="form?.hasError('required', 'data')"
                   >Data para a vistoria é obrigatório</mat-error
                 >
               </mat-form-field>
 
-              <mat-form-field style="width: 100%">
+              <mat-form-field style="width: 65%">
                 <input
                   matInput
                   placeholder="Escolha o horário para a vistoria"

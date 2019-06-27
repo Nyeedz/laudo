@@ -180,10 +180,20 @@
         type="number"
       />
     </mat-form-field>
-    <mat-radio-group formControlName="tipoUser">
-      <mat-radio-button value="1">Vistoriador</mat-radio-button>
-      <mat-radio-button value="2">Credenciado</mat-radio-button>
-      <mat-radio-button value="3">Contratante</mat-radio-button>
+    <mat-radio-group
+      class="example-radio-group"
+      aria-label="Select an option"
+      formControlName="tipoUser"
+    >
+      <mat-radio-button class="example-radio-button" value="1" color="accent"
+        >Vistoriador</mat-radio-button
+      >
+      <mat-radio-button value="2" class="example-radio-button"
+        >Credenciado</mat-radio-button
+      >
+      <mat-radio-button value="3" class="example-radio-button"
+        >Contratante</mat-radio-button
+      >
     </mat-radio-group>
   </form>
 </mat-dialog-content>
