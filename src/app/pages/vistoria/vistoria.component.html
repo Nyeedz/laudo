@@ -80,7 +80,7 @@
                   (click)="toggleMap()"
                   type="button"
                 >
-                  Mostrar mapa
+                  {{ showMap ? 'Esconder mapa' : 'Mostrar mapa' }}
                 </button>
               </div>
               <div id="map" class="map-area" [hidden]="!showMap"></div>
