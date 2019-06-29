@@ -74,14 +74,11 @@
       <ng-container matColumnDef="ações">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Ações</th>
         <td mat-cell *matCellDef="let row" [style.color]="'red'">
-          <div *ngIf="row.status === 'Em aberto'">
+          <!-- <div *ngIf="row.status === 'Em aberto'">
             <p>Aguardando Laudo</p>
-          </div>
-          <button
-            mat-icon-button
-            (click)="edit(row)"
-            *ngIf="row.status !== 'Em aberto'"
-          >
+          </div> -->
+          <button mat-icon-button (click)="edit(row)">
+            <!-- *ngIf="row.status !== 'Em aberto'" -->
             <mat-icon
               color="primary"
               aria-label="Botão editar"
