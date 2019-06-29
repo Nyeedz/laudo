@@ -30,11 +30,7 @@ export class UserService {
   }
 
   get() {
-    return this.http.get(`${this.apiUrl}/users`);
-  }
-
-  getPageSize() {
-    return this.http.get<number>(`${this.apiUrl}/users/count`);
+    return this.http.get(`${this.apiUrl}/users?admin=false`);
   }
 
   getMe() {

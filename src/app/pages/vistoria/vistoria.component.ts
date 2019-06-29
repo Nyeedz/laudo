@@ -1,15 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ViaCepService } from 'src/app/services/viaCep/via-cep.service';
-import { MatSnackBar, MatDatepickerInputEvent } from '@angular/material';
-import { VistoriaService } from 'src/app/services/vistoria/vistoria.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar, MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-import { SolicitacoesService } from 'src/app/services/solicitacoes/solicitacoes.service';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user/user.service';
-declare var ol: any;
+import { LaudoService } from '../../services/laudo/laudo.service';
+import { UserService } from '../../services/user/user.service';
+import { ViaCepService } from '../../services/viaCep/via-cep.service';
+import { VistoriaService } from '../../services/vistoria/vistoria.service';
+declare var ol;
 
 @Component({
   selector: 'app-vistoria',
@@ -31,7 +30,9 @@ export class VistoriaComponent implements OnInit {
       clockFaceTimeInactiveColor: '#fff'
     }
   };
-  form: FormGroup;
+  generalForm: FormGroup;
+  locationForm: FormGroup;
+  partesForm: FormGroup;
   partes: FormArray;
   showMap = false;
   tipos_laudo = [
@@ -52,7 +53,7 @@ export class VistoriaComponent implements OnInit {
     private snackBar: MatSnackBar,
     private vistoriaService: VistoriaService,
     private router: Router,
-    private solicitacoesService: SolicitacoesService,
+    private laudoService: LaudoService,
     private userService: UserService
   ) {}
 
@@ -60,23 +61,29 @@ export class VistoriaComponent implements OnInit {
     this.userService.get().subscribe(result => {
       this.users = result;
     });
-    this.form = this.formBuilder.group({
-      cep: ['', Validators.required],
-      cidade: ['', Validators.required],
-      bairro: ['', Validators.required],
-      estado: ['', Validators.required],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      partes: this.formBuilder.array([]),
+
+    this.generalForm = this.formBuilder.group({
       tipos_laudo: ['', Validators.required],
       data: ['', Validators.required],
       hora: ['', Validators.required],
       user: ['', Validators.required]
     });
 
-    this.addParte();
-    this.startMap();
+    this.locationForm = this.formBuilder.group({
+      cep: ['', Validators.required],
+      cidade: ['', Validators.required],
+      bairro: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      numero: ['', Validators.required],
+      complemento: ['']
+    });
+
+    this.partesForm = this.formBuilder.group({
+      partes: this.formBuilder.array([])
+    });
+
+    // this.addParte();
   }
 
   startMap() {
@@ -120,7 +127,7 @@ export class VistoriaComponent implements OnInit {
   }
 
   addParte(): void {
-    this.partes = this.form.get('partes') as FormArray;
+    this.partes = this.partesForm.get('partes') as FormArray;
     this.partes.push(this.createParte());
   }
 
@@ -147,7 +154,7 @@ export class VistoriaComponent implements OnInit {
   }
 
   populaDadosCep(dados) {
-    this.form.patchValue({
+    this.locationForm.patchValue({
       cep: dados.cep,
       bairro: dados.bairro,
       cidade: dados.localidade,
@@ -159,7 +166,7 @@ export class VistoriaComponent implements OnInit {
   }
 
   resetaDadosForm(cep) {
-    this.form.patchValue({
+    this.locationForm.patchValue({
       cep: cep,
       bairro: null,
       cidade: null,
@@ -170,38 +177,40 @@ export class VistoriaComponent implements OnInit {
     });
   }
 
-  create() {
-    if (this.form.invalid) {
-      return;
-    }
-    const moment_date = moment(this.form.controls.data.value).format(
-      'DD/MM/YYYY'
-    );
-    const hour = this.form.controls.hora.value;
-    const moment_hour = moment(hour, 'hh:mm a').format('HH:mm');
-    const pronto = moment(`${moment_date} ${moment_hour}`, 'DD/MM/YYYY HH:mm');
+  nextStep(stepper: any) {
+    stepper.next();
+    this.startMap();
+  }
 
-    const dados = {
-      ...this.form.getRawValue(),
-      visita: pronto
-    };
-
-    this.vistoriaService.create(dados).subscribe(
-      res => {
-        this.solicitacoesService
-          .create({ vistoria: res['_id'], status: [{ value: 'Em aberto' }] })
-          .subscribe(() => {
-            this.snackBar.open(`✔️ Vistoria Solicitada com sucesso!`, 'Ok', {
-              duration: 3000
-            });
-            this.router.navigate(['/dashboard/solicitacoes']);
-          });
-      },
-      () => {
-        this.snackBar.open('❌ Erro ao solicitar a vistoria', 'Ok', {
-          duration: 3000
-        });
-      }
-    );
+  async create() {
+    // try {
+    //   if (this.form.invalid) {
+    //     return;
+    //   }
+    //   const moment_date = moment(this.form.controls.data.value).format(
+    //     'DD/MM/YYYY'
+    //   );
+    //   const hour = this.form.controls.hora.value;
+    //   const moment_hour = moment(hour, 'hh:mm a').format('HH:mm');
+    //   const pronto = moment(
+    //     `${moment_date} ${moment_hour}`,
+    //     'DD/MM/YYYY HH:mm'
+    //   );
+    //   const dados = {
+    //     ...this.form.getRawValue(),
+    //     visita: pronto,
+    //     status: 'Em aberto'
+    //   };
+    //   const response = await this.vistoriaService.create(dados);
+    //   await this.laudoService.create({ vistoria: response['_id'] });
+    //   this.snackBar.open(`✔️ Vistoria Solicitada com sucesso!`, 'Ok', {
+    //     duration: 3000
+    //   });
+    //   this.router.navigate(['/dashboard/solicitacoes']);
+    // } catch (error) {
+    //   this.snackBar.open('❌ Erro ao solicitar a vistoria', 'Ok', {
+    //     duration: 3000
+    //   });
+    // }
   }
 }

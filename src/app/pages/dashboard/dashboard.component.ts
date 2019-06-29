@@ -19,12 +19,11 @@ export class DashboardComponent implements OnInit {
   credenciado: boolean = false;
   admin: boolean = false;
   contratante: boolean = false;
-  verify: boolean = false
+  verify: boolean = false;
+  vistoriador: boolean = false;
+  user: User;
 
-  constructor(
-    private authenticationService: AuthenticationService,
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userService.getMe().subscribe(
@@ -32,10 +31,9 @@ export class DashboardComponent implements OnInit {
         console.log(user["role"]["_id"] === environment.adminId)
         if (user["role"]["_id"] === environment.adminId) {
           this.admin = true;
-          this.contratante = user['adminContratante']
-          this.credenciado = user['adminCredenciado']
-          this.verify = user['verify']
+          this.verify = user["verify"];
         }
+        this.user = user;
       },
       () => {
         this.admin = false;

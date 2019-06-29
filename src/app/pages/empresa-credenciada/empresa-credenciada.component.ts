@@ -4,41 +4,41 @@ import {
   Component,
   OnDestroy,
   ViewChild
-} from '@angular/core';
+} from "@angular/core";
 import {
   MatDialog,
   MatPaginator,
   MatSnackBar,
   MatSort,
   MatTableDataSource
-} from '@angular/material';
-import { SwalComponent } from '@toverux/ngx-sweetalert2';
-import { merge, of as observableOf } from 'rxjs';
-import { EmpresaCredenciada } from 'src/app/models/empresaCredenciada';
-import { EmpresaCredenciadaService } from 'src/app/services/empresa-credenciada/empresa-credenciada.service';
-import { UploadService } from '../../services/upload/upload.service';
-import { EmpresaCredenciadaCreateModalComponent } from './empresa-credenciada-create-modal/empresa-credenciada-create-modal.component';
-import { EmpresaCredenciadaEditModalComponent } from './empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component';
-import { UserService } from 'src/app/services/user/user.service';
-import { environment } from 'src/environments/environment';
+} from "@angular/material";
+import { SwalComponent } from "@toverux/ngx-sweetalert2";
+import { merge, of as observableOf } from "rxjs";
+import { EmpresaCredenciada } from "src/app/models/empresaCredenciada";
+import { EmpresaCredenciadaService } from "src/app/services/empresa-credenciada/empresa-credenciada.service";
+import { UploadService } from "../../services/upload/upload.service";
+import { EmpresaCredenciadaCreateModalComponent } from "./empresa-credenciada-create-modal/empresa-credenciada-create-modal.component";
+import { EmpresaCredenciadaEditModalComponent } from "./empresa-credenciada-edit-modal/empresa-credenciada-edit-modal.component";
+import { UserService } from "src/app/services/user/user.service";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-empresa-credenciada',
-  templateUrl: './empresa-credenciada.component.html',
-  styleUrls: ['./empresa-credenciada.component.scss']
+  selector: "app-empresa-credenciada",
+  templateUrl: "./empresa-credenciada.component.html",
+  styleUrls: ["./empresa-credenciada.component.scss"]
 })
 export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('deleteSwal') private deleteSwal: SwalComponent;
+  @ViewChild("deleteSwal") private deleteSwal: SwalComponent;
 
   displayedColumns: string[] = [
-    'logotipo',
-    'cnpj',
-    'nome_fantasia',
-    'empresacons',
-    'razao_social',
-    'email',
-    'telefone',
-    'ações'
+    "logotipo",
+    "cnpj",
+    "nome_fantasia",
+    "empresacons",
+    "razao_social",
+    "email",
+    "telefone",
+    "ações"
   ];
 
   dataSource = new MatTableDataSource();
@@ -78,9 +78,9 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   ngOnInit() {
     this.userService.getMe().subscribe(
       user => {
-        if (user['role']['_id'] === environment.adminId) {
+        if (user["role"]["_id"] === environment.adminId) {
           this.admin = true;
-          this.credenciado = user['adminCredenciado'];
+          this.credenciado = user["adminCredenciado"];
         }
       },
       () => {
@@ -90,7 +90,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Registros por página';
+    this.paginator._intl.itemsPerPageLabel = "Registros por página";
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
     });
@@ -117,7 +117,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
 
           this.data = empresa;
           this.data.map(value => {
-            this.empresacons = value['empresacons'];
+            this.empresacons = value["empresacons"];
           });
           this.resultsLength = pageSize;
           this.isLoadingResults = false;
@@ -151,15 +151,16 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result.dados);
       if (result && result.dados) {
         this.empresaCredenciadaService.create(result.dados).subscribe(
           empresa => {
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append('ref', 'empresacre');
-              arquivo.append('refId', empresa['id']);
-              arquivo.append('field', 'logotipo');
-              arquivo.append('files', result.file);
+              arquivo.append("ref", "empresacre");
+              arquivo.append("refId", empresa["id"]);
+              arquivo.append("field", "logotipo");
+              arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 this.loadEmpresas();
@@ -167,12 +168,12 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
             }
 
             this.loadEmpresas();
-            this.snackBar.open('✔ Empresa criada com sucesso', 'Ok', {
+            this.snackBar.open("✔ Empresa criada com sucesso", "Ok", {
               duration: 5000
             });
           },
           error => {
-            this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 300
             });
           }
@@ -202,10 +203,10 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
 
             if (result.file) {
               const arquivo = new FormData();
-              arquivo.append('ref', 'empresacre');
-              arquivo.append('refId', val.id);
-              arquivo.append('field', 'logotipo');
-              arquivo.append('files', result.file);
+              arquivo.append("ref", "empresacre");
+              arquivo.append("refId", val.id);
+              arquivo.append("field", "logotipo");
+              arquivo.append("files", result.file);
 
               this.upload.send(arquivo).subscribe(res => {
                 this.loadEmpresas();
@@ -214,12 +215,12 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
 
             this.loadEmpresas();
             this.cdr.detectChanges();
-            this.snackBar.open('✔ Empresa alterada com sucesso', 'Ok', {
+            this.snackBar.open("✔ Empresa alterada com sucesso", "Ok", {
               duration: 5000
             });
           },
           error => {
-            this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
               duration: 5000
             });
           }
@@ -238,12 +239,12 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
         this.data = this.data.filter(item => item.id !== this.selectedId);
         this.resultsLength -= 1;
         this.selectedId = null;
-        this.snackBar.open('✔ Empresa excluida com sucesso', 'Ok', {
+        this.snackBar.open("✔ Empresa excluida com sucesso", "Ok", {
           duration: 5000
         });
       },
       error => {
-        this.snackBar.open(`❌ ${error.error.message}`, 'Ok', {
+        this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
           duration: 5000
         });
       }

@@ -1,5 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
-import { SolicitacoesService } from "src/app/services/solicitacoes/solicitacoes.service";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import {
   MatPaginator,
   MatSort,
@@ -7,11 +6,13 @@ import {
   MatSnackBar,
   MatDialog
 } from "@angular/material";
-import { Solicitacoes } from "src/app/models/solicitacoes";
 import { merge, of as observableOf } from "rxjs";
-import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { UserService } from "src/app/services/user/user.service";
 import { Vistoria } from "src/app/models/vistoria";
+import { environment } from "src/environments/environment";
+import { VistoriaService } from "src/app/services/vistoria/vistoria.service";
+import { Laudo } from "src/app/models/laudo";
+import { SolicitacoesEditModalComponent } from './solicitacoes-edit-modal/solicitacoes-edit-modal.component';
 
 @Component({
   selector: "app-solicitacoes",
@@ -33,65 +34,82 @@ export class SolicitacoesComponent {
   ];
 
   dataSource = new MatTableDataSource();
-  data: Solicitacoes[];
+  data: Vistoria[];
   status: any;
   vistoria: Vistoria;
   filter: {
-    status;
+    status: string;
+    tipos_laudo: string;
   } = {
-    status
+    status: null,
+    tipos_laudo: null
   };
 
   vistorias: Vistoria[] = [];
+  laudo: Laudo;
 
   constructor(
-    private solicitacoesService: SolicitacoesService,
-    private userService: UserService
-  ) {
-    this.userService.getMe().subscribe(result => {
-      this.vistorias = result.vistorias || [];
-
-      if (this.vistorias.length > 0) {
-        this.initTable();
-      }
-    });
-  }
+    private userService: UserService,
+    private vistoriaService: VistoriaService,
+    private dialog: MatDialog
+  ) {}
 
   initTable() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    this.loadSolicitacoes();
+    this.loadVistorias();
 
     merge(this.sort.sortChange, this.paginator.page).subscribe(() => {
-      this.loadSolicitacoes();
+      this.loadVistorias();
     });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user.user.role._id === environment.adminId) {
+      this.initTable();
+    } else {
+      this.userService.getMe().subscribe(result => {
+        this.vistorias = result.vistorias || [];
 
-  loadSolicitacoes() {
-    this.solicitacoesService
+        if (this.vistorias.length > 0) {
+          this.initTable();
+        }
+      });
+    }
+  }
+
+  loadVistorias() {
+    this.vistoriaService
       .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
-        status: this.filter.status
+        status: this.filter.status,
+        tipos_laudo: this.filter.tipos_laudo
       })
       .subscribe(res => {
-        const [solicitacoes, pageSize] = res;
+        const [vistoria, pageSize] = res;
 
-        this.data = solicitacoes;
-
+        this.data = vistoria;
         this.data.map(value => {
-          this.status = value["status"];
-          this.vistoria = value["vistoria"];
+          this.status = value.status;
+          this.laudo = value["laudo"];
         });
       });
   }
 
   applyFilter(filterValue: string, type: string) {
     this.filter[type] = filterValue;
-    this.loadSolicitacoes();
+    this.loadVistorias();
     this.sort.sortChange.emit();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  edit(item: any) {
+    const dialogRef = this.dialog.open(SolicitacoesEditModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+    });
   }
 }

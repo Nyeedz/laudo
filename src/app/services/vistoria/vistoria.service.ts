@@ -14,15 +14,21 @@ export class VistoriaService {
   constructor(private http: HttpClient) {}
 
   dataSource(sort: string, start: number, limit: number = 10, filter: any) {
-    return forkJoin([this.getAll(sort, start, limit, filter)]);
+    return forkJoin([
+      this.getAll(sort, start, limit, filter),
+      this.getPageSize()
+    ]);
   }
 
   getAll(sort: string, start: number, limit: number, filter: any) {
     let params = new HttpParams()
+      .set("_sort", sort)
       .set("_start", start.toString())
       .set("_limit", limit.toString());
 
-    if (filter.nome) params.append("nome_contais", filter.nome);
+    if (filter.tipos_laudo)
+      params = params.append("tipos_laudo_contains", filter.tipos_laudo);
+    if (filter.status) params = params.append("status_contains", filter.status);
 
     return this.http.get<Vistoria[]>(`${this.apiUrl}/vistorias`, { params });
   }
@@ -31,8 +37,8 @@ export class VistoriaService {
     return this.http.get<number>(`${this.apiUrl}/vistorias/count`);
   }
 
-  create(vistoria: Vistoria) {
-    return this.http.post(`${this.apiUrl}/vistorias`, vistoria);
+  create(vistoria: Vistoria): Promise<any> {
+    return this.http.post(`${this.apiUrl}/vistorias`, vistoria).toPromise();
   }
 
   delete(id: any) {

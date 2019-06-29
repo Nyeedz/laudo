@@ -21,3 +21,27 @@
   margin-left: auto;
   margin-right: 0;
 }
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+/deep/ .mat-radio-outer-circle {
+  .mat-radio-checked & {
+    border-color: #c58725 !important;
+  }
+}
+
+/deep/ .mat-radio-inner-circle {
+  background-color: #c58725 !important;
+}
+
+/deep/ .mat-radio-ripple .mat-ripple-element {
+  background-color: rgba(#c58725, 0.26) !important;
+}

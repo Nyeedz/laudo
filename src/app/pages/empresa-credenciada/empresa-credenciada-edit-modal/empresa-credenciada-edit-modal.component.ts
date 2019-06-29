@@ -87,18 +87,7 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
       nome_fantasia: ["", Validators.required],
       razao_social: [""],
       empresacons: [""],
-      email: [
-        "",
-        [
-          ,
-          Validators.email,
-          Validators.compose([
-            Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
-            )
-          ])
-        ]
-      ],
+      email: ["", [Validators.required, Validators.email]],
       telefone: [""],
       inscricao_estadual: [""],
       inscricao_municipal: [""],
@@ -123,7 +112,7 @@ export class EmpresaCredenciadaEditModalComponent implements OnInit {
     }
 
     this.form.patchValue(this.data);
-    console.log(this.data)
+    console.log(this.data);
   }
 
   save() {

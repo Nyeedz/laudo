@@ -1,4 +1,273 @@
-<div fxLayout="column" fxLayoutAlign="space-around center">
+<div class="full-screen">
+  <mat-card>
+    <mat-card-content>
+      <mat-horizontal-stepper [linear]="false" #stepper>
+        <mat-step [stepControl]="generalForm">
+          <form [formGroup]="generalForm">
+            <ng-template matStepLabel>Informações gerais</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipos de laudo</mat-label>
+              <mat-select formControlName="tipos_laudo">
+                <mat-option
+                  *ngFor="let tipo_laudo of tipos_laudo"
+                  [value]="tipo_laudo.value"
+                >
+                  {{ tipo_laudo.value }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label
+                >Selecione o usuário responsável pela vistoria</mat-label
+              >
+              <mat-select formControlName="user">
+                <mat-option *ngFor="let user of users" [value]="user._id">
+                  {{ user.nome }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="generalForm?.hasError('required', 'user')"
+                >Usuário responsável é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Escolha a data para a vistoria"
+                formControlName="data"
+              />
+              <mat-datepicker touchUi #picker></mat-datepicker>
+              <mat-error *ngIf="generalForm?.hasError('required', 'data')"
+                >Data para a vistoria é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Escolha o horário para a vistoria"
+                aria-label="Escolha o horário para a vistoria"
+                [ngxTimepicker]="darkPicker"
+                formControlName="hora"
+                readonly
+              />
+              <ngx-material-timepicker
+                #darkPicker
+                [ngxMaterialTimepickerTheme]="darkTheme"
+              ></ngx-material-timepicker>
+              <mat-error *ngIf="generalForm?.hasError('required', 'hora')"
+                >Hora para a vistoria é obrigatório</mat-error
+              >
+            </mat-form-field>
+          </form>
+          <div class="button-row">
+            <button mat-flat-button matStepperNext color="primary">
+              Próximo
+            </button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="locationForm">
+          <form [formGroup]="locationForm">
+            <ng-template matStepLabel>Local</ng-template>
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Cep"
+                formControlName="cep"
+                required
+                (blur)="consultaCep($event.target.value)"
+              />
+              <mat-error *ngIf="locationForm?.hasError('required', 'cep')"
+                >Cep é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <div class="form-flex">
+              <mat-form-field appearance="outline">
+                <input
+                  formControlName="cidade"
+                  matInput
+                  placeholder="Cidade"
+                  required
+                />
+                <mat-error *ngIf="locationForm?.hasError('required', 'cidade')"
+                  >Cidade é obrigatório</mat-error
+                >
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <input
+                  formControlName="estado"
+                  matInput
+                  placeholder="Estado"
+                  required
+                />
+                <mat-error *ngIf="locationForm?.hasError('required', 'estado')"
+                  >estado é obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="bairro"
+                matInput
+                placeholder="Bairro"
+                required
+              />
+              <mat-error *ngIf="locationForm?.hasError('required', 'bairro')"
+                >Bairro é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <div class="form-flex">
+              <mat-form-field appearance="outline">
+                <input
+                  formControlName="endereco"
+                  matInput
+                  placeholder="Endereço"
+                  required
+                />
+                <mat-error
+                  *ngIf="locationForm?.hasError('required', 'endereco')"
+                  >Endereço é obrigatório</mat-error
+                >
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <input
+                  formControlName="numero"
+                  matInput
+                  placeholder="Número"
+                  type="number"
+                  required
+                />
+                <mat-error *ngIf="locationForm?.hasError('required', 'numero')"
+                  >Número é obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <input
+                formControlName="complemento"
+                matInput
+                placeholder="Complemento"
+              />
+            </mat-form-field>
+          </form>
+          <div class="button-row">
+            <button mat-stroked-button matStepperPrevious color="primary">
+              Voltar
+            </button>
+            <button mat-flat-button (click)="nextStep(stepper)" color="primary">
+              Próximo
+            </button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Finalização</ng-template>
+          <div id="map" class="map-area"></div>
+          <div class="button-row">
+            <button mat-stroked-button matStepperPrevious color="primary">
+              Voltar
+            </button>
+            <button mat-flat-button (click)="addParte()" color="primary">
+              Adicionar parte
+            </button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </mat-card-content>
+  </mat-card>
+  <form class="partes" [formGroup]="partesForm">
+    <div class="no-parts" *ngIf="partesForm.get('partes').controls.length == 0">
+      Para adicionar partes, utilize o botão 'Adicionar parte' no último passo
+      do formulário
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel
+        formArrayName="partes"
+        *ngFor="let parte of partesForm.get('partes').controls; let i = index"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Parte {{ i + 1 }} </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="expansion-form" formGroupName="{{ i }}">
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              required
+              placeholder="Título"
+              formControlName="titulo"
+            />
+            <mat-error *ngIf="partesForm?.hasError('required', 'titulo')"
+              >Título é obrigatório</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              placeholder="Nome"
+              required
+              formControlName="nome_parte"
+            />
+            <mat-error *ngIf="partesForm?.hasError('required', 'nome_parte')"
+              >Nome é obrigatório</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              placeholder="E-mail"
+              type="email"
+              required
+              formControlName="email"
+            />
+            <mat-error *ngIf="partesForm?.hasError('required', 'email')"
+              >E-mail é obrigatório</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              placeholder="Telefone"
+              required
+              formControlName="telefone"
+            />
+            <mat-error *ngIf="partesForm?.hasError('required', 'telefone')"
+              >Telefone é obrigatório</mat-error
+            >
+          </mat-form-field>
+
+          <button mat-flat-button color="warn" (click)="deleteParte(i)">
+            Remover
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <button
+      mat-flat-button
+      color="primary"
+      *ngIf="partesForm.get('partes').controls.length > 0"
+      (click)="create()"
+      [disabled]="partesForm.invalid"
+    >
+      Finalizar
+    </button>
+  </form>
+</div>
+<!-- <div fxLayout="column" fxLayoutAlign="space-around center">
   <div class="card-width">
     <form [formGroup]="form" fxLayout="column">
       <mat-card>
@@ -36,24 +305,24 @@
                 >
               </mat-form-field>
 
-              <mat-form-field style="width: 100%">
+              <mat-form-field style="width: 65%">
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
                 <input
                   matInput
                   [matDatepicker]="picker"
                   placeholder="Escolha a data para a vistoria"
                   formControlName="data"
                 />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
                 <mat-datepicker touchUi #picker></mat-datepicker>
                 <mat-error *ngIf="form?.hasError('required', 'data')"
                   >Data para a vistoria é obrigatório</mat-error
                 >
               </mat-form-field>
 
-              <mat-form-field style="width: 100%">
+              <mat-form-field style="width: 65%">
                 <input
                   matInput
                   placeholder="Escolha o horário para a vistoria"
@@ -254,4 +523,4 @@
       </button>
     </form>
   </div>
-</div>
+</div> -->
