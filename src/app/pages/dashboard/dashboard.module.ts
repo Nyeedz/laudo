@@ -22,8 +22,12 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatRadioModule,
+<<<<<<< HEAD
   MatStepperModule,
   MatExpansionModule
+=======
+  MatStepperModule
+>>>>>>> f4a9d8377cfd11f256ce2f1d6f48f99a91119614
 } from "@angular/material";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
@@ -47,7 +51,7 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { VistoriaComponent } from "../vistoria/vistoria.component";
 import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
-import { SolicitacoesEditModalComponent } from '../solicitacoes/solicitacoes-edit-modal/solicitacoes-edit-modal.component';
+import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edit-modal/solicitacoes-edit-modal.component";
 
 @NgModule({
   declarations: [
@@ -102,7 +106,8 @@ import { SolicitacoesEditModalComponent } from '../solicitacoes/solicitacoes-edi
     MatStepperModule,
     MatExpansionModule,
     NgxMaterialTimepickerModule,
-    MatRadioModule
+    MatRadioModule,
+    MatStepperModule
   ],
   entryComponents: [
     EmpresaContratanteEditModalComponent,

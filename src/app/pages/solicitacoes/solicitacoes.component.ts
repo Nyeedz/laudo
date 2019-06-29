@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from "@angular/core";
 import {
   MatPaginator,
   MatSort,
@@ -12,7 +12,7 @@ import { Vistoria } from "src/app/models/vistoria";
 import { environment } from "src/environments/environment";
 import { VistoriaService } from "src/app/services/vistoria/vistoria.service";
 import { Laudo } from "src/app/models/laudo";
-import { SolicitacoesEditModalComponent } from './solicitacoes-edit-modal/solicitacoes-edit-modal.component';
+import { SolicitacoesEditModalComponent } from "./solicitacoes-edit-modal/solicitacoes-edit-modal.component";
 
 @Component({
   selector: "app-solicitacoes",
@@ -51,7 +51,9 @@ export class SolicitacoesComponent {
   constructor(
     private userService: UserService,
     private vistoriaService: VistoriaService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {}
 
   initTable() {
@@ -106,10 +108,33 @@ export class SolicitacoesComponent {
   }
 
   edit(item: any) {
-    const dialogRef = this.dialog.open(SolicitacoesEditModalComponent);
+    const dialogRef = this.dialog.open(SolicitacoesEditModalComponent, {
+      data: item
+    });
 
     dialogRef.afterClosed().subscribe(result => {
-      
+      if (result && result.dados) {
+        this.vistoriaService.update(result.dados).subscribe(
+          (val: any) => {
+            const index = this.data.findIndex(item => item.id === result.id);
+            const newArray = [...this.data];
+            newArray[index] = val;
+
+            this.data = newArray;
+            this.loadVistorias();
+
+            this.cdr.detectChanges();
+            this.snackBar.open("✔ Vistoria alterada com sucesso", "Ok", {
+              duration: 5000
+            });
+          },
+          error => {
+            this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
+              duration: 5000
+            });
+          }
+        );
+      }
     });
   }
 }

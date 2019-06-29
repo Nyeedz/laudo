@@ -124,3 +124,7 @@ image-cropper {
 .avatar-content {
   object-fit: cover;
 }
+
+.cdk-global-overlay-wrapper .cdk-overlay-pane {
+  width: 70% !important;
+}

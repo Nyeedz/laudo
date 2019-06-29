@@ -3,3 +3,17 @@
     width: 100%;
   }
 }
+
+form {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 2em;
+
+  button {
+    margin-top: 1em;
+  }
+}
+
+.cdk-overlay-pane {
+  width: 80% !important;
+}
