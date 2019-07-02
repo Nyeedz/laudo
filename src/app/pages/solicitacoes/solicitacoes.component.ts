@@ -114,6 +114,10 @@ export class SolicitacoesComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.dados) {
+        console.log(result, "result");
+        console.log(result.dados, "result.dados");
+
+        return;
         this.vistoriaService.update(result.dados).subscribe(
           (val: any) => {
             const index = this.data.findIndex(item => item.id === result.id);

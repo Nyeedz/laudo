@@ -22,12 +22,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatRadioModule,
-<<<<<<< HEAD
-  MatStepperModule,
-  MatExpansionModule
-=======
+  MatExpansionModule,
   MatStepperModule
->>>>>>> f4a9d8377cfd11f256ce2f1d6f48f99a91119614
 } from "@angular/material";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
@@ -104,10 +100,9 @@ import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edi
     MatCardModule,
     MatSelectModule,
     MatStepperModule,
-    MatExpansionModule,
     NgxMaterialTimepickerModule,
     MatRadioModule,
-    MatStepperModule
+    MatExpansionModule
   ],
   entryComponents: [
     EmpresaContratanteEditModalComponent,
