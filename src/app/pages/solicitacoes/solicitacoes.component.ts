@@ -4,7 +4,8 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialog
+  MatDialog,
+  MatDialogConfig
 } from "@angular/material";
 import { merge, of as observableOf } from "rxjs";
 import { UserService } from "src/app/services/user/user.service";
