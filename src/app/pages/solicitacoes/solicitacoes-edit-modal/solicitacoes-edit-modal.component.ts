@@ -42,9 +42,8 @@ export class SolicitacoesEditModalComponent implements OnInit {
       user: [""]
     });
 
-    console.log(this.data);
-
     this.form2.patchValue(this.data);
+    console.log(this.data);
   }
 
   consultaCep(cep) {
@@ -87,5 +86,12 @@ export class SolicitacoesEditModalComponent implements OnInit {
       numero: null,
       complemento: null
     });
+  }
+
+  save() {
+    if (this.form2.invalid) return;
+
+    const formData2 = this.form2.getRawValue();
+    this.dialogRef.close({ dados: formData2, vistoriaId: this.data.id });
   }
 }

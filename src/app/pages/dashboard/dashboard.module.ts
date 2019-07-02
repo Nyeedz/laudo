@@ -100,10 +100,9 @@ import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edi
     MatCardModule,
     MatSelectModule,
     MatStepperModule,
-    MatExpansionModule,
     NgxMaterialTimepickerModule,
     MatRadioModule,
-    MatStepperModule
+    MatExpansionModule
   ],
   entryComponents: [
     EmpresaContratanteEditModalComponent,

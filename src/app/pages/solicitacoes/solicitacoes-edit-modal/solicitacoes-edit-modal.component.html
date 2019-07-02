@@ -43,5 +43,104 @@
         <button mat-button matStepperPrevious>Voltar</button>
       </div>
     </form>
+    <form class="partes" [formGroup]="partesForm">
+      <div
+        class="no-parts"
+        *ngIf="partesForm.get('partes').controls.length == 0"
+      >
+        Para adicionar partes, utilize o botão 'Adicionar parte' no último passo
+        do formulário
+      </div>
+      <mat-accordion>
+        <mat-expansion-panel
+          formArrayName="partes"
+          *ngFor="let parte of partesForm.get('partes').controls; let i = index"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title> Parte {{ i + 1 }} </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="expansion-form" formGroupName="{{ i }}">
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                required
+                placeholder="Título"
+                formControlName="titulo"
+              />
+              <mat-error *ngIf="partesForm?.hasError('required', 'titulo')"
+                >Título é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Nome"
+                required
+                formControlName="nome_parte"
+              />
+              <mat-error *ngIf="partesForm?.hasError('required', 'nome_parte')"
+                >Nome é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="E-mail"
+                type="email"
+                required
+                formControlName="email"
+              />
+              <mat-error *ngIf="partesForm?.hasError('required', 'email')"
+                >E-mail é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Telefone"
+                required
+                formControlName="telefone"
+              />
+              <mat-error *ngIf="partesForm?.hasError('required', 'telefone')"
+                >Telefone é obrigatório</mat-error
+              >
+            </mat-form-field>
+
+            <button mat-flat-button color="warn" (click)="deleteParte(i)">
+              Remover
+            </button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <button
+        mat-flat-button
+        color="primary"
+        *ngIf="partesForm.get('partes').controls.length > 0"
+        (click)="create()"
+        [disabled]="partesForm.invalid"
+      >
+        Finalizar
+      </button>
+    </form>
+    <mat-accordion>
+      <mat-expansion-panel formArray="partes"> </mat-expansion-panel>
+    </mat-accordion>
   </mat-step>
 </mat-horizontal-stepper>
+<div mat-dialog-actions class="actions">
+  <button
+    (click)="save()"
+    mat-raised-button
+    color="primary"
+    [disabled]="form.invalid"
+  >
+    <mat-icon>
+      save
+    </mat-icon>
+    Salvar
+  </button>
+</div>
