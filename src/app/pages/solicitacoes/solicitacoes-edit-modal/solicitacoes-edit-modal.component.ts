@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
 import { Solicitacoes } from "src/app/models/solicitacoes";
 import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
@@ -12,6 +12,7 @@ import { ViaCepService } from "src/app/services/viaCep/via-cep.service";
 export class SolicitacoesEditModalComponent implements OnInit {
   form: FormGroup;
   form2: FormGroup;
+  partesForm: FormGroup;
   ambientes: boolean = false;
   vistorias: boolean = false;
   isLinear: boolean = false;
@@ -42,8 +43,36 @@ export class SolicitacoesEditModalComponent implements OnInit {
       user: [""]
     });
 
+    this.partesForm = this.fb.group({
+      partes: this.fb.array([this.createParte()])
+    });
+
+    console.log(this.data["partes"]);
+    console.log(this.partesForm.get("partes"));
+
+    this.partesForm.patchValue(this.data["partes"]);
     this.form2.patchValue(this.data);
-    console.log(this.data);
+  }
+
+  createParte(): FormGroup {
+    return this.fb.group({
+      titulo: ["", Validators.required],
+      nome_parte: ["", Validators.required],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.email,
+          Validators.compose([
+            Validators.pattern(
+              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+            )
+          ])
+        ]
+      ],
+
+      telefone: ["", Validators.required]
+    });
   }
 
   consultaCep(cep) {

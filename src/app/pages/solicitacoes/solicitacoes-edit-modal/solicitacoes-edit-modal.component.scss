@@ -17,3 +17,6 @@ form {
 .cdk-overlay-pane {
   width: 80% !important;
 }
+.cdk-global-overlay-wrapper .cdk-overlay-pane {
+  overflow-y: auto !important ;
+}

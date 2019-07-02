@@ -4,7 +4,8 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialog
+  MatDialog,
+  MatDialogConfig
 } from "@angular/material";
 import { merge, of as observableOf } from "rxjs";
 import { UserService } from "src/app/services/user/user.service";
@@ -108,15 +109,15 @@ export class SolicitacoesComponent {
   }
 
   edit(item: any) {
+    const dialogConfig = new MatDialogConfig();
+
     const dialogRef = this.dialog.open(SolicitacoesEditModalComponent, {
+      width: "400px",
       data: item
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.dados) {
-        console.log(result, "result");
-        console.log(result.dados, "result.dados");
-
         return;
         this.vistoriaService.update(result.dados).subscribe(
           (val: any) => {
