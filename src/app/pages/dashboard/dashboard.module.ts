@@ -47,7 +47,6 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { VistoriaComponent } from "../vistoria/vistoria.component";
 import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
-import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edit-modal/solicitacoes-edit-modal.component";
 
 @NgModule({
   declarations: [
@@ -67,8 +66,7 @@ import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edi
     EmpresaCredenciadaCreateModalComponent,
     UserComponent,
     UserModalCreateComponent,
-    UserEditModalComponent,
-    SolicitacoesEditModalComponent
+    UserEditModalComponent
   ],
   imports: [
     CommonModule,
@@ -111,8 +109,7 @@ import { SolicitacoesEditModalComponent } from "../solicitacoes/solicitacoes-edi
     EmpresaCredenciadaCreateModalComponent,
     UserModalCreateComponent,
     UserEditModalComponent,
-    PerfilAvatarModalComponent,
-    SolicitacoesEditModalComponent
+    PerfilAvatarModalComponent
   ]
 })
 export class DashboardModule {}

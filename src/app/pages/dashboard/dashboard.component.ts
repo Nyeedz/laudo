@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.userService.getMe().subscribe(
       user => {
-        console.log(user["role"]["_id"] === environment.adminId)
         if (user["role"]["_id"] === environment.adminId) {
           this.admin = true;
           this.verify = user["verify"];
