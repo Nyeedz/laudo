@@ -4,8 +4,7 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialog,
-  MatDialogConfig
+  MatDialog
 } from "@angular/material";
 import { merge, of as observableOf } from "rxjs";
 import { UserService } from "src/app/services/user/user.service";
@@ -57,68 +56,35 @@ export class SolicitacoesComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  initTable() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    this.loadVistorias();
-
-    merge(this.sort.sortChange, this.paginator.page).subscribe(() => {
-      this.loadVistorias();
-    });
-  }
-
   ngAfterViewInit() {
     let user = JSON.parse(localStorage.getItem("currentUser"));
     if (user.user.role._id === environment.adminId) {
-      this.initTable();
+      this.loadVistorias();
     } else {
       this.userService.getMe().subscribe(result => {
         this.vistorias = result.vistorias || [];
 
         if (this.vistorias.length > 0) {
-          this.initTable();
+          this.loadVistorias();
         }
       });
     }
   }
 
   loadVistorias() {
-    this.vistoriaService
-      .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
-        status: this.filter.status,
-        tipos_laudo: this.filter.tipos_laudo
-      })
-      .subscribe(res => {
-        const [vistoria, pageSize] = res;
-
-        this.data = vistoria;
-        this.data.map(value => {
-          this.status = value.status;
-          this.laudo = value["laudo"];
-        });
-      });
-  }
-
-  applyFilter(filterValue: string, type: string) {
-    this.filter[type] = filterValue;
-    this.loadVistorias();
-    this.sort.sortChange.emit();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.vistoriaService.getAll("", "", "", "").subscribe(res => {
+      this.vistorias = res;
+      console.log(this.vistorias);
+    });
   }
 
   edit(item: any) {
-    const dialogConfig = new MatDialogConfig();
-
     const dialogRef = this.dialog.open(SolicitacoesEditModalComponent, {
-      width: "400px",
       data: item
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.dados) {
-        return;
         this.vistoriaService.update(result.dados).subscribe(
           (val: any) => {
             const index = this.data.findIndex(item => item.id === result.id);
