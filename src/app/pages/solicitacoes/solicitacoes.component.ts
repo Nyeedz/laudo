@@ -1,19 +1,17 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import {
+  MatDialog,
   MatPaginator,
-  MatSort,
-  MatTableDataSource,
   MatSnackBar,
-  MatDialog
-} from "@angular/material";
-import { merge, of as observableOf } from "rxjs";
-import { UserService } from "../../services/user/user.service";
-import { Vistoria } from "../../models/vistoria";
-import { environment } from "src/environments/environment";
-import { VistoriaService } from "../../services/vistoria/vistoria.service";
-import { Laudo } from "../../models/laudo";
+  MatSort,
+  MatTableDataSource
+} from '@angular/material';
 import { Router } from '@angular/router';
-import { LaudoService } from '../../services/laudo/laudo.service';
+import { environment } from '../../../environments/environment';
+import { Laudo } from '../../models/laudo';
+import { Vistoria } from '../../models/vistoria';
+import { UserService } from '../../services/user/user.service';
+import { VistoriaService } from '../../services/vistoria/vistoria.service';
 
 @Component({
   selector: 'app-solicitacoes',
@@ -53,7 +51,6 @@ export class SolicitacoesComponent {
     private userService: UserService,
     private vistoriaService: VistoriaService,
     private router: Router,
-    private laudoService: LaudoService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private snackBar: MatSnackBar
@@ -75,29 +72,10 @@ export class SolicitacoesComponent {
   }
 
   loadVistorias() {
-    this.vistoriaService
-      .dataSource(undefined, this.paginator.pageIndex * 10, 10, {
-        status: this.filter.status,
-        tipos_laudo: this.filter.tipos_laudo
-      })
-      .subscribe(res => {
-        const [vistoria, pageSize] = res;
-
-        this.data = vistoria;
-        this.data.map(value => {
-          this.status = value.status;
-          this.laudo = value['laudo'];
-        });
-      });
-  }
-
-  applyFilter(filterValue: string, type: string) {
-    this.filter[type] = filterValue;
-    this.loadVistorias();
-    this.sort.sortChange.emit();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.vistoriaService.getAll('', '', '', '').subscribe(res => {
+      this.vistorias = res;
+      console.log(this.vistorias);
+    });
   }
 
   async seeLaudo(vistoria: any) {
@@ -113,42 +91,5 @@ export class SolicitacoesComponent {
     } catch (err) {
       console.log(err);
     }
-
-    // const dialogRef = this.dialog.open(SolicitacoesEditModalComponent, {
-    //   data: item
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result && result.dados) {
-    //     console.log(result, "result");
-    //     console.log(result.dados, "result.dados");
-
-    //     return;
-    //     this.vistoriaService.update(result.dados).subscribe(
-    //       (val: any) => {
-    //         const index = this.data.findIndex(item => item.id === result.id);
-    //         const newArray = [...this.data];
-    //         newArray[index] = val;
-
-    //         this.data = newArray;
-    //         this.loadVistorias();
-
-    //         this.cdr.detectChanges();
-    //         this.snackBar.open("✔ Vistoria alterada com sucesso", "Ok", {
-    //           duration: 5000
-    //         });
-    //       },
-    //       error => {
-    //         this.snackBar.open(`❌ ${error.error.message}`, "Ok", {
-    //           duration: 5000
-    //         });
-    //       }
-    //     );
-    //   }
-    // });
-    this.vistoriaService.getAll("", "", "", "").subscribe(res => {
-      this.vistorias = res;
-      console.log(this.vistorias);
-    });
   }
 }

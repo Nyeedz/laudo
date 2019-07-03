@@ -1,23 +1,4 @@
 <div class="wrapper">
-  <!-- <div fxLayout="row" fxLayoutAlign="space-around center">
-    <h3>Pesquisar por:</h3>
-    <mat-form-field>
-      <input
-        matInput
-        (keyup)="applyFilter($event.target.value, 'tipos_laudo')"
-        placeholder="Tipos de laudo"
-      />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input
-        matInput
-        (keyup)="applyFilter($event.target.value, 'status')"
-        placeholder="Status"
-      />
-    </mat-form-field>
-  </div> -->
-
   <div *ngIf="dataSource || vistorias.length > 0">
     <div class="vistoria" *ngFor="let vistoria of vistorias">
       <div class="vistoria-title">
@@ -26,7 +7,7 @@
           {{ vistoria.status }}
         </span>
         <div class="vistoria-tools">
-          <a class="collapse-link" href="">
+          <a class="collapse-link" (click)="seeLaudo(vistoria)">
             <mat-icon matTooltip="Editar" matTooltipPosition="above"
               >edit</mat-icon
             >
@@ -41,13 +22,4 @@
       </div>
     </div>
   </div>
-
-  <swal
-    #deleteSwal
-    title="Excluir empresa"
-    text="Essa ação não pode ser revertida"
-    type="warning"
-    [showCancelButton]="true"
-    [focusCancel]="true"
-  ></swal>
 </div>
