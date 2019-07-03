@@ -4,17 +4,16 @@ import {
   MatSort,
   MatTableDataSource,
   MatSnackBar,
-  MatDialog,
-  MatDialogConfig
-} from '@angular/material';
-import { merge, of as observableOf } from 'rxjs';
-import { UserService } from 'src/app/services/user/user.service';
-import { Vistoria } from 'src/app/models/vistoria';
-import { environment } from 'src/environments/environment';
-import { VistoriaService } from 'src/app/services/vistoria/vistoria.service';
-import { Laudo } from 'src/app/models/laudo';
-import { LaudoService } from 'src/app/services/laudo/laudo.service';
+  MatDialog
+} from "@angular/material";
+import { merge, of as observableOf } from "rxjs";
+import { UserService } from "../../services/user/user.service";
+import { Vistoria } from "../../models/vistoria";
+import { environment } from "src/environments/environment";
+import { VistoriaService } from "../../services/vistoria/vistoria.service";
+import { Laudo } from "../../models/laudo";
 import { Router } from '@angular/router';
+import { LaudoService } from '../../services/laudo/laudo.service';
 
 @Component({
   selector: 'app-solicitacoes',
@@ -60,26 +59,16 @@ export class SolicitacoesComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  initTable() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    this.loadVistorias();
-
-    merge(this.sort.sortChange, this.paginator.page).subscribe(() => {
-      this.loadVistorias();
-    });
-  }
-
   ngAfterViewInit() {
     const user = JSON.parse(localStorage.getItem('currentUser'));
     if (user.user.role._id === environment.adminId) {
-      this.initTable();
+      this.loadVistorias();
     } else {
       this.userService.getMe().subscribe(result => {
         this.vistorias = result.vistorias || [];
 
         if (this.vistorias.length > 0) {
-          this.initTable();
+          this.loadVistorias();
         }
       });
     }
@@ -157,5 +146,9 @@ export class SolicitacoesComponent {
     //     );
     //   }
     // });
+    this.vistoriaService.getAll("", "", "", "").subscribe(res => {
+      this.vistorias = res;
+      console.log(this.vistorias);
+    });
   }
 }

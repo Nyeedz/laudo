@@ -1,11 +1,130 @@
-table {
-  width: 100%;
-}
+.vistoria {
+  clear: both;
+  margin-bottom: 25px;
+  margin-top: 0;
+  padding: 0;
+  .vistoria-box {
+    clear: both;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+  }
+  .vistoria-title {
+    background-color: #ffffff;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 2px 0 0;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 15px 90px 8px 15px;
+    min-height: 48px;
+    position: relative;
+    clear: both;
+    h5 {
+      display: inline-block;
+      font-size: 14px;
+      margin: 0 0 7px;
+      padding: 0;
+      text-overflow: ellipsis;
+      float: none;
+      color: #676a6c;
+    }
+    .label {
+      margin-left: 4px;
+      font-size: 10px;
+      background-color: #d1dade;
+      color: #5e5e5e;
+      font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 600;
+      padding: 3px 8px;
+      text-shadow: none;
+      border-radius: 0.25em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .label-primary,
+    .badge-success {
+      background-color: #1ab394;
+      color: #ffffff;
+    }
+    .badge-warning {
+      background-color: #dcb04d;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .badge-warning {
+      background-color: #ed5565;
+      color: #fff;
+    }
+  }
+  .vistoria-tools {
+    display: block;
+    float: none;
+    margin-top: 0;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0;
+    text-align: right;
+    a {
+      cursor: pointer;
+      margin-left: 5px;
+      color: #c4c4c4 !important;
+      .material-icons {
+        font-size: 14px !important;
+      }
+    }
+  }
 
-th.mat-sort-header-sorted {
-  color: black;
+  .vistoria-content {
+    clear: both;
+    background-color: #ffffff;
+    color: inherit;
+    padding: 15px 20px 20px 20px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+    h4 {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #676a6c;
+      font-weight: 600;
+    }
+  }
 }
 
 .p-5 {
   padding: 2em 3em 0em 3em;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.badge-danger {
+  color: "#fff";
+  background-color: #dc3545;
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.badge-warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
 }

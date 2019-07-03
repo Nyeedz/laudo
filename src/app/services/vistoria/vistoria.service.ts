@@ -20,7 +20,7 @@ export class VistoriaService {
     ]);
   }
 
-  getAll(sort: string, start: number, limit: number, filter: any) {
+  getAll(sort: string, start: any, limit: any, filter: any) {
     let params = new HttpParams()
       .set("_sort", sort)
       .set("_start", start.toString())

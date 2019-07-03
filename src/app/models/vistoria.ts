@@ -3,6 +3,7 @@ export class Vistoria {
   cep: string;
   endereco: string;
   cidade: string;
+  estado: string;
   bairro: string;
   numero: number;
   tipo_laudo: string;
