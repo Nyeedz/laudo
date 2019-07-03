@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   MatPaginator,
   MatSort,
@@ -6,31 +6,33 @@ import {
   MatSnackBar,
   MatDialog,
   MatDialogConfig
-} from "@angular/material";
-import { merge, of as observableOf } from "rxjs";
-import { UserService } from "src/app/services/user/user.service";
-import { Vistoria } from "src/app/models/vistoria";
-import { environment } from "src/environments/environment";
-import { VistoriaService } from "src/app/services/vistoria/vistoria.service";
-import { Laudo } from "src/app/models/laudo";
+} from '@angular/material';
+import { merge, of as observableOf } from 'rxjs';
+import { UserService } from 'src/app/services/user/user.service';
+import { Vistoria } from 'src/app/models/vistoria';
+import { environment } from 'src/environments/environment';
+import { VistoriaService } from 'src/app/services/vistoria/vistoria.service';
+import { Laudo } from 'src/app/models/laudo';
+import { LaudoService } from 'src/app/services/laudo/laudo.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-solicitacoes",
-  templateUrl: "./solicitacoes.component.html",
-  styleUrls: ["./solicitacoes.component.scss"]
+  selector: 'app-solicitacoes',
+  templateUrl: './solicitacoes.component.html',
+  styleUrls: ['./solicitacoes.component.scss']
 })
 export class SolicitacoesComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = [
-    "status",
-    "tipos_laudo",
-    "cep",
-    "endereco",
-    "bairro",
-    "cidade",
-    "ações"
+    'status',
+    'tipos_laudo',
+    'cep',
+    'endereco',
+    'bairro',
+    'cidade',
+    'ações'
   ];
 
   dataSource = new MatTableDataSource();
@@ -51,6 +53,8 @@ export class SolicitacoesComponent {
   constructor(
     private userService: UserService,
     private vistoriaService: VistoriaService,
+    private router: Router,
+    private laudoService: LaudoService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private snackBar: MatSnackBar
@@ -67,7 +71,7 @@ export class SolicitacoesComponent {
   }
 
   ngAfterViewInit() {
-    let user = JSON.parse(localStorage.getItem("currentUser"));
+    const user = JSON.parse(localStorage.getItem('currentUser'));
     if (user.user.role._id === environment.adminId) {
       this.initTable();
     } else {
@@ -93,7 +97,7 @@ export class SolicitacoesComponent {
         this.data = vistoria;
         this.data.map(value => {
           this.status = value.status;
-          this.laudo = value["laudo"];
+          this.laudo = value['laudo'];
         });
       });
   }
@@ -107,7 +111,20 @@ export class SolicitacoesComponent {
     }
   }
 
-  edit(item: any) {
+  async seeLaudo(vistoria: any) {
+    try {
+      if (!vistoria.laudo) {
+        throw Error('n tem laudo');
+      }
+
+      this.router.navigate([`dashboard/vistoria/${vistoria.laudo._id}`]);
+      // const res = await this.laudoService.findOne(item.laudo.id);
+
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+
     // const dialogRef = this.dialog.open(SolicitacoesEditModalComponent, {
     //   data: item
     // });

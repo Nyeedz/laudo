@@ -45,8 +45,9 @@ import { UserModalCreateComponent } from "../user/user-modal-create/user-modal-c
 import { UserComponent } from "../user/user.component";
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
-import { VistoriaComponent } from "../vistoria/vistoria.component";
 import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
+import { VistoriaCreateComponent } from '../vistoria/vistoria-create/vistoria-create.component';
+import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
     NavbarComponent,
     PerfilComponent,
     PerfilAvatarModalComponent,
-    VistoriaComponent,
+    VistoriaEditComponent,
+    VistoriaCreateComponent,
     SolicitacoesComponent,
     // empresa contratante
     EmpresaContratanteComponent,

@@ -45,7 +45,7 @@ export class VistoriaService {
     return this.http.delete(`${this.apiUrl}/vistorias/${id}`);
   }
 
-  update(vistoria: any) {
-    return this.http.put(`${this.apiUrl}/vistorias/${vistoria.id}`, vistoria);
+  update(vistoria: any, id: string) {
+    return this.http.put(`${this.apiUrl}/vistorias/${id}`, vistoria);
   }
 }

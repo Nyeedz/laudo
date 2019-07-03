@@ -6,8 +6,9 @@ import { EmpresaCredenciadaComponent } from '../empresa-credenciada/empresa-cred
 import { PerfilComponent } from '../perfil/perfil.component';
 import { UserComponent } from '../user/user.component';
 import { DashboardComponent } from './dashboard.component';
-import { VistoriaComponent } from '../vistoria/vistoria.component';
 import { SolicitacoesComponent } from '../solicitacoes/solicitacoes.component';
+import { VistoriaCreateComponent } from '../vistoria/vistoria-create/vistoria-create.component';
+import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,11 @@ const routes: Routes = [
       },
       {
         path: 'vistoria',
-        component: VistoriaComponent
+        component: VistoriaCreateComponent
+      },
+      {
+        path: 'vistoria/:id',
+        component: VistoriaEditComponent
       },
       {
         path: 'solicitacoes',

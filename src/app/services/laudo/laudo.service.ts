@@ -12,6 +12,10 @@ export class LaudoService {
 
   constructor(private http: HttpClient) {}
 
+  findOne(id: string) {
+    return this.http.get<Laudo>(`${this.apiUrl}/laudos/${id}`).toPromise();
+  }
+
   dataSource(sort: string, start: number, limit: number = 10, filter: any) {
     return forkJoin([
       this.getLaudos(sort, start, limit, filter),

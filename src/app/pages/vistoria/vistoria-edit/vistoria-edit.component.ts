@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵConsole } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatStepper } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-import { LaudoService } from '../../services/laudo/laudo.service';
-import { UserService } from '../../services/user/user.service';
-import { ViaCepService } from '../../services/viaCep/via-cep.service';
-import { VistoriaService } from '../../services/vistoria/vistoria.service';
+import { LaudoService } from '../../../services/laudo/laudo.service';
+import { UserService } from '../../../services/user/user.service';
+import { ViaCepService } from '../../../services/viaCep/via-cep.service';
+import { VistoriaService } from '../../../services/vistoria/vistoria.service';
 declare var ol;
 
 @Component({
-  selector: 'app-vistoria',
-  templateUrl: './vistoria.component.html',
-  styleUrls: ['./vistoria.component.scss']
+  selector: 'app-vistoria-edit',
+  templateUrl: './vistoria-edit.component.html',
+  styleUrls: ['./vistoria-edit.component.scss']
 })
-export class VistoriaComponent implements OnInit {
+export class VistoriaEditComponent implements OnInit {
+  id: string;
+  laudoId: string;
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
       bodyBackgroundColor: '#fff',
@@ -48,6 +50,7 @@ export class VistoriaComponent implements OnInit {
   map: any;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private viaCepService: ViaCepService,
     private snackBar: MatSnackBar,
@@ -83,7 +86,41 @@ export class VistoriaComponent implements OnInit {
       partes: this.formBuilder.array([])
     });
 
-    // this.addParte();
+    this.generalForm.get('data').valueChanges.subscribe(val => {
+      console.log(val);
+    });
+
+    this.loadVistoria();
+  }
+
+  async loadVistoria() {
+    try {
+      this.laudoId = this.activatedRoute.snapshot.paramMap.get('id');
+      const laudo = await this.laudoService.findOne(this.laudoId);
+      const vistoria = laudo.vistoria;
+      this.id = laudo.vistoria._id;
+
+      this.locationForm.patchValue(vistoria);
+      this.generalForm.patchValue({
+        ...vistoria,
+        data: moment(vistoria.visita).toISOString(),
+        hora: moment(vistoria.visita).format('hh:mm a')
+      });
+
+      vistoria.partes.forEach((parte, i) => {
+        this.addParte();
+        const partesForm = this.partesForm.get('partes') as FormArray;
+        partesForm.at(i).patchValue(parte);
+      });
+
+      setTimeout(() => {
+        this.partesForm.patchValue(vistoria.partes);
+      }, 2000);
+
+      console.log(laudo);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   startMap() {
@@ -182,35 +219,46 @@ export class VistoriaComponent implements OnInit {
     this.startMap();
   }
 
-  async create() {
-    // try {
-    //   if (this.form.invalid) {
-    //     return;
-    //   }
-    //   const moment_date = moment(this.form.controls.data.value).format(
-    //     'DD/MM/YYYY'
-    //   );
-    //   const hour = this.form.controls.hora.value;
-    //   const moment_hour = moment(hour, 'hh:mm a').format('HH:mm');
-    //   const pronto = moment(
-    //     `${moment_date} ${moment_hour}`,
-    //     'DD/MM/YYYY HH:mm'
-    //   );
-    //   const dados = {
-    //     ...this.form.getRawValue(),
-    //     visita: pronto,
-    //     status: 'Em aberto'
-    //   };
-    //   const response = await this.vistoriaService.create(dados);
-    //   await this.laudoService.create({ vistoria: response['_id'] });
-    //   this.snackBar.open(`✔️ Vistoria Solicitada com sucesso!`, 'Ok', {
-    //     duration: 3000
-    //   });
-    //   this.router.navigate(['/dashboard/solicitacoes']);
-    // } catch (error) {
-    //   this.snackBar.open('❌ Erro ao solicitar a vistoria', 'Ok', {
-    //     duration: 3000
-    //   });
-    // }
+  async update() {
+    try {
+      if (
+        this.locationForm.invalid ||
+        this.generalForm.invalid ||
+        this.partesForm.invalid
+      ) {
+        return;
+      }
+
+      const locationRaw = this.locationForm.getRawValue();
+      const generalRaw = this.generalForm.getRawValue();
+      const partesRaw = this.partesForm.getRawValue();
+      const date = moment(generalRaw.data).format('DD/MM/YYYY');
+      const hora = moment(generalRaw.hora, 'hh:mm a').format('hh:mm a');
+      const fullDate = moment(`${date} ${hora}`, 'DD/MM/YYYY hh:mm a');
+
+      const data = {
+        ...locationRaw,
+        ...generalRaw,
+        ...partesRaw,
+        visita: fullDate
+      };
+
+      delete data.data;
+      delete data.hora;
+
+      const response = await this.vistoriaService
+        .update(data, this.id)
+        .toPromise();
+
+      console.log(response);
+
+      this.snackBar.open(`✔️ Vistoria editada com sucesso!`, 'Ok', {
+        duration: 3000
+      });
+    } catch (error) {
+      this.snackBar.open('❌ Erro ao solicitar a vistoria', 'Ok', {
+        duration: 3000
+      });
+    }
   }
 }
