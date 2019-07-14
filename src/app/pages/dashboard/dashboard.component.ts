@@ -19,7 +19,6 @@ export class DashboardComponent implements OnInit {
   credenciado: boolean = false;
   admin: boolean = false;
   contratante: boolean = false;
-  verify: boolean = false;
   vistoriador: boolean = false;
   user: User;
 
@@ -30,7 +29,6 @@ export class DashboardComponent implements OnInit {
       user => {
         if (user["role"]["_id"] === environment.adminId) {
           this.admin = true;
-          this.verify = user["verify"];
         }
         this.user = user;
       },

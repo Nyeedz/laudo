@@ -1,24 +1,42 @@
 <div class="wrapper">
-  <div *ngIf="dataSource || vistorias.length > 0">
-    <div class="vistoria" *ngFor="let vistoria of vistorias">
-      <div class="vistoria-title">
-        <h5>Status:</h5>
-        <span class="label label-primary">
-          {{ vistoria.status }}
-        </span>
-        <div class="vistoria-tools">
-          <a class="collapse-link" (click)="seeLaudo(vistoria)">
-            <mat-icon matTooltip="Editar" matTooltipPosition="above"
-              >edit</mat-icon
-            >
-          </a>
+  <div *ngIf="vistorias.length > 0">
+    <div class="vistorias">
+      <div class="vistoria" *ngFor="let vistoria of vistorias">
+        <div *ngIf="vistoria.status === 'Em andamento'">
+          <div class="vistoria-title">
+            <h5>Status:</h5>
+            <span class="label label-primary">
+              {{ vistoria.status }}
+            </span>
+            <div class="vistoria-tools">
+              <a class="collapse-link" (click)="seeLaudo(vistoria)">
+                <mat-icon matTooltip="Editar" matTooltipPosition="above"
+                  >edit</mat-icon
+                >
+              </a>
+            </div>
+          </div>
+          <div class="vistoria-content">
+            <div>
+              <span class="details">Cidade: </span>
+              <span class="title"
+                >{{ vistoria.cidade }} / {{ vistoria.estado }}
+              </span>
+            </div>
+            <div class="mt-2">
+              <span class="details">Data Laudo: </span>
+              <span class="title">{{ vistoria.visita | date }}</span>
+            </div>
+            <div class="mt-2">
+              <span class="details">Tipo laudo: </span>
+              <span class="title">{{ vistoria.tipos_laudo }}</span>
+            </div>
+            <div class="mt-2">
+              <span class="details">Usuário responsável: </span>
+              <span class="title">{{ vistoria.user.nome }}</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="vistoria-content">
-        <div class="float-right text-right">
-          <span>Mapa aqui</span>
-        </div>
-        <h4>{{ vistoria.cidade }} - {{ vistoria.estado }}</h4>
       </div>
     </div>
   </div>

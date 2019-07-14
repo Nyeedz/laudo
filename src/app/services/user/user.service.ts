@@ -24,7 +24,7 @@ export class UserService {
 
     if (filter.email) params = params.append("email_contains", filter.email);
 
-    return this.http.get<User[]>(`${this.apiUrl}/users`, {
+    return this.http.get<User[]>(`${this.apiUrl}/users?admin=false`, {
       params
     });
   }

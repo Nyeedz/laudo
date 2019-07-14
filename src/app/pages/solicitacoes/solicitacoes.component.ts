@@ -1,40 +1,40 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import {
   MatDialog,
   MatPaginator,
   MatSnackBar,
   MatSort,
   MatTableDataSource
-} from '@angular/material';
-import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { Laudo } from '../../models/laudo';
-import { Vistoria } from '../../models/vistoria';
-import { UserService } from '../../services/user/user.service';
-import { VistoriaService } from '../../services/vistoria/vistoria.service';
+} from "@angular/material";
+import { Router } from "@angular/router";
+import { environment } from "../../../environments/environment";
+import { Laudo } from "../../models/laudo";
+import { Vistoria } from "../../models/vistoria";
+import { UserService } from "../../services/user/user.service";
+import { VistoriaService } from "../../services/vistoria/vistoria.service";
 
 @Component({
-  selector: 'app-solicitacoes',
-  templateUrl: './solicitacoes.component.html',
-  styleUrls: ['./solicitacoes.component.scss']
+  selector: "app-solicitacoes",
+  templateUrl: "./solicitacoes.component.html",
+  styleUrls: ["./solicitacoes.component.scss"]
 })
 export class SolicitacoesComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = [
-    'status',
-    'tipos_laudo',
-    'cep',
-    'endereco',
-    'bairro',
-    'cidade',
-    'ações'
+    "status",
+    "tipos_laudo",
+    "cep",
+    "endereco",
+    "bairro",
+    "cidade",
+    "ações"
   ];
 
   dataSource = new MatTableDataSource();
   data: Vistoria[];
-  status: any;
+  status: boolean = false;
   vistoria: Vistoria;
   filter: {
     status: string;
@@ -46,7 +46,6 @@ export class SolicitacoesComponent {
 
   vistorias: Vistoria[] = [];
   laudo: Laudo;
-
   constructor(
     private userService: UserService,
     private vistoriaService: VistoriaService,
@@ -57,7 +56,7 @@ export class SolicitacoesComponent {
   ) {}
 
   ngAfterViewInit() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = JSON.parse(localStorage.getItem("currentUser"));
     if (user.user.role._id === environment.adminId) {
       this.loadVistorias();
     } else {
@@ -72,16 +71,16 @@ export class SolicitacoesComponent {
   }
 
   loadVistorias() {
-    this.vistoriaService.getAll('', '', '', '').subscribe(res => {
+    this.vistoriaService.getAll("status:desc", "", "", "").subscribe(res => {
       this.vistorias = res;
-      console.log(this.vistorias);
+      console.log(this.vistorias)
     });
   }
 
   async seeLaudo(vistoria: any) {
     try {
       if (!vistoria.laudo) {
-        throw Error('n tem laudo');
+        throw Error("n tem laudo");
       }
 
       this.router.navigate([`dashboard/vistoria/${vistoria.laudo._id}`]);

@@ -1,8 +1,15 @@
+.vistorias {
+  display: flex;
+  flex-wrap: wrap;
+}
 .vistoria {
   clear: both;
   margin-bottom: 25px;
   margin-top: 0;
   padding: 0;
+  flex-shrink: 0;
+  flex-basis: 25%;
+  margin-left: 1rem;
   .vistoria-box {
     clear: both;
     margin-bottom: 25px;
@@ -85,17 +92,25 @@
     border-image: none;
     border-style: solid solid none;
     border-width: 1px 0;
-    h4 {
+    .details {
       margin-top: 5px;
       font-size: 14px;
       color: #676a6c;
       font-weight: 600;
+    }
+    .title {
+      color: #676a6c;
+      font-weight: 400;
+      font-size: 14px;
     }
   }
 }
 
 .p-5 {
   padding: 2em 3em 0em 3em;
+}
+.mt-2 {
+  margin-top: 0.5rem;
 }
 
 .example-card {
