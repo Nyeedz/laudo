@@ -103,7 +103,9 @@ export class RegisterComponent implements OnInit {
 
     const dados = {
       ...this.firstForm.getRawValue(),
-      ...this.secondForm.getRawValue()
+      ...this.secondForm.getRawValue(),
+      admin: false,
+      vistoriador: true
     };
 
     this.userService
