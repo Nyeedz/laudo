@@ -23,7 +23,11 @@ import {
   MatNativeDateModule,
   MatRadioModule,
   MatExpansionModule,
-  MatStepperModule
+  MatStepperModule,
+  MatTabsModule,
+  MatTreeModule,
+  MatBadgeModule,
+  MatRippleModule
 } from "@angular/material";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
@@ -92,11 +96,15 @@ import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.c
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
+    MatTabsModule,
+    MatTreeModule,
+    MatBadgeModule,
     MatProgressSpinnerModule,
     MatSortModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRippleModule,
     MatCardModule,
     MatSelectModule,
     MatStepperModule,

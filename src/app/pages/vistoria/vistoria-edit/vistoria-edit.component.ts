@@ -1,14 +1,31 @@
-import { Component, OnInit, ViewChild, ɵConsole } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatSnackBar, MatStepper } from "@angular/material";
-import { Router, ActivatedRoute } from "@angular/router";
-import * as moment from "moment";
-import { NgxMaterialTimepickerTheme } from "ngx-material-timepicker";
-import { LaudoService } from "../../../services/laudo/laudo.service";
-import { UserService } from "../../../services/user/user.service";
-import { ViaCepService } from "../../../services/viaCep/via-cep.service";
-import { VistoriaService } from "../../../services/vistoria/vistoria.service";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ɵConsole,
+  ChangeDetectorRef
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar, MatStepper } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
+import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
+import { LaudoService } from '../../../services/laudo/laudo.service';
+import { UserService } from '../../../services/user/user.service';
+import { ViaCepService } from '../../../services/viaCep/via-cep.service';
+import { VistoriaService } from '../../../services/vistoria/vistoria.service';
+import { AmbienteService } from '../../../services/ambiente/ambiente.service';
+import { FlatTreeControl } from '@angular/cdk/tree';
 declare var ol;
+
+export class DynamicFlatNode {
+  constructor(
+    public item: string,
+    public level = 1,
+    public expandable = false,
+    public isLoading = false
+  ) {}
+}
 
 @Component({
   selector: "app-vistoria-edit",
@@ -18,6 +35,9 @@ declare var ol;
 export class VistoriaEditComponent implements OnInit {
   id: string;
   laudoId: string;
+  laudo: any;
+  showMap = false;
+
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
       bodyBackgroundColor: "#fff",
@@ -34,9 +54,18 @@ export class VistoriaEditComponent implements OnInit {
   };
   generalForm: FormGroup;
   locationForm: FormGroup;
+  itemForm: FormGroup;
   partesForm: FormGroup;
+  ambienteForm: FormGroup;
+
+  newImage: string;
+
   partes: FormArray;
-  showMap = false;
+
+  ambientes: any;
+  users: any;
+  selectedAmbiente: any;
+
   tipos_laudo = [
     { value: "Vistoria locativa de entrada" },
     { value: "Vistoria locativa de saida" },
@@ -45,26 +74,31 @@ export class VistoriaEditComponent implements OnInit {
     { value: "Laudo judicial" },
     { value: "Laudo de constatação" }
   ];
-  date: Date;
-  users: any;
-  map: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private viaCepService: ViaCepService,
     private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef,
     private vistoriaService: VistoriaService,
     private router: Router,
     private laudoService: LaudoService,
+    private ambienteService: AmbienteService,
     private userService: UserService
-  ) {}
+  ) {
+    this.buildForm();
+  }
 
   ngOnInit() {
+    this.loadVistoria();
+
     this.userService.get().subscribe(result => {
       this.users = result;
     });
+  }
 
+  buildForm() {
     this.generalForm = this.formBuilder.group({
       tipos_laudo: ["", Validators.required],
       data: ["", Validators.required],
@@ -86,11 +120,9 @@ export class VistoriaEditComponent implements OnInit {
       partes: this.formBuilder.array([])
     });
 
-    this.generalForm.get("data").valueChanges.subscribe(val => {
-      console.log(val);
+    this.ambienteForm = this.formBuilder.group({
+      nome: ['', Validators.required]
     });
-
-    this.loadVistoria();
   }
 
   async loadVistoria() {
@@ -98,6 +130,7 @@ export class VistoriaEditComponent implements OnInit {
       this.laudoId = this.activatedRoute.snapshot.paramMap.get("id");
       const laudo = await this.laudoService.findOne(this.laudoId);
       const vistoria = laudo.vistoria;
+      this.laudo = laudo;
       this.id = laudo.vistoria._id;
 
       this.locationForm.patchValue(vistoria);
@@ -113,33 +146,69 @@ export class VistoriaEditComponent implements OnInit {
         partesForm.at(i).patchValue(parte);
       });
 
+      this.loadAmbientes();
+
       setTimeout(() => {
         this.partesForm.patchValue(vistoria.partes);
       }, 2000);
 
-      console.log(laudo);
+      this.cdr.detectChanges();
     } catch (err) {
       console.log(err);
     }
   }
 
-  startMap() {
-    this.map = new ol.Map({
-      target: "map",
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      view: new ol.View({
-        center: ol.proj.fromLonLat([73.8567, 18.5204]),
-        zoom: 8
-      })
-    });
+  async loadAmbientes() {
+    try {
+      const ambientes = await this.ambienteService.findByLaudo(this.laudoId);
+
+      this.selectAmbiente(ambientes[0]);
+      this.ambientes = ambientes;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  toggleMap() {
-    this.showMap = !this.showMap;
+  selectAmbiente(ambiente: any) {
+    this.selectedAmbiente = ambiente;
+
+    this.ambienteForm.patchValue({
+      nome: ambiente.nome
+    });
+
+    this.newImage = null;
+  }
+
+  async saveAmbiente() {
+    try {
+      const ambiente = this.ambienteForm.getRawValue();
+
+      const updated = await this.ambienteService.update(
+        ambiente,
+        this.selectedAmbiente.id
+      );
+
+      const index = this.ambientes.findIndex(
+        ambiente => ambiente._id == updated['_id']
+      );
+
+      this.selectedAmbiente = updated;
+      this.ambientes[index] = updated;
+
+      console.log(this.ambientes);
+    } catch (err) {}
+  }
+
+  async imageChange(event) {
+    if (event.target.files && event.target.files.length > 0) {
+      const reader = new FileReader();
+
+      reader.onload = e => {
+        this.newImage = e.target['result'];
+      };
+
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   createParte(): FormGroup {
@@ -216,7 +285,6 @@ export class VistoriaEditComponent implements OnInit {
 
   nextStep(stepper: any) {
     stepper.next();
-    this.startMap();
   }
 
   async update() {
