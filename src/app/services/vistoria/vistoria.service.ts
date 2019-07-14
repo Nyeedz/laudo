@@ -30,7 +30,10 @@ export class VistoriaService {
       params = params.append("tipos_laudo_contains", filter.tipos_laudo);
     if (filter.status) params = params.append("status_contains", filter.status);
 
-    return this.http.get<Vistoria[]>(`${this.apiUrl}/vistorias`, { params });
+    return this.http.get<Vistoria[]>(
+      `${this.apiUrl}/vistorias`,
+      { params }
+    );
   }
 
   getPageSize() {

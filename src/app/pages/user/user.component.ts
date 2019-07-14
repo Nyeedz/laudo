@@ -42,6 +42,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
   dataSource = new MatTableDataSource();
   data: User[];
   users: any;
+  admin: boolean = false;
 
   resultsLength = 0;
   isLoadingResults = false;
@@ -92,6 +93,9 @@ export class UserComponent implements AfterViewInit, OnDestroy {
 
           this.data = users;
           this.data.map(value => {
+            if (value["role"]["_id"] === environment.adminId) {
+              this.admin = true;
+            }
             this.users = value["users"];
           });
           this.resultsLength = 0;
