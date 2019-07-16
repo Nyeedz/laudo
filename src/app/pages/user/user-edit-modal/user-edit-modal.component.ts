@@ -122,7 +122,7 @@ export class UserEditModalComponent implements OnInit {
     });
 
     if (this.data.foto) {
-      this.croppedImage = '//localhost:1337' + this.data.foto['url'];
+      this.croppedImage = '////191.252.59.5:7100' + this.data.foto['url'];
       this.imageBase64 = '';
       this.cropFinished = true;
       this.cdr.detectChanges();

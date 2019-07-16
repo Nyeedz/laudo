@@ -27,7 +27,7 @@
   .mat-card {
     flex: 1;
     max-width: 600px;
-    margin: 0.5rem;
+    margin-top: 0.5rem;
 
     form {
       display: flex;
@@ -76,10 +76,9 @@
   }
 }
 
-.ambientes-list {
+.ambientes-panel {
   flex: 1;
   max-width: 600px;
-  max-height: 300px;
   margin: 0.5rem;
 
   .list {
@@ -88,6 +87,14 @@
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     border-radius: 4px;
+    max-height: 300px;
+    transition: all .3s ease-in-out;
+    user-select: none;
+
+    &.hidden {
+      max-height: 48px;
+      overflow: hidden;
+    }
 
     mat-list-item {
       transition: all 0.3s ease-in-out;
@@ -108,11 +115,6 @@
       }
     }
   }
-}
-
-.ambiente-detail {
-  flex: 1;
-  max-width: 600px;
 
   .mat-card-image {
     height: 300px;
@@ -146,6 +148,28 @@
       left: 0;
       right: 0;
       bottom: 0;
+    }
+  }
+}
+
+.itens-panel {
+  flex: 1;
+  max-width: 600px;
+  margin: 0.5rem;
+
+  .list {
+    overflow: auto;
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    max-height: 400px;
+    user-select: none;
+
+    .mat-list-item {
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
     }
   }
 }

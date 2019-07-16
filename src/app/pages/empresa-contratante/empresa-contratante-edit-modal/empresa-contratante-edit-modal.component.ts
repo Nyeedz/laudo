@@ -104,7 +104,7 @@ export class EmpresaContratanteEditModalComponent implements OnInit {
     });
 
     if (this.data.logotipo) {
-      this.croppedImage = "//localhost:1337" + this.data.logotipo["url"];
+      this.croppedImage = "////191.252.59.5:7100" + this.data.logotipo["url"];
       this.imageBase64 = "";
       this.cropFinished = true;
       this.cdr.detectChanges();

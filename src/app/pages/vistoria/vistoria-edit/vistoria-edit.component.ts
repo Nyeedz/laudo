@@ -1,21 +1,16 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ɵConsole,
-  ChangeDetectorRef
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar, MatStepper } from '@angular/material';
-import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
+import { AmbienteService } from '../../../services/ambiente/ambiente.service';
 import { LaudoService } from '../../../services/laudo/laudo.service';
+import { UploadService } from '../../../services/upload/upload.service';
 import { UserService } from '../../../services/user/user.service';
 import { ViaCepService } from '../../../services/viaCep/via-cep.service';
 import { VistoriaService } from '../../../services/vistoria/vistoria.service';
-import { AmbienteService } from '../../../services/ambiente/ambiente.service';
-import { FlatTreeControl } from '@angular/cdk/tree';
+import { ItensComponent } from '../../itens/itens.component';
 declare var ol;
 
 export class DynamicFlatNode {
@@ -28,30 +23,32 @@ export class DynamicFlatNode {
 }
 
 @Component({
-  selector: "app-vistoria-edit",
-  templateUrl: "./vistoria-edit.component.html",
-  styleUrls: ["./vistoria-edit.component.scss"]
+  selector: 'app-vistoria-edit',
+  templateUrl: './vistoria-edit.component.html',
+  styleUrls: ['./vistoria-edit.component.scss']
 })
 export class VistoriaEditComponent implements OnInit {
   id: string;
   laudoId: string;
   laudo: any;
   showMap = false;
+  ambientesListShow: boolean = true;
 
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
-      bodyBackgroundColor: "#fff",
-      buttonColor: "#d3a03d"
+      bodyBackgroundColor: '#fff',
+      buttonColor: '#d3a03d'
     },
     dial: {
-      dialBackgroundColor: "#d3a03d"
+      dialBackgroundColor: '#d3a03d'
     },
     clockFace: {
-      clockFaceBackgroundColor: "#d3a03d",
-      clockHandColor: "#e7c882",
-      clockFaceTimeInactiveColor: "#fff"
+      clockFaceBackgroundColor: '#d3a03d',
+      clockHandColor: '#e7c882',
+      clockFaceTimeInactiveColor: '#fff'
     }
   };
+
   generalForm: FormGroup;
   locationForm: FormGroup;
   itemForm: FormGroup;
@@ -59,6 +56,7 @@ export class VistoriaEditComponent implements OnInit {
   ambienteForm: FormGroup;
 
   newImage: string;
+  newImageFile: any;
 
   partes: FormArray;
 
@@ -67,12 +65,12 @@ export class VistoriaEditComponent implements OnInit {
   selectedAmbiente: any;
 
   tipos_laudo = [
-    { value: "Vistoria locativa de entrada" },
-    { value: "Vistoria locativa de saida" },
-    { value: "Vistoria cautelar de vizinhança" },
-    { value: "Parecer técnico" },
-    { value: "Laudo judicial" },
-    { value: "Laudo de constatação" }
+    { value: 'Vistoria locativa de entrada' },
+    { value: 'Vistoria locativa de saida' },
+    { value: 'Vistoria cautelar de vizinhança' },
+    { value: 'Parecer técnico' },
+    { value: 'Laudo judicial' },
+    { value: 'Laudo de constatação' }
   ];
 
   constructor(
@@ -81,9 +79,11 @@ export class VistoriaEditComponent implements OnInit {
     private viaCepService: ViaCepService,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
     private vistoriaService: VistoriaService,
     private router: Router,
     private laudoService: LaudoService,
+    private uploadService: UploadService,
     private ambienteService: AmbienteService,
     private userService: UserService
   ) {
@@ -100,20 +100,20 @@ export class VistoriaEditComponent implements OnInit {
 
   buildForm() {
     this.generalForm = this.formBuilder.group({
-      tipos_laudo: ["", Validators.required],
-      data: ["", Validators.required],
-      hora: ["", Validators.required],
-      user: ["", Validators.required]
+      tipos_laudo: ['', Validators.required],
+      data: ['', Validators.required],
+      hora: ['', Validators.required],
+      user: ['', Validators.required]
     });
 
     this.locationForm = this.formBuilder.group({
-      cep: ["", Validators.required],
-      cidade: ["", Validators.required],
-      bairro: ["", Validators.required],
-      estado: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
-      complemento: [""]
+      cep: ['', Validators.required],
+      cidade: ['', Validators.required],
+      bairro: ['', Validators.required],
+      estado: ['', Validators.required],
+      endereco: ['', Validators.required],
+      numero: ['', Validators.required],
+      complemento: ['']
     });
 
     this.partesForm = this.formBuilder.group({
@@ -127,7 +127,7 @@ export class VistoriaEditComponent implements OnInit {
 
   async loadVistoria() {
     try {
-      this.laudoId = this.activatedRoute.snapshot.paramMap.get("id");
+      this.laudoId = this.activatedRoute.snapshot.paramMap.get('id');
       const laudo = await this.laudoService.findOne(this.laudoId);
       const vistoria = laudo.vistoria;
       this.laudo = laudo;
@@ -137,12 +137,12 @@ export class VistoriaEditComponent implements OnInit {
       this.generalForm.patchValue({
         ...vistoria,
         data: moment(vistoria.visita).toISOString(),
-        hora: moment(vistoria.visita).format("hh:mm a")
+        hora: moment(vistoria.visita).format('hh:mm a')
       });
 
       vistoria.partes.forEach((parte, i) => {
         this.addParte();
-        const partesForm = this.partesForm.get("partes") as FormArray;
+        const partesForm = this.partesForm.get('partes') as FormArray;
         partesForm.at(i).patchValue(parte);
       });
 
@@ -162,7 +162,15 @@ export class VistoriaEditComponent implements OnInit {
     try {
       const ambientes = await this.ambienteService.findByLaudo(this.laudoId);
 
-      this.selectAmbiente(ambientes[0]);
+      if (this.selectedAmbiente) {
+        const index = this.ambientes.findIndex(ambiente => {
+          return ambiente._id === this.selectedAmbiente._id
+        })
+        this.selectAmbiente(ambientes[index]);
+      } else {
+        this.selectAmbiente(ambientes[0]);
+      }
+
       this.ambientes = ambientes;
     } catch (err) {
       console.log(err);
@@ -177,26 +185,44 @@ export class VistoriaEditComponent implements OnInit {
     });
 
     this.newImage = null;
+    this.newImageFile = null;
   }
 
   async saveAmbiente() {
     try {
       const ambiente = this.ambienteForm.getRawValue();
-
-      const updated = await this.ambienteService.update(
+      const newAmbiente = await this.ambienteService.update(
         ambiente,
         this.selectedAmbiente.id
       );
 
-      const index = this.ambientes.findIndex(
-        ambiente => ambiente._id == updated['_id']
-      );
+      if (this.newImage && this.newImageFile) {
+        const formData = new FormData();
+        formData.append('ref', 'ambiente');
+        formData.append('refId', newAmbiente['_id']);
+        formData.append('field', 'fotoFachada');
+        formData.append('files', this.newImageFile);
 
-      this.selectedAmbiente = updated;
-      this.ambientes[index] = updated;
+        if (this.selectedAmbiente.fotoFachada) {
+          await this.uploadService.deleteFile(
+            this.selectedAmbiente.fotoFachada._id
+          );
+        }
 
-      console.log(this.ambientes);
-    } catch (err) {}
+        await this.uploadService.send(formData).toPromise();
+      }
+
+      this.loadAmbientes();
+      this.selectedAmbiente = newAmbiente;
+      this.newImage = null;
+      this.newImageFile = null;
+
+      this.snackBar.open('✔ Ambiente editado com sucesso', 'OK', {
+        duration: 2000
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async imageChange(event) {
@@ -207,34 +233,51 @@ export class VistoriaEditComponent implements OnInit {
         this.newImage = e.target['result'];
       };
 
+      this.newImageFile = event.target.files[0];
+
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   createParte(): FormGroup {
     return this.formBuilder.group({
-      titulo: ["", Validators.required],
-      nome_parte: ["", Validators.required],
+      titulo: ['', Validators.required],
+      nome_parte: ['', Validators.required],
       email: [
-        "",
+        '',
         [
           Validators.required,
           Validators.email,
           Validators.compose([
             Validators.pattern(
-              "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+              '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
             )
           ])
         ]
       ],
 
-      telefone: ["", Validators.required]
+      telefone: ['', Validators.required]
     });
   }
 
   addParte(): void {
-    this.partes = this.partesForm.get("partes") as FormArray;
+    this.partes = this.partesForm.get('partes') as FormArray;
     this.partes.push(this.createParte());
+  }
+
+  editItem(item: any) {
+    const dialogRef = this.dialog.open(ItensComponent, {
+      data: item
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadAmbientes();
+        this.snackBar.open('✔ Item editado com sucesso', 'OK', {
+          duration: 2000
+        });
+      }
+    });
   }
 
   deleteParte(index) {
@@ -242,16 +285,16 @@ export class VistoriaEditComponent implements OnInit {
   }
 
   consultaCep(cep) {
-    cep.replace(/\D+/g, "");
+    cep.replace(/\D+/g, '');
     const validaCep = /^[0-9]{8}$/;
-    if (cep != "" && validaCep.test(cep)) {
+    if (cep != '' && validaCep.test(cep)) {
       this.resetaDadosForm(cep);
       this.viaCepService.getCep(cep).subscribe(
         result => {
           this.populaDadosCep(result);
         },
         () => {
-          this.snackBar.open("❌ Cep não encontrado", "OK", {
+          this.snackBar.open('❌ Cep não encontrado', 'OK', {
             duration: 2000
           });
         }
@@ -300,16 +343,16 @@ export class VistoriaEditComponent implements OnInit {
       const locationRaw = this.locationForm.getRawValue();
       const generalRaw = this.generalForm.getRawValue();
       const partesRaw = this.partesForm.getRawValue();
-      const date = moment(generalRaw.data).format("DD/MM/YYYY");
-      const hora = moment(generalRaw.hora, "hh:mm a").format("hh:mm a");
-      const fullDate = moment(`${date} ${hora}`, "DD/MM/YYYY hh:mm a");
+      const date = moment(generalRaw.data).format('DD/MM/YYYY');
+      const hora = moment(generalRaw.hora, 'hh:mm a').format('hh:mm a');
+      const fullDate = moment(`${date} ${hora}`, 'DD/MM/YYYY hh:mm a');
 
       const data = {
         ...locationRaw,
         ...generalRaw,
         ...partesRaw,
         visita: fullDate,
-        status: "Finalizado"
+        status: 'Finalizado'
       };
 
       delete data.data;
@@ -322,14 +365,14 @@ export class VistoriaEditComponent implements OnInit {
       this.snackBar.open(
         `✔️ Vistoria finalizada
        com sucesso!`,
-        "Ok",
+        'Ok',
         {
           duration: 3000
         }
       );
-      this.router.navigate(["/dashboard/solicitacoes"]);
+      this.router.navigate(['/dashboard/solicitacoes']);
     } catch (error) {
-      this.snackBar.open("❌ Erro ao solicitar a vistoria", "Ok", {
+      this.snackBar.open('❌ Erro ao solicitar a vistoria', 'Ok', {
         duration: 3000
       });
     }

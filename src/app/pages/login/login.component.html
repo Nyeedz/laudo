@@ -38,7 +38,9 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-stroked-button (click)="register()">Cadastrar</button>
-      <button mat-button (click)="register()">Esqueci minha senha</button>
+      <button mat-button (click)="register()" [disabled]="loading">
+        Esqueci minha senha
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
