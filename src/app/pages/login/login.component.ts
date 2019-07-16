@@ -13,6 +13,7 @@ import { AuthenticationService } from "src/app/services/authentication/authentic
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
+  hide = true;
 
   constructor(
     private formBuilder: FormBuilder,

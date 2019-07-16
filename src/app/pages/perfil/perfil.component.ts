@@ -19,6 +19,7 @@ export class PerfilComponent implements OnInit {
   credenciada: any = [];
   contratante: any = [];
   avatar: any = null;
+  selected = 'credenciada';
 
   constructor(
     private formBuilder: FormBuilder,

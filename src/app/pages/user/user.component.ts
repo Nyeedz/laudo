@@ -124,7 +124,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  create(dados: any) {
+  create(dados?: any) {
     const dialogRef = this.dialog.open(UserModalCreateComponent, {
       data: dados
     });

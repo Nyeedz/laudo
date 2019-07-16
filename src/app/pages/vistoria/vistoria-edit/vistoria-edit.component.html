@@ -183,7 +183,7 @@
       <form class="partes" [formGroup]="partesForm">
         <div
           class="no-parts"
-          *ngIf="partesForm.get('partes').controls.length == 0"
+          *ngIf="partesForm.get('partes')['controls'].length == 0"
         >
           Para adicionar partes, utilize o botão 'Adicionar parte' no último
           passo do formulário
@@ -192,7 +192,7 @@
           <mat-expansion-panel
             formArrayName="partes"
             *ngFor="
-              let parte of partesForm.get('partes').controls;
+              let parte of partesForm.get('partes')['controls'];
               let i = index
             "
           >
@@ -260,7 +260,7 @@
         <button
           mat-flat-button
           color="primary"
-          *ngIf="partesForm.get('partes').controls.length > 0"
+          *ngIf="partesForm.get('partes')['controls'].length > 0"
           (click)="update()"
           [disabled]="partesForm.invalid"
         >

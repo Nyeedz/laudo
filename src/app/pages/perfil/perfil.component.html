@@ -31,7 +31,7 @@
         <mat-error *ngIf="form?.hasError('required', 'nome')"
           >E-mail é obrigatório</mat-error
         >
-        <mat-error *ngIf="firstForm?.hasError('nome', 'nome')"
+        <mat-error *ngIf="form?.hasError('nome', 'nome')"
           >Formato de e-mail errado</mat-error
         >
       </mat-form-field>
@@ -41,7 +41,7 @@
         <mat-error *ngIf="form?.hasError('required', 'email')"
           >E-mail é obrigatório</mat-error
         >
-        <mat-error *ngIf="firstForm?.hasError('email', 'email')"
+        <mat-error *ngIf="form?.hasError('email', 'email')"
           >Formato de e-mail errado</mat-error
         >
       </mat-form-field>

@@ -176,14 +176,14 @@
     </mat-card-content>
   </mat-card>
   <form class="partes" [formGroup]="partesForm">
-    <div class="no-parts" *ngIf="partesForm.get('partes').controls.length == 0">
+    <div class="no-parts" *ngIf="partesForm.get('partes')['controls'].length == 0">
       Para adicionar partes, utilize o botão 'Adicionar parte' no último passo
       do formulário
     </div>
     <mat-accordion>
       <mat-expansion-panel
         formArrayName="partes"
-        *ngFor="let parte of partesForm.get('partes').controls; let i = index"
+        *ngFor="let parte of partesForm.get('partes')['controls']; let i = index"
       >
         <mat-expansion-panel-header>
           <mat-panel-title> Parte {{ i + 1 }} </mat-panel-title>
@@ -248,7 +248,7 @@
     <button
       mat-flat-button
       color="primary"
-      *ngIf="partesForm.get('partes').controls.length > 0"
+      *ngIf="partesForm.get('partes')['controls'].length > 0"
       (click)="create()"
       [disabled]="partesForm.invalid"
     >
