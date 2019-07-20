@@ -2,13 +2,13 @@
   <div *ngIf="vistorias.length > 0">
     <div class="vistorias">
       <div class="vistoria" *ngFor="let vistoria of vistorias">
-        <div *ngIf="vistoria.status === 'Em andamento'">
+        <div>
           <div class="vistoria-title">
             <h5>Status:</h5>
             <span class="label label-primary">
               {{ vistoria.status }}
             </span>
-            <div class="vistoria-tools">
+            <div class="vistoria-tools" *ngIf="canEdit && vistoria.status === 'Em andamento'">
               <a class="collapse-link" (click)="seeLaudo(vistoria)">
                 <mat-icon matTooltip="Editar" matTooltipPosition="above"
                   >edit</mat-icon
