@@ -140,7 +140,8 @@ export class UserComponent implements AfterViewInit, OnDestroy {
         const users = {
           ...result.dados,
           empresacons: contratantes,
-          empresacres: credenciadas
+          empresacres: credenciadas,
+          admin: false
         };
 
         this.userService.register(users).subscribe(
