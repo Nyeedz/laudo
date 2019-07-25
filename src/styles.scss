@@ -37,6 +37,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-grid-tile .mat-figure {
+  display: block !important;
+}
+
 * {
   box-sizing: border-box;
 }

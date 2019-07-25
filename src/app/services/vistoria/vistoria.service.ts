@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { forkJoin } from "rxjs";
-import { environment } from "../../../environments/environment";
-import { Vistoria } from "../../models/vistoria";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Vistoria } from '../../models/vistoria';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class VistoriaService {
   private apiUrl = environment.apiUrl;
-  jwt = JSON.parse(localStorage.getItem("currentUser"));
+  jwt = JSON.parse(localStorage.getItem('currentUser'));
 
   constructor(private http: HttpClient) {}
 
@@ -20,20 +20,24 @@ export class VistoriaService {
     ]);
   }
 
+  findMine(id: string) {
+    return this.http.get<Vistoria[]>(`${this.apiUrl}/vistorias?user=${id}`);
+  }
+
   getAll(sort: string, start: any, limit: any, filter: any) {
     let params = new HttpParams()
-      .set("_sort", sort)
-      .set("_start", start.toString())
-      .set("_limit", limit.toString());
+      .set('_sort', sort)
+      .set('_start', start.toString())
+      .set('_limit', limit.toString());
 
-    if (filter.tipos_laudo)
-      params = params.append("tipos_laudo_contains", filter.tipos_laudo);
-    if (filter.status) params = params.append("status_contains", filter.status);
+    if (filter.tipos_laudo) {
+      params = params.append('tipos_laudo_contains', filter.tipos_laudo);
+    }
+    if (filter.status) {
+      params = params.append('status_contains', filter.status);
+    }
 
-    return this.http.get<Vistoria[]>(
-      `${this.apiUrl}/vistorias`,
-      { params }
-    );
+    return this.http.get<Vistoria[]>(`${this.apiUrl}/vistorias`, { params });
   }
 
   getPageSize() {

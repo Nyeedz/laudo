@@ -183,7 +183,7 @@
       <form class="partes" [formGroup]="partesForm">
         <div
           class="no-parts"
-          *ngIf="partesForm.get('partes').controls.length == 0"
+          *ngIf="partesForm.get('partes')['controls'].length == 0"
         >
           Para adicionar partes, utilize o botão 'Adicionar parte' no último
           passo do formulário
@@ -192,7 +192,7 @@
           <mat-expansion-panel
             formArrayName="partes"
             *ngFor="
-              let parte of partesForm.get('partes').controls;
+              let parte of partesForm.get('partes')['controls'];
               let i = index
             "
           >
@@ -260,7 +260,7 @@
         <button
           mat-flat-button
           color="primary"
-          *ngIf="partesForm.get('partes').controls.length > 0"
+          *ngIf="partesForm.get('partes')['controls'].length > 0"
           (click)="update()"
           [disabled]="partesForm.invalid"
         >
@@ -271,23 +271,34 @@
   </mat-tab>
   <mat-tab label="Ambientes">
     <div class="full-screen" *ngIf="ambientes">
-      <div class="ambientes-list">
-        <mat-list class="list">
-          <h3 mat-subheader>Ambientes cadastrados</h3>
+      <div class="ambientes-panel">
+        <mat-list class="list" [class.hidden]="!ambientesListShow">
+          <h3 mat-subheader>
+            Ambientes cadastrados
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="ambientesListShow = !ambientesListShow"
+            >
+              <mat-icon>{{ ambientesListShow ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+          </h3>
           <mat-list-item
             *ngFor="let ambiente of ambientes; let index"
             [class.selected]="selectedAmbiente.id == ambiente.id"
             (click)="selectAmbiente(ambiente)"
           >
-            <mat-icon [matBadge]="ambiente.itens.length" mat-list-icon
+            <mat-icon
+              matTooltip="Itens"
+              matTooltipPosition="left"
+              [matBadge]="ambiente.itens?.length"
+              mat-list-icon
               >account_balance</mat-icon
             >
             <h4 mat-line>{{ ambiente.nome }}</h4>
             <p mat-line>{{ ambiente.updatedAt | date }}</p>
           </mat-list-item>
         </mat-list>
-      </div>
-      <div class="ambiente-detail">
         <mat-card>
           <mat-card-header>
             <mat-card-title>{{ selectedAmbiente.nome }}</mat-card-title>
@@ -300,7 +311,7 @@
               [src]="
                 newImage
                   ? newImage
-                  : 'http://localhost:1337' + selectedAmbiente.fotoFachada?.url
+                  : 'http://191.252.59.5:7100' + selectedAmbiente.fotoFachada?.url
               "
               alt="foto de fachada"
             />
@@ -311,7 +322,7 @@
                 [href]="
                   newImage
                     ? newImage
-                    : 'http://localhost:1337' +
+                    : 'http://191.252.59.5:7100' +
                       selectedAmbiente.fotoFachada?.url
                 "
                 mat-flat-button
@@ -353,6 +364,25 @@
             <button mat-button color="warn">EXCLUIR</button>
           </mat-card-actions>
         </mat-card>
+      </div>
+      <div class="itens-panel">
+        <mat-list class="list">
+          <h3 mat-subheader>Itens</h3>
+          <mat-list-item
+            *ngFor="let item of selectedAmbiente.itens; let index"
+            (click)="editItem(item)"
+          >
+            <mat-icon
+              matTooltip="Fotos"
+              matTooltipPosition="left"
+              [matBadge]="item.fotos?.length"
+              mat-list-icon
+              >insert_photo</mat-icon
+            >
+            <h4 mat-line>{{ item.nome }}</h4>
+            <p mat-line>{{ item.updatedAt | date }}</p>
+          </mat-list-item>
+        </mat-list>
       </div>
     </div>
   </mat-tab>

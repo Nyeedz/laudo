@@ -13,4 +13,13 @@ export class UploadService {
   send(arquivo: FormData) {
     return this.http.post(`${this.apiUrl}/upload`, arquivo);
   }
+
+  update(arquivo: FormData, id: string) {
+    return this.http.put(`${this.apiUrl}/upload/${id}`, arquivo);
+  }
+
+  deleteFile(id: string) {
+    const url = environment.apiUrl + '/upload/files/' + id;
+    return this.http.delete<any>(url).toPromise();
+  }
 }

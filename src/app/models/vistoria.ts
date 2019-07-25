@@ -7,6 +7,7 @@ export class Vistoria {
   bairro: string;
   numero: number;
   tipo_laudo: string;
+  user: any;
   visita: Date;
   partes: any;
   fachada: any;

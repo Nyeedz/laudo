@@ -1,0 +1,66 @@
+<div mat-dialog-title>
+  <form [formGroup]="itemForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Alterar nome do item</mat-label>
+      <input matInput placeholder="Nome" formControlName="nome" required />
+      <mat-error *ngIf="itemForm?.hasError('required', 'nome')"
+        >Nome é obrigatório</mat-error
+      >
+    </mat-form-field>
+  </form>
+  <label
+    class="item-image-label mat-stroked-button"
+    matRipple
+    for="item-image"
+    >Adicionar foto</label
+  >
+  <input
+    class="item-image-input"
+    type="file"
+    (change)="imageChange($event)"
+    id="item-image"
+  />
+</div>
+<div mat-dialog-content>
+  <mat-grid-list
+    [cols]="breakpoint"
+    rowHeight="2:1"
+    class="foto-grid"
+    (window:resize)="onResize($event)"
+  >
+    <mat-grid-tile *ngFor="let picture of picturesToUpload; let i = index">
+      <img
+        [src]="picture.uri"
+        alt=""
+      />
+      <button
+        mat-mini-fab
+        (click)="removeFoto(picture, i)"
+        class="remove"
+        color="warn"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile *ngFor="let foto of pictures; let i = index">
+      <img
+        [src]="foto.url ? 'http://191.252.59.5:7100' + foto.url : foto"
+        alt=""
+      />
+      <button
+        mat-mini-fab
+        (click)="removeFoto(foto)"
+        class="remove"
+        color="warn"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="submit()" cdkFocusInitial>
+    Salvar
+  </button>
+</div>

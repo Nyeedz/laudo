@@ -145,7 +145,7 @@ export class EmpresaCredenciadaComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  create(dados: any) {
+  create(dados?: any) {
     const dialogRef = this.dialog.open(EmpresaCredenciadaCreateModalComponent, {
       data: dados
     });

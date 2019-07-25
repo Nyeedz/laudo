@@ -27,7 +27,8 @@ import {
   MatTabsModule,
   MatTreeModule,
   MatBadgeModule,
-  MatRippleModule
+  MatRippleModule,
+  MatGridListModule
 } from "@angular/material";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { RouterModule } from "@angular/router";
@@ -52,6 +53,7 @@ import { DashboardComponent } from "./dashboard.component";
 import { SolicitacoesComponent } from "../solicitacoes/solicitacoes.component";
 import { VistoriaCreateComponent } from '../vistoria/vistoria-create/vistoria-create.component';
 import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.component';
+import { ItensComponent } from '../itens/itens.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.c
     EmpresaCredenciadaCreateModalComponent,
     UserComponent,
     UserModalCreateComponent,
-    UserEditModalComponent
+    UserEditModalComponent,
+    ItensComponent
   ],
   imports: [
     CommonModule,
@@ -98,6 +101,7 @@ import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.c
     MatPaginatorModule,
     MatTabsModule,
     MatTreeModule,
+    MatGridListModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatSortModule,
@@ -119,6 +123,7 @@ import { VistoriaEditComponent } from '../vistoria/vistoria-edit/vistoria-edit.c
     EmpresaCredenciadaCreateModalComponent,
     UserModalCreateComponent,
     UserEditModalComponent,
+    ItensComponent,
     PerfilAvatarModalComponent
   ]
 })

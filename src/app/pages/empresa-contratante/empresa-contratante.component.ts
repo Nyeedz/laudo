@@ -139,7 +139,7 @@ export class EmpresaContratanteComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  create(dados: any) {
+  create(dados?: any) {
     const dialogRef = this.dialog.open(EmpresaContratanteCreateModalComponent, {
       data: dados
     });

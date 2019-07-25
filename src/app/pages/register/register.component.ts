@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
   firstForm: FormGroup;
   secondForm: FormGroup;
   loading = false;
+  hide = true;
 
   constructor(
     private formBuilder: FormBuilder,

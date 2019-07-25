@@ -23,7 +23,7 @@ export class PerfilAvatarModalComponent {
     private upload: UploadService
   ) {
     if (this.data.user.foto) {
-      this.croppedImage = "//localhost:1337" + this.data.user.foto["url"];
+      this.croppedImage = "//191.252.59.5:7100" + this.data.user.foto["url"];
       this.imageBase64 = "";
       this.cropFinished = true;
     }
