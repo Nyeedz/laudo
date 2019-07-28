@@ -33,7 +33,7 @@ export class UserComponent implements AfterViewInit, OnDestroy {
     "foto",
     "nome",
     "email",
-    "role",
+    "tipoUser",
     "cep",
     "cidade",
     "ações"
@@ -143,7 +143,6 @@ export class UserComponent implements AfterViewInit, OnDestroy {
           empresacres: credenciadas,
           admin: false
         };
-
         this.userService.register(users).subscribe(
           async user => {
             if (credenciadas.length > 0 || contratantes.length > 0) {

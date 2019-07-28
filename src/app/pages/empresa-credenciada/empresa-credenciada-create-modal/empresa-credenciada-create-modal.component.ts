@@ -171,8 +171,9 @@ export class EmpresaCredenciadaCreateModalComponent implements OnInit {
         id: this.form.controls.id.value,
         inscricao_estadual: this.form.controls.inscricao_estadual.value,
         inscricao_municipal: this.form.controls.inscricao_municipal.value,
+        email: this.form.controls.email.value,
         logotipo: this.form.controls.logotipo.value,
-        nome_fantasia: "teste",
+        nome_fantasia: this.form.controls.nome_fantasia.value,
         numero: this.form.controls.numero.value,
         razao_social: this.form.controls.razao_social.value,
         telefone: this.form.controls.telefone.value

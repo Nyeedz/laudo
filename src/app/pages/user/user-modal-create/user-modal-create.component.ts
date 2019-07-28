@@ -25,6 +25,7 @@ export class UserModalCreateComponent implements OnInit {
   vistoriador: boolean = false;
   credenciado: boolean = false;
   contratante: boolean = false;
+  tipoUsers: string[] = ["Vistoriador", "Credenciado", "Contratante"];
 
   constructor(
     public dialogRef: MatDialogRef<UserModalCreateComponent>,
@@ -171,19 +172,8 @@ export class UserModalCreateComponent implements OnInit {
       return;
     }
 
-    if (this.form.controls.tipoUser.value === "1") {
-      this.vistoriador = true;
-    } else if (this.form.controls.tipoUser.value === "2") {
-      this.credenciado = true;
-    } else {
-      this.contratante = true;
-    }
-
     const dados = {
-      ...this.form.getRawValue(),
-      vistoriador: this.vistoriador,
-      contratante: this.contratante,
-      credenciado: this.credenciado
+      ...this.form.getRawValue()
     };
     this.dialogRef.close({ dados, file: this.croppedFile });
   }

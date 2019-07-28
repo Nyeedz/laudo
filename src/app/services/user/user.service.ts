@@ -30,7 +30,9 @@ export class UserService {
   }
 
   get() {
-    return this.http.get(`${this.apiUrl}/users?admin=false`);
+    return this.http.get(
+      `${this.apiUrl}/users?admin=false&tipoUser=Vistoriador`
+    );
   }
 
   getMe() {
